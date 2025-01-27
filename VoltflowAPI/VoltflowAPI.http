@@ -1,0 +1,6 @@
+@VoltflowAPI_HostAddress = http://localhost:5227
+
+##GET {{VoltflowAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
