@@ -4,9 +4,10 @@ using ReactiveUI;
 using Mapsui.Extensions;
 using System.Diagnostics;
 using Mapsui.Layers;
-using Mapsui.UI.Avalonia;
 using System.Collections.Generic;
 using System;
+using System.Net.Mail;
+using System.Net;
 
 namespace Voltflow.ViewModels;
 
@@ -27,11 +28,6 @@ public class MainViewModel : ViewModelBase
         IsMapInfoLayer = true,
     };
 
-    public MainViewModel()
-    {
-        Debug.WriteLine("test");
-    }
-
     public void ConfigureMap()
     {
         Map = new Map();
@@ -51,5 +47,17 @@ public class MainViewModel : ViewModelBase
         Map.RefreshGraphics();
 
         Map.Layers.Add(_pointsLayer);
+    }
+
+    public void EmailTest()
+    {
+        var client = new SmtpClient("smtp.gmail.com", 587)
+        {
+            Credentials = new NetworkCredential("from-mail@gmail.com", "password"),
+            EnableSsl = true
+        };
+        client.Send("to-mail@gmail.com", "to-mail@gmail.com", "title", "testbody");
+        Console.WriteLine("Sent");
+        Console.ReadLine();
     }
 }

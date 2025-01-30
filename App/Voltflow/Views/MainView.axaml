@@ -16,6 +16,9 @@
 
 	<DockPanel>
 		<Panel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Height="50" Background="Green">
+			<Button Command="{Binding EmailTest}">
+				email test
+			</Button>
 		</Panel>
         <mapsui:MapControl x:Name="map"/>
 	</DockPanel>
