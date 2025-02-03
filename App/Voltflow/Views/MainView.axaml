@@ -15,10 +15,17 @@
   </Design.DataContext>
 
 	<DockPanel>
-		<Panel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Height="50" Background="Green">
+		<Panel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Height="100" Background="Green">
 			<Button Command="{Binding EmailTest}">
 				email test
 			</Button>
+			<StackPanel HorizontalAlignment="Right">
+				<Label>Lon</Label>				
+				<TextBlock Text="{Binding Lon}"/>				
+				<Label>Lat</Label>				
+				<TextBlock Text="{Binding Lat}"/>
+				<TextBlock Text="{Binding IsHit}"/>
+			</StackPanel>
 		</Panel>
         <mapsui:MapControl x:Name="map"/>
 	</DockPanel>
