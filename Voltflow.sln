@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{2D1CB345-FB5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoltflowAPI", "VoltflowAPI\VoltflowAPI.csproj", "{EC33689E-62BC-4F31-8FD1-A4E0F4E33619}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Voltflow.Modules", "Voltflow.Modules\Voltflow.Modules.csproj", "{DAB6AAF3-7CC5-4900-87C6-453E43110410}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{EC33689E-62BC-4F31-8FD1-A4E0F4E33619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC33689E-62BC-4F31-8FD1-A4E0F4E33619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC33689E-62BC-4F31-8FD1-A4E0F4E33619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAB6AAF3-7CC5-4900-87C6-453E43110410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB6AAF3-7CC5-4900-87C6-453E43110410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB6AAF3-7CC5-4900-87C6-453E43110410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB6AAF3-7CC5-4900-87C6-453E43110410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
