@@ -1,32 +1,41 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using VoltflowAPI.Contexts;
 
 namespace VoltflowAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountsController : ControllerBase
+public class AuthController : ControllerBase
 {
     readonly UserManager<Account> _userManager;
     readonly IConfiguration _configuration;
 
-    public AccountsController(UserManager<Account> userManager, IConfiguration configuration)
+    public AuthController(UserManager<Account> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _configuration = configuration;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register()
+    public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var user = new Account { UserName="testUsername2", Phone="123456789", Name="testName", Surname="testSurname", Email = "tes2t@mail.com"};
-        var result = await _userManager.CreateAsync(user, "password123@W");
+        var user = await _userManager.FindByEmailAsync(model.Email);
+
+        if (user is not null)
+            return BadRequest(new { AccountExist = true });
+
+        user = new Account()
+        {
+            Email = model.Email,
+            Name = model.Name,
+            Surname = model.Surname
+        };
+
+        var result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
             return Ok(new { message = "User registered successfully!" });
@@ -35,15 +44,16 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login()
+    public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
-        var user = await _userManager.FindByNameAsync("testUsername2");  
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
-        if (user != null && await _userManager.CheckPasswordAsync(user, "password123@W"))
+        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
             var token = GenerateJwtToken(user);
             return Ok(new { Token = token });
         }
+
         return Unauthorized();
     }
 
@@ -61,5 +71,19 @@ public class AccountsController : ControllerBase
             signingCredentials: creds
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public struct RegisterModel
+    {
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Password { get; set; }
+    }
+
+    public struct LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
