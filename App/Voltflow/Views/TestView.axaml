@@ -1,0 +1,41 @@
+<UserControl
+    x:Class="Voltflow.Views.TestView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:TestViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+        <Panel
+            Height="100"
+            HorizontalAlignment="Stretch"
+            Background="Green"
+            DockPanel.Dock="Top">
+            <StackPanel HorizontalAlignment="Left">
+                <Button Command="{Binding EmailTest}">
+                    email test
+                </Button>
+                <Button Command="{Binding RouteToLogin}">
+                    Login
+                </Button>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right">
+                <Label>Lon</Label>
+                <TextBlock Text="{Binding Lon}" />
+                <Label>Lat</Label>
+                <TextBlock Text="{Binding Lat}" />
+                <TextBlock Text="{Binding IsHit}" />
+            </StackPanel>
+        </Panel>
+        <mapsui:MapControl x:Name="map" />
+    </DockPanel>
+</UserControl>

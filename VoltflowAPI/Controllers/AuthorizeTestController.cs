@@ -8,10 +8,10 @@ namespace VoltflowAPI.Controllers;
 [ApiController]
 public class AuthorizeTestController : ControllerBase
 {
-    [HttpGet]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public IActionResult GetProtectedData()
-    {
-        return Ok(new { message = "auth ok" });
-    }
+	[HttpGet]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	public IActionResult GetProtectedData()
+	{
+		return Ok(new { message = "auth ok" });
+	}
 }
