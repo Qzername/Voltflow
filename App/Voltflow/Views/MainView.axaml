@@ -6,12 +6,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    xmlns:views="clr-namespace:Voltflow.Views"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <reactiveUi:RoutedViewHost Router="{Binding Router}">
-        <reactiveUi:RoutedViewHost.ViewLocator>
-            <controllers:AppViewController />
-        </reactiveUi:RoutedViewHost.ViewLocator>
-    </reactiveUi:RoutedViewHost>
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <views:NavBarView Grid.Row="0" />
+        <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
+            <reactiveUi:RoutedViewHost.ViewLocator>
+                <controllers:AppViewController />
+            </reactiveUi:RoutedViewHost.ViewLocator>
+        </reactiveUi:RoutedViewHost>
+    </Grid>
 </UserControl>

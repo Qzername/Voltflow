@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Diagnostics;
+using ReactiveUI;
 using System.Reactive;
 
 namespace Voltflow.ViewModels;
@@ -12,6 +13,11 @@ public class MainViewModel : ReactiveObject, IScreen
 	public MainViewModel()
 	{
 		Router.Navigate.Execute(new TestViewModel(this));
+	}
+
+	public void RouteToLogin()
+	{
+		if (Router.GetCurrentViewModel()?.GetType() != typeof(AuthViewModel)) Router.Navigate.Execute(new AuthViewModel(this));
 	}
 }
 

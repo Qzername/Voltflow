@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using HotAvalonia;
 using Voltflow.ViewModels;
 using Voltflow.Views;
 
@@ -11,6 +11,7 @@ public partial class App : Application
 {
 	public override void Initialize()
 	{
+		this.EnableHotReload();
 		AvaloniaXamlLoader.Load(this);
 	}
 

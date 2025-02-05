@@ -9,8 +9,9 @@ namespace Voltflow.Controllers
 	{
 		public IViewFor ResolveView<T>(T? viewModel, string? contract = null) => viewModel switch
 		{
+			MainViewModel context => new MainView { DataContext = context },
 			TestViewModel context => new TestView { DataContext = context },
-			LoginViewModel context => new LoginView { DataContext = context },
+			AuthViewModel context => new AuthView { DataContext = context },
 			_ => throw new ArgumentOutOfRangeException(nameof(viewModel))
 		};
 	}
