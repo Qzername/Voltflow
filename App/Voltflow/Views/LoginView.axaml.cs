@@ -3,9 +3,9 @@ using Voltflow.ViewModels;
 
 namespace Voltflow.Views;
 
-public partial class MainView : ReactiveUserControl<MainViewModel>
+public partial class LoginView : ReactiveUserControl<LoginViewModel>
 {
-	public MainView()
+	public LoginView()
 	{
 		InitializeComponent();
 	}

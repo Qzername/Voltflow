@@ -21,13 +21,13 @@ public class AuthController : ControllerBase
         _tokenGenerator = generator;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterModel model)
-    {
-        var user = await _userManager.FindByEmailAsync(model.Email);
+	[HttpPost("register")]
+	public async Task<IActionResult> Register([FromBody] RegisterModel model)
+	{
+		var user = await _userManager.FindByEmailAsync(model.Email);
 
-        if (user is not null)
-            return BadRequest(new { AccountExist = true });
+		if (user is not null)
+			return BadRequest(new { AccountExist = true });
 
         user = new Account()
         {
@@ -38,13 +38,13 @@ public class AuthController : ControllerBase
             Phone = model.Phone
         };
 
-        var result = await _userManager.CreateAsync(user, model.Password);
+		var result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
             return Ok();
 
-        return BadRequest(result.Errors);
-    }
+		return BadRequest(result.Errors);
+	}
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
@@ -74,9 +74,9 @@ public class AuthController : ControllerBase
         public string Phone { get; set; }
     }
 
-    public struct LoginModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+	public struct LoginModel
+	{
+		public string Email { get; set; }
+		public string Password { get; set; }
+	}
 }

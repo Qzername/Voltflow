@@ -7,5 +7,5 @@ namespace VoltflowAPI.Contexts;
 /// </summary>
 public class ApplicationContext : IdentityDbContext<Account>
 {
-    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
+	public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 }
