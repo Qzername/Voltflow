@@ -17,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using VoltflowAPI.Contexts;
+using VoltflowAPI.Models;
+using VoltflowAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +27,13 @@ builder.Services.AddOpenApi();
 
 // --- Contexts ---
 
-// --- Dependency Injection ---
+// --- Services ---
+builder.Services.AddTransient<IEmailSender, DefaultEmailSender>();
+builder.Services.AddTransient<IAccountTokenGenerator, DefaultAccountTokenGenerator>();
+
+// --- Configuration ---
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
 // --- PostgreSQL Server configuration ---
 //Requires ConnectionStrings -> Default to be set 

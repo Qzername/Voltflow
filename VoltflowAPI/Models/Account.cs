@@ -15,4 +15,5 @@ public class Account : IdentityUser
     public string Email { get; set; }
     [Column("phone")]
     public string Phone { get; set; }
+    public bool TwoFactorEnabled { get; set; }
 }
