@@ -17,9 +17,18 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Spacing="8">
+        <TextBlock Classes="size-sm color-lightgray weight-bold" Text="E-Mail" />
+        <TextBox />
+
+        <TextBlock Classes="size-sm color-lightgray weight-bold" Text="Password" />
+        <TextBox PasswordChar="*" />
+
+        <Separator />
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -27,47 +36,29 @@
                 Grid.Column="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                CornerRadius="16,0,0,16">
-                Log In
+                Command="{Binding NavigateBack}">
+                Go Back
             </Button>
 
             <Button
-                Grid.Column="1"
+                Grid.Column="2"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                CornerRadius="0,16,16,0">
-                Register
+                Classes="color-green">
+                Log In
             </Button>
         </Grid>
 
-        <Separator Margin="0,4" />
-
-        <TextBlock
-            Classes="sm"
-            Foreground="LightGray"
-            Text="E-Mail" />
-        <TextBox />
-
-        <TextBlock
-            Classes="sm"
-            Foreground="LightGray"
-            Text="Password" />
-        <TextBox />
-
-        <Separator Margin="0,4" />
-
-        <Button
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            Classes="green">
-            ✓ Login
-        </Button>
-
-        <Button
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            Command="{Binding NavigateBack}">
-            ← Back
-        </Button>
+        <StackPanel
+            Margin="0,16,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="4">
+            <TextBlock Classes="size-sm" Text="Don't have an account?" />
+            <TextBlock
+                Classes="size-sm hyperlink"
+                Text="Sign up here!"
+                TextDecorations="Underline" />
+        </StackPanel>
     </StackPanel>
 </UserControl>

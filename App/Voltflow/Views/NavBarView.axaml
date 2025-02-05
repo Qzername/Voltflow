@@ -12,13 +12,23 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <StackPanel
-        Margin="8"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Orientation="Horizontal">
-        <Button Command="{Binding RouteToLogin}">
-            Log In
-        </Button>
-    </StackPanel>
+    <Panel>
+        <StackPanel
+            Margin="8"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock Classes="lg bold" Text="Voltflow" />
+        </StackPanel>
+        <StackPanel
+            Margin="8"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button Command="{Binding RouteToLogin}">
+                Log In
+            </Button>
+        </StackPanel>
+    </Panel>
+
 </UserControl>
