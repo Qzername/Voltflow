@@ -4,16 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Account : IdentityUser
 {
-    [Key]
-    [Column("id")]
-    public uint Id { get; set; }
-    [Column("name")]
+    [Column("Name")]
     public string Name { get; set; }
-    [Column("surname")]
+    [Column("Surname")]
     public string Surname { get; set; }
-    [Column("email")]
-    public string Email { get; set; }
-    [Column("phone")]
-    public string Phone { get; set; }
-    public bool TwoFactorEnabled { get; set; }
 }

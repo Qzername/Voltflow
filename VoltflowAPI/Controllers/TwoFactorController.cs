@@ -25,7 +25,7 @@ public class TwoFactorController : ControllerBase
     }
     
     #region 2FA setting control
-    [HttpPost]
+    [HttpPost("enable")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Enable()
     {
@@ -39,7 +39,7 @@ public class TwoFactorController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
+    [HttpPost("disable")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Disable()
     {
@@ -55,11 +55,13 @@ public class TwoFactorController : ControllerBase
     #endregion
 
     #region 2FA Process 
-    [HttpPost]
+    [HttpPost("send")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Send()
     {
         var claims = User.Claims.ToList();
-        var email = claims.Single(x => x.Type == ClaimTypes.Email).Value;
+
+        var email = claims.Single(x => x.Type == "TwoFactorEmail").Value;
 
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -72,16 +74,24 @@ public class TwoFactorController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Verify([FromBody] string code)
+    [HttpPost("verify")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> Verify([FromBody] VerifyModel model)
     {
-        var user = await _userManager.GetUserAsync(User);
+        var claims = User.Claims.ToList();
+        var email = claims.Single(x => x.Type == "TwoFactorEmail").Value;
+        var user = await _userManager.FindByEmailAsync(email);
         if (user == null) return Unauthorized();
 
-        var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultAuthenticatorProvider, code);
+        var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, model.Code);
         if (!isValid) return BadRequest("Invalid 2FA code");
 
         return Ok(new {Token = _tokenGenerator.GenerateJwtToken(user)});
+    }
+
+    public struct VerifyModel
+    {
+        public string Code { get; set; }
     }
     #endregion
 }

@@ -31,4 +31,21 @@ public class DefaultAccountTokenGenerator : IAccountTokenGenerator
         );
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    public string GenerateTwoFactorToken(Account user)
+    {
+        Console.WriteLine(user.Email);
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            claims:
+            [
+                new Claim("TwoFactorEmail", user.Email)
+            ],
+            expires: DateTime.UtcNow.AddMinutes(10),
+            signingCredentials: creds
+        );
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 }

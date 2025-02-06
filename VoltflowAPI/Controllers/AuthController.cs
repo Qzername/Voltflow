@@ -35,7 +35,7 @@ public class AuthController : ControllerBase
             Name = model.Name,
             Surname = model.Surname,
             UserName = model.Email,
-            Phone = model.Phone
+            PhoneNumber = model.Phone
         };
 
 		var result = await _userManager.CreateAsync(user, model.Password);
@@ -49,17 +49,13 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
-        Console.WriteLine(model.Email);
-
         var user = await _userManager.FindByEmailAsync(model.Email);
-
-        Console.WriteLine(user is null);
 
         if (user == null || !(await _userManager.CheckPasswordAsync(user, model.Password)))
             return Unauthorized();
 
         if (user.TwoFactorEnabled)
-            return Ok(new { Requires2FA = true });
+            return Ok(new { Requires2FA = true, TwoFactorToken = _tokenGenerator.GenerateTwoFactorToken(user) });
 
         var token = _tokenGenerator.GenerateJwtToken(user);
         return Ok(new { Token = token });
