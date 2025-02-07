@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Voltflow.Views;
 
-public partial class NavBarView : UserControl
+public partial class TwoFactorAuthView : UserControl
 {
-	public NavBarView()
+	public TwoFactorAuthView()
 	{
 		InitializeComponent();
 	}

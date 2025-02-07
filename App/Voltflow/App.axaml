@@ -7,5 +7,11 @@
 
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://IconPacks.Avalonia/Icons.axaml" />
+        <StyleInclude Source="/Styles/ButtonStyle.axaml" />
+        <StyleInclude Source="/Styles/IconStyle.axaml" />
+        <StyleInclude Source="/Styles/SeparatorStyle.axaml" />
+        <StyleInclude Source="/Styles/StackPanelStyle.axaml" />
+        <StyleInclude Source="/Styles/TextBlockStyle.axaml" />
     </Application.Styles>
 </Application>

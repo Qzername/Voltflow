@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
     d:DesignHeight="450"
@@ -18,15 +19,21 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <TextBlock Classes="lg bold" Text="Voltflow" />
+            <TextBlock Classes="size-l weight-bold" Text="Voltflow" />
         </StackPanel>
         <StackPanel
             Margin="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <Button Command="{Binding RouteToLogin}">
-                Log In
+            <Button Command="{Binding RouteToAuthView}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons
+                        VerticalAlignment="Center"
+                        Classes="size-l"
+                        Kind="PeopleFill" />
+                    <TextBlock VerticalAlignment="Center" Text="Sign In" />
+                </StackPanel>
             </Button>
         </StackPanel>
     </Panel>

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0.8" />
     <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia" Version="2.1.0" />
     <PackageReference Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
   </ItemGroup>
@@ -27,7 +28,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.3" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
-    <PackageReference Include="HotAvalonia" Version="2.1.0" />
     <PackageReference Include="IconPacks.Avalonia" Version="1.0.0" />
     <PackageReference Include="Mapsui.Avalonia" Version="4.1.8" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
@@ -39,6 +39,12 @@
     </Compile>
     <Compile Update="Views\NavBarView.axaml.cs">
       <DependentUpon>NavBarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SignInFormView.axaml.cs">
+      <DependentUpon>SignInFormView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SignUpFormView.axaml.cs">
+      <DependentUpon>SignUpFormView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\TestView.axaml.cs">
       <DependentUpon>TestView.axaml</DependentUpon>

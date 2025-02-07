@@ -4,12 +4,12 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="ForegroundGray">DimGray</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundGray" Color="DimGray" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ForegroundGray">LightGray</SolidColorBrush>
+                    <SolidColorBrush x:Key="ForegroundGray" Color="LightGray" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

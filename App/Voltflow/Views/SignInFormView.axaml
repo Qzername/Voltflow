@@ -1,0 +1,109 @@
+<UserControl
+    x:Class="Voltflow.Views.SignInFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Voltflow.Models"
+    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:AuthViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <models:AuthTypeConverter x:Key="AuthTypeConverter" />
+    </UserControl.Resources>
+
+    <StackPanel x:Name="SignInForm" IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignIn}">
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconBootstrapIcons
+                VerticalAlignment="Center"
+                Classes="size-sm color-gray"
+                IsVisible="True"
+                Kind="EnvelopeFill" />
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
+        </StackPanel>
+        <TextBox IsEnabled="{Binding !Authenticating}" Watermark="example@gmail.com" />
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconBootstrapIcons
+                VerticalAlignment="Center"
+                Classes="size-sm color-gray"
+                IsVisible="True"
+                Kind="ShieldLockFill" />
+
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
+        </StackPanel>
+        <TextBox
+            IsEnabled="{Binding !Authenticating}"
+            PasswordChar="*"
+            Watermark="ExamplePassword123" />
+
+        <Separator />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Command="{Binding NavigateHome}"
+                IsEnabled="{Binding !Authenticating}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Center"
+                        Kind="ArrowLeft" />
+                    <TextBlock VerticalAlignment="Center" Text="Go Back" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Classes="color-green"
+                Command="{Binding TestAuthentication}"
+                IsEnabled="{Binding !Authenticating}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons
+                        Width="16"
+                        Height="16"
+                        VerticalAlignment="Center"
+                        Kind="Check2" />
+                    <TextBlock VerticalAlignment="Center" Text="Sign In" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <StackPanel
+            Margin="0,16,0,0"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="4">
+            <TextBlock Classes="size-sm" Text="Don't have an account?" />
+            <TextBlock
+                x:Name="SignUpHyperlink"
+                Classes="size-sm hyperlink"
+                IsEnabled="{Binding !Authenticating}"
+                Text="Sign up here!"
+                TextDecorations="Underline">
+                <Interaction.Behaviors>
+                    <EventTriggerBehavior EventName="PointerPressed" SourceObject="{Binding #SignUpHyperlink}">
+                        <InvokeCommandAction Command="{Binding SwitchForms}" />
+                    </EventTriggerBehavior>
+                </Interaction.Behaviors>
+            </TextBlock>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

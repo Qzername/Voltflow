@@ -4,20 +4,20 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="Background">Black</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundHover">#3c3c3c</SolidColorBrush>
-                    <SolidColorBrush x:Key="Foreground">White</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundGreen">DarkGreen</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundGreenHover">Green</SolidColorBrush>
+                    <SolidColorBrush x:Key="Background" Color="Black" />
+                    <SolidColorBrush x:Key="BackgroundHover" Color="#3c3c3c" />
+                    <SolidColorBrush x:Key="Foreground" Color="White" />
+                    <SolidColorBrush x:Key="BackgroundGreen" Color="DarkGreen" />
+                    <SolidColorBrush x:Key="BackgroundGreenHover" Color="Green" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="Background">White</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundHover">LightGray</SolidColorBrush>
-                    <SolidColorBrush x:Key="Foreground">Black</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundGreen">Green</SolidColorBrush>
-                    <SolidColorBrush x:Key="BackgroundGreenHover">DarkGreen</SolidColorBrush>
+                    <SolidColorBrush x:Key="Background" Color="White" />
+                    <SolidColorBrush x:Key="BackgroundHover" Color="LightGray" />
+                    <SolidColorBrush x:Key="Foreground" Color="Black" />
+                    <SolidColorBrush x:Key="BackgroundGreen" Color="Green" />
+                    <SolidColorBrush x:Key="BackgroundGreenHover" Color="DarkGreen" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
