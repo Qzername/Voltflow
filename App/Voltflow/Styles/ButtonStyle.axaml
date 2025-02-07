@@ -1,23 +1,47 @@
 <Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!--  Light Theme  -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="Background">Black</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundHover">#3c3c3c</SolidColorBrush>
+                    <SolidColorBrush x:Key="Foreground">White</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundGreen">DarkGreen</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundGreenHover">Green</SolidColorBrush>
+                </ResourceDictionary>
+
+                <!--  Dark Theme  -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="Background">White</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundHover">LightGray</SolidColorBrush>
+                    <SolidColorBrush x:Key="Foreground">Black</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundGreen">Green</SolidColorBrush>
+                    <SolidColorBrush x:Key="BackgroundGreenHover">DarkGreen</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
     <Style Selector="Button">
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Background" Value="White" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="{DynamicResource Background}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
     <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="LightGray" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
     </Style>
 
     <Style Selector="Button.color-green">
-        <Setter Property="Background" Value="Green" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundGreen}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
     <Style Selector="Button.color-green:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="DarkGreen" />
+        <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 </Styles>

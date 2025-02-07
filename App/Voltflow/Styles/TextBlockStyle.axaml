@@ -1,4 +1,20 @@
 <Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!--  Light Theme  -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ForegroundGray">DimGray</SolidColorBrush>
+                </ResourceDictionary>
+
+                <!--  Dark Theme  -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ForegroundGray">LightGray</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
     <Style Selector="TextBlock.size-xs">
         <Setter Property="FontSize" Value="10" />
     </Style>
@@ -24,11 +40,7 @@
     </Style>
 
     <Style Selector="TextBlock.color-gray">
-        <Setter Property="Foreground" Value="Gray" />
-    </Style>
-
-    <Style Selector="TextBlock.color-lightgray">
-        <Setter Property="Foreground" Value="LightGray" />
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundGray}" />
     </Style>
 
     <Style Selector="TextBlock.hyperlink">

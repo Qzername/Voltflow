@@ -17,10 +17,10 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Spacing="8">
-        <TextBlock Classes="size-sm color-lightgray weight-bold" Text="E-Mail" />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="E-Mail" />
         <TextBox />
 
-        <TextBlock Classes="size-sm color-lightgray weight-bold" Text="Password" />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
         <TextBox PasswordChar="*" />
 
         <Separator />
