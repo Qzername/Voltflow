@@ -11,7 +11,8 @@ public partial class App : Application
 {
 	public override void Initialize()
 	{
-		this.EnableHotReload();
+		if (!(ApplicationLifetime is ISingleViewApplicationLifetime))
+			this.EnableHotReload();
 		AvaloniaXamlLoader.Load(this);
 	}
 
