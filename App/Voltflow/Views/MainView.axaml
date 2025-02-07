@@ -2,7 +2,7 @@
     x:Class="Voltflow.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controllers="clr-namespace:Voltflow.Controllers"
+	xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveUi="http://reactiveui.net"
@@ -23,7 +23,7 @@
         <views:NavBarView Grid.Row="0" />
         <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
             <reactiveUi:RoutedViewHost.ViewLocator>
-                <controllers:AppViewController />
+                <viewLocators:ReactiveViewLocator/>
             </reactiveUi:RoutedViewHost.ViewLocator>
         </reactiveUi:RoutedViewHost>
     </Grid>
