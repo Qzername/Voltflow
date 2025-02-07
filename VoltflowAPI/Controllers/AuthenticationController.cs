@@ -27,7 +27,7 @@ public class AuthenticationController : ControllerBase
 		var user = await _userManager.FindByEmailAsync(model.Email);
 
 		if (user is not null)
-			return BadRequest(new { AccountExist = false });
+			return BadRequest(new { AccountExist = true });
 
         user = new Account()
         {
