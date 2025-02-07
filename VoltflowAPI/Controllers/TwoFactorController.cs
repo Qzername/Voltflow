@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using VoltflowAPI.Models.Endpoints;
 
 namespace VoltflowAPI.Controllers;
 
@@ -11,6 +12,7 @@ namespace VoltflowAPI.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class TwoFactorController : ControllerBase
 {
     readonly UserManager<Account> _userManager;
@@ -56,7 +58,6 @@ public class TwoFactorController : ControllerBase
 
     #region 2FA Process 
     [HttpPost("send")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Send()
     {
         var claims = User.Claims.ToList();
@@ -75,23 +76,21 @@ public class TwoFactorController : ControllerBase
     }
 
     [HttpPost("verify")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public async Task<IActionResult> Verify([FromBody] VerifyModel model)
+    public async Task<IActionResult> Verify([FromBody] TokenModel model)
     {
         var claims = User.Claims.ToList();
         var email = claims.Single(x => x.Type == "TwoFactorEmail").Value;
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null) return Unauthorized();
 
-        var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, model.Code);
-        if (!isValid) return BadRequest("Invalid 2FA code");
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null) 
+            return Unauthorized();
+
+        var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, model.Token);
+        if (!isValid) 
+            return BadRequest("Invalid 2FA code");
 
         return Ok(new {Token = _tokenGenerator.GenerateJwtToken(user)});
     }
 
-    public struct VerifyModel
-    {
-        public string Code { get; set; }
-    }
     #endregion
 }
