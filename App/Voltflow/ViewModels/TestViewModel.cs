@@ -6,20 +6,26 @@ using Mapsui.Styles;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using ReactiveUI.Fody.Helpers;
 
 namespace Voltflow.ViewModels;
 
+/// <summary>
+/// ViewModel for TestView.
+/// </summary>
+/// <param name="screen"></param>
 public class TestViewModel(IScreen screen) : ViewModelBase(screen)
 {
 	private bool _isConfigured;
 
-	private Map? _map;
-	public Map? Map
-	{
-		get => _map;
-		set => this.RaiseAndSetIfChanged(ref _map, value);
-	}
+	/// <summary>
+	/// Map to display.
+	/// </summary>
+	[Reactive] public Map? Map { get; set; }
 
+	/// <summary>
+	/// Layer for red points.
+	/// </summary>
 	private readonly MemoryLayer _pointsLayer = new()
 	{
 		Name = "Points",
@@ -32,6 +38,9 @@ public class TestViewModel(IScreen screen) : ViewModelBase(screen)
 		}
 	};
 
+	/// <summary>
+	/// Configures the map with a random red point on the map.
+	/// </summary>
 	public void ConfigureMap()
 	{
 		// Prevent from running multiple times, RUN ONLY ONCE!

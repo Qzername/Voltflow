@@ -13,5 +13,6 @@
         <viewModels:TestViewModel />
     </Design.DataContext>
 
+    <!--  Just a test map, idk what else to write about it.  -->
     <mapsui:MapControl x:Name="MapControl" />
 </UserControl>

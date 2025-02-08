@@ -2,6 +2,9 @@
 
 namespace Voltflow.Models;
 
+/// <summary>
+/// Represents the sign-up form.
+/// </summary>
 public class SignUpForm
 {
 	[Reactive] public string? Email { get; set; }

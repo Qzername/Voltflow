@@ -15,40 +15,44 @@
         </ResourceDictionary>
     </Styles.Resources>
 
+    <!--  Tiny TextBlock  -->
     <Style Selector="TextBlock.size-xs">
         <Setter Property="FontSize" Value="10" />
     </Style>
 
+    <!--  Small TextBlock  -->
     <Style Selector="TextBlock.size-sm">
         <Setter Property="FontSize" Value="12" />
     </Style>
 
+    <!--  Medium (default) TextBlock  -->
     <Style Selector="TextBlock.size-md">
         <Setter Property="FontSize" Value="14" />
     </Style>
 
+    <!--  Large TextBlock  -->
     <Style Selector="TextBlock.size-l">
         <Setter Property="FontSize" Value="16" />
     </Style>
 
+    <!--  Extra large TextBlock  -->
     <Style Selector="TextBlock.size-xl">
         <Setter Property="FontSize" Value="18" />
     </Style>
 
+    <!--  Bold TextBlock  -->
     <Style Selector="TextBlock.weight-bold">
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
+    <!--  Gray TextBlock  -->
     <Style Selector="TextBlock.color-gray">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundGray}" />
     </Style>
 
+    <!--  Hyperlink TextBlock  -->
     <Style Selector="TextBlock.hyperlink">
         <Setter Property="Foreground" Value="LightSkyBlue" />
         <Setter Property="FontWeight" Value="Bold" />
-    </Style>
-
-    <Style Selector="TextBlock.hyperlink:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="DarkGreen" />
     </Style>
 </Styles>

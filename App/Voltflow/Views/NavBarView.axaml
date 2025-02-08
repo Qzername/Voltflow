@@ -14,6 +14,7 @@
     </Design.DataContext>
 
     <Panel>
+        <!--  Left side  -->
         <StackPanel
             Margin="8"
             HorizontalAlignment="Left"
@@ -21,12 +22,14 @@
             Orientation="Horizontal">
             <TextBlock Classes="size-l weight-bold" Text="Voltflow" />
         </StackPanel>
+
+        <!--  Right side  -->
         <StackPanel
             Margin="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <Button Command="{Binding RouteToAuthView}">
+            <Button Command="{Binding NavigateToAuthView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"

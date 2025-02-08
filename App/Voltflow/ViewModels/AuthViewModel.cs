@@ -5,21 +5,34 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels;
 
+/// <summary>
+/// ViewModel for AuthView.
+/// </summary>
+/// <param name="screen"></param>
 public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 {
+	// Properties
+	// I couldn't get ShowPassword to work when it was in SignInForm or SignUpForm, so I moved it here.
 	[Reactive] public AuthType AuthType { get; set; } = AuthType.SignIn;
 	[Reactive] public bool Authenticating { get; set; }
 	[Reactive] public bool ShowPassword { get; set; }
 
+	// Forms
 	public SignInForm SignInForm { get; set; } = new();
 	public SignUpForm SignUpForm { get; set; } = new();
 	public TwoFactorForm TwoFactorForm { get; set; } = new();
 
+	// Commands
 	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new TestViewModel(screen));
 	public void NavigateBack() => AuthType = AuthType.SignIn;
 	public void SwitchForms() => AuthType = AuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
 	public void RevealPassword() => ShowPassword = !ShowPassword;
 
+	// Validators (they're commands as well)
+
+	/// <summary>
+	/// Validates the sign-in form (just for testing).
+	/// </summary>
 	public void ValidateSignIn()
 	{
 		bool emailValid = EmailValidator.IsValid(SignInForm.Email);
@@ -29,6 +42,9 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 		Debug.WriteLine($"Password is {(passwordValid ? "VALID" : "INVALID")}!");
 	}
 
+	/// <summary>
+	/// Validates the sign-up form (just for testing).
+	/// </summary>
 	public void ValidateSignUp()
 	{
 		bool emailValid = EmailValidator.IsValid(SignUpForm.Email);
@@ -44,6 +60,9 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 		Debug.WriteLine($"Phone number is {(phoneNumberValid ? "VALID" : "INVALID")}!");
 	}
 
+	/// <summary>
+	/// Validates the 2FA form (just for testing).
+	/// </summary>
 	public void ValidateTwoFactor()
 	{
 		bool codeValid = NumberValidator.IsValid(TwoFactorForm.Code, 6);

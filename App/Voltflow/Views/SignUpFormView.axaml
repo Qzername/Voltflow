@@ -15,10 +15,13 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <!--  AuthTypeConverter returns whether AuthType set in AuthViewModel is the same as here, which is AuthType.SignUp.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
+    <!--  Form  -->
     <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
+        <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -32,6 +35,7 @@
             Text="{Binding SignUpForm.Email}"
             Watermark="example@gmail.com" />
 
+        <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -71,6 +75,7 @@
             </Button>
         </Grid>
 
+        <!--  First and last name input  -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -109,6 +114,7 @@
             </StackPanel>
         </Grid>
 
+        <!--  Phone number input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -140,6 +146,7 @@
 
         <Separator />
 
+        <!--  Buttons  -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -181,6 +188,7 @@
             </Button>
         </Grid>
 
+        <!--  Hyperlink which hides this form and shows SignIn form.  -->
         <StackPanel
             Margin="0,16,0,0"
             HorizontalAlignment="Center"

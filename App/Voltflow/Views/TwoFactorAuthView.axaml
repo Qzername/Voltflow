@@ -15,10 +15,13 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <!--  AuthTypeConverter returns whether AuthType set in AuthViewModel is the same as here, which is AuthType.TwoFactor.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
+    <!--  Form  -->
     <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactor}">
+        <!--  2FA code input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -36,6 +39,7 @@
 
         <Separator />
 
+        <!--  Buttons  -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

@@ -18,30 +18,36 @@
         </ResourceDictionary>
     </Styles.Resources>
 
+    <!--  Gray Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.color-gray">
         <Setter Property="Foreground" Value="{DynamicResource ForegroundGray}" />
     </Style>
 
+    <!--  Tiny Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.size-xs">
         <Setter Property="Width" Value="10" />
         <Setter Property="Height" Value="10" />
     </Style>
 
+    <!--  Small Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.size-sm">
         <Setter Property="Width" Value="12" />
         <Setter Property="Height" Value="12" />
     </Style>
 
+    <!--  Medium (default) Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.size-md">
         <Setter Property="Width" Value="14" />
         <Setter Property="Height" Value="14" />
     </Style>
 
+    <!--  Large Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.size-l">
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
     </Style>
 
+    <!--  Extra large Bootstrap icons  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.size-xl">
         <Setter Property="Width" Value="18" />
         <Setter Property="Height" Value="18" />

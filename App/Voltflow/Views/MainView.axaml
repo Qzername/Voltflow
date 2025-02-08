@@ -2,10 +2,10 @@
     x:Class="Voltflow.Views.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
     xmlns:views="clr-namespace:Voltflow.Views"
     d:DesignHeight="450"
@@ -20,10 +20,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <views:NavBarView Grid.Row="0" />
+
         <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
             <reactiveUi:RoutedViewHost.ViewLocator>
-                <viewLocators:ReactiveViewLocator/>
+                <viewLocators:ReactiveViewLocator />
             </reactiveUi:RoutedViewHost.ViewLocator>
         </reactiveUi:RoutedViewHost>
     </Grid>

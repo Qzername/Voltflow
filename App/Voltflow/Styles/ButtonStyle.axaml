@@ -23,6 +23,7 @@
         </ResourceDictionary>
     </Styles.Resources>
 
+    <!--  Default Button style  -->
     <Style Selector="Button">
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Background" Value="{DynamicResource Background}" />
@@ -30,26 +31,31 @@
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
+    <!--  Default hovered Button style  -->
     <Style Selector="Button:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
         <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
     </Style>
 
+    <!--  Default pressed Button style  -->
     <Style Selector="Button:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
         <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
     </Style>
 
+    <!--  Green Button style  -->
     <Style Selector="Button.color-green">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreen}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
+    <!--  Green hovered Button style  -->
     <Style Selector="Button.color-green:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
+    <!--  Green pressed Button style  -->
     <Style Selector="Button.color-green:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
         <Setter Property="Foreground" Value="White" />

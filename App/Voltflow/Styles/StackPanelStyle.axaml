@@ -1,12 +1,15 @@
 <Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  Default StackPanel style  -->
     <Style Selector="StackPanel">
         <Setter Property="Spacing" Value="8" />
     </Style>
 
+    <!--  StackPanel with smaller spacing  -->
     <Style Selector="StackPanel.sm-spacing">
         <Setter Property="Spacing" Value="4" />
     </Style>
 
+    <!--  StackPanel with no spacing  -->
     <Style Selector="StackPanel.no-spacing">
         <Setter Property="Spacing" Value="0" />
     </Style>

@@ -18,6 +18,7 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Classes="no-spacing">
+        <!--  Store all 3 forms here (I split them into each file so the code here looks *clean*). Each form knows when to display because of AuthTypeConverter and set AuthType in AuthViewModel.  -->
         <views:SignUpFormView />
         <views:SignInFormView />
         <views:TwoFactorAuthView />

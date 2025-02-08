@@ -2,16 +2,18 @@
     x:Class="Voltflow.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
-	
+    xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     RequestedThemeVariant="Default">
 
-	<Application.DataTemplates>
-		<viewLocators:AvaloniaViewLocator/>
-	</Application.DataTemplates>
-	
+    <Application.DataTemplates>
+        <viewLocators:AvaloniaViewLocator />
+    </Application.DataTemplates>
+
     <Application.Styles>
+        <!--  Use FluentTheme  -->
         <FluentTheme />
+
+        <!--  Include styles (even for Icons from IconPacks.Avalonia)  -->
         <StyleInclude Source="avares://IconPacks.Avalonia/Icons.axaml" />
         <StyleInclude Source="/Styles/ButtonStyle.axaml" />
         <StyleInclude Source="/Styles/IconStyle.axaml" />
