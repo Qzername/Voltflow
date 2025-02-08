@@ -1,0 +1,25 @@
+﻿using Splat;
+using System;
+using System.Net.Http;
+
+namespace Voltflow;
+
+/// <summary>
+/// Loads the services into the dependency resolver.
+/// </summary>
+internal static class Bootstraper
+{
+    public static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+    {
+        services.RegisterLazySingleton(() => new HttpClient()
+        {
+            BaseAddress = new Uri("https://localhost:5001") //subject to change
+        }, typeof(HttpClient));
+    }
+
+    /*
+     * - This method is for later use in Register method
+     * - Shortens the code for getting a service from the resolver
+     */
+    static T GetService<T>(IReadonlyDependencyResolver resolver) => resolver.GetService<T>()!;
+}
