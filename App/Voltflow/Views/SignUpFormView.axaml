@@ -18,7 +18,7 @@
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
-    <StackPanel x:Name="SignUpForm" IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
+    <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -27,7 +27,10 @@
                 Kind="EnvelopeFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
-        <TextBox IsEnabled="{Binding !Authenticating}" Watermark="example@gmail.com" />
+        <TextBox
+            IsEnabled="{Binding !Authenticating}"
+            Text="{Binding SignUpForm.Email}"
+            Watermark="example@gmail.com" />
 
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
@@ -37,10 +40,36 @@
                 Kind="ShieldLockFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
         </StackPanel>
-        <TextBox
-            IsEnabled="{Binding !Authenticating}"
-            PasswordChar="*"
-            Watermark="ExamplePassword123" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                Grid.Column="0"
+                IsEnabled="{Binding !Authenticating}"
+                MaxLength="32"
+                PasswordChar="*"
+                RevealPassword="{Binding ShowPassword}"
+                Text="{Binding SignUpForm.Password}"
+                Watermark="Example123@" />
+
+            <Button Grid.Column="2" Command="{Binding RevealPassword}">
+                <StackPanel>
+                    <iconPacks:PackIconBootstrapIcons
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding !ShowPassword}"
+                        Kind="EyeFill" />
+
+                    <iconPacks:PackIconBootstrapIcons
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding ShowPassword}"
+                        Kind="EyeSlashFill" />
+                </StackPanel>
+            </Button>
+        </Grid>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -58,7 +87,10 @@
                         Kind="PersonFill" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="First Name" />
                 </StackPanel>
-                <TextBox IsEnabled="{Binding !Authenticating}" Watermark="Jan" />
+                <TextBox
+                    IsEnabled="{Binding !Authenticating}"
+                    Text="{Binding SignUpForm.FirstName}"
+                    Watermark="Jan" />
             </StackPanel>
 
             <StackPanel Grid.Column="2">
@@ -70,7 +102,10 @@
                         Kind="PersonFill" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="Last Name" />
                 </StackPanel>
-                <TextBox IsEnabled="{Binding !Authenticating}" Watermark="Kowalski" />
+                <TextBox
+                    IsEnabled="{Binding !Authenticating}"
+                    Text="{Binding SignUpForm.LastName}"
+                    Watermark="Kowalski" />
             </StackPanel>
         </Grid>
 
@@ -80,9 +115,28 @@
                 Classes="size-sm color-gray"
                 IsVisible="True"
                 Kind="TelephoneFill" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Phone Number (only Polish)" />
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Phone Number" />
         </StackPanel>
-        <TextBox IsEnabled="{Binding !Authenticating}" Watermark="123456789" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="color-gray"
+                Text="+48" />
+            <NumericUpDown
+                Grid.Column="2"
+                IsEnabled="{Binding !Authenticating}"
+                Maximum="999999999"
+                ShowButtonSpinner="False"
+                Text="{Binding SignUpForm.PhoneNumber}"
+                Watermark="123456789" />
+        </Grid>
 
         <Separator />
 
@@ -114,7 +168,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="color-green"
-                Command="{Binding TestAuthentication}"
+                Command="{Binding ValidateSignUp}"
                 IsEnabled="{Binding !Authenticating}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons

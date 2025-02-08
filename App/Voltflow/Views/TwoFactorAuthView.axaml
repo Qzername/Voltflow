@@ -18,7 +18,7 @@
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
-    <StackPanel x:Name="TwoFactorForm" IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactor}">
+    <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactor}">
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
@@ -27,9 +27,11 @@
                 Kind="KeyFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="2FA Code" />
         </StackPanel>
-        <TextBox
+        <NumericUpDown
             IsEnabled="{Binding !Authenticating}"
-            MaxLength="6"
+            Maximum="999999"
+            ShowButtonSpinner="False"
+            Text="{Binding TwoFactorForm.Code}"
             Watermark="123456" />
 
         <Separator />
@@ -62,7 +64,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="color-green"
-                Command="{Binding TestAuthentication}"
+                Command="{Binding ValidateTwoFactor}"
                 IsEnabled="{Binding !Authenticating}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons

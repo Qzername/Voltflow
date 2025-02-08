@@ -35,12 +35,22 @@
         <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
     </Style>
 
+    <Style Selector="Button:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
+    </Style>
+
     <Style Selector="Button.color-green">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreen}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
     <Style Selector="Button.color-green:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <Style Selector="Button.color-green:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
