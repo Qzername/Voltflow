@@ -10,7 +10,6 @@ namespace VoltflowAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PasswordResetController : ControllerBase
 {
     readonly UserManager<Account> _userManager;
@@ -23,19 +22,16 @@ public class PasswordResetController : ControllerBase
     }
 
     [HttpGet("send")]
-    public async Task<IActionResult> SendToken()
+    public async Task<IActionResult> SendToken([FromBody] SendTokenModel model)
     {
-        var claims = User.Claims.ToList();
-        var email = claims.Single(x => x.Type == ClaimTypes.Email).Value;
-
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user == null)
             return Unauthorized();
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var message = $"Your password reset token is: {token}";
-        await _emailSender.SendEmailAsync(user.Email, "Password reset", message);
+        await _emailSender.SendEmailAsync(user.Email!, "Password reset", message);
 
         return Ok();
     }
@@ -57,6 +53,11 @@ public class PasswordResetController : ControllerBase
             return BadRequest(result.Errors);
 
         return Ok();
+    }
+
+    public struct SendTokenModel
+    {
+        public string Email { get; set; }
     }
 
     public struct PasswordResetModel
