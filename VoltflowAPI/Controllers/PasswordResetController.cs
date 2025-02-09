@@ -21,7 +21,7 @@ public class PasswordResetController : ControllerBase
         _emailSender = emailSender;
     }
 
-    [HttpGet("send")]
+    [HttpPost("send")]
     public async Task<IActionResult> SendToken([FromBody] SendTokenModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
