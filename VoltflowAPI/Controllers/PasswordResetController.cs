@@ -39,10 +39,7 @@ public class PasswordResetController : ControllerBase
     [HttpPost("reset")]
     public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel password)
     {
-        var claims = User.Claims.ToList();
-        var email = claims.Single(x => x.Type == ClaimTypes.Email).Value;
-
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(password.Email);
 
         if (user == null)
             return Unauthorized();
@@ -62,6 +59,7 @@ public class PasswordResetController : ControllerBase
 
     public struct PasswordResetModel
     {
+        public string Email { get; set; }
         public string Password { get; set; }
         public TokenModel TokenModel { get; set; }
     }
