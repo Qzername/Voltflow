@@ -11,12 +11,15 @@ public enum AuthType
 {
 	SignIn = 0,
 	SignUp = 1,
-	TwoFactor = 2
+	TwoFactorAuth = 2,
+	PasswordReset = 3,
+	EmailVerification = 4
 }
 
 /// <summary>
-/// Converts AuthType to a boolean based on the parameter. This is useful for showing/hiding forms.
-/// Using this is better than having a boolean bound to "IsVisible" for each form and also makes the code look cleaner. ;)
+/// Checks if CurrentAuthType is the same as the one in a form.
+/// Using this is better than having multiple booleans bound to the 'IsVisible' property of each form.
+/// Also, it makes the code look cleaner. ;)
 /// </summary>
 public class AuthTypeConverter : IValueConverter
 {

@@ -4,9 +4,9 @@ using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
-using ReactiveUI.Fody.Helpers;
 
 namespace Voltflow.ViewModels;
 

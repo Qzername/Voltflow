@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="Voltflow.Views.TwoFactorAuthView"
+    x:Class="Voltflow.Views.Forms.EmailVerificationForm"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,27 +15,22 @@
     </Design.DataContext>
 
     <UserControl.Resources>
-        <!--  AuthTypeConverter returns whether AuthType set in AuthViewModel is the same as here, which is AuthType.TwoFactor.  -->
+        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.EmailVerification.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
     <!--  Form  -->
-    <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactor}">
-        <!--  2FA code input  -->
+    <StackPanel IsEnabled="{Binding !EmailVerificationForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=EmailVerification}">
+        <!--  Token input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
                 Kind="KeyFill" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="2FA Code" />
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Token" />
         </StackPanel>
-        <NumericUpDown
-            IsEnabled="{Binding !Authenticating}"
-            Maximum="999999"
-            ShowButtonSpinner="False"
-            Text="{Binding TwoFactorForm.Code}"
-            Watermark="123456" />
+        <TextBox Text="{Binding EmailVerificationForm.Token}" Watermark="Enter received token here" />
 
         <Separator />
 
@@ -51,8 +46,7 @@
                 Grid.Column="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Command="{Binding NavigateBack}"
-                IsEnabled="{Binding !Authenticating}">
+                Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons
                         Width="16"
@@ -68,8 +62,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="color-green"
-                Command="{Binding ValidateTwoFactor}"
-                IsEnabled="{Binding !Authenticating}">
+                Command="{Binding VerifyEmail}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons
                         Width="16"

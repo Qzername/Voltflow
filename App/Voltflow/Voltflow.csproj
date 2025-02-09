@@ -30,6 +30,7 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
     <PackageReference Include="IconPacks.Avalonia" Version="1.0.0" />
     <PackageReference Include="Mapsui.Avalonia" Version="4.1.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
   </ItemGroup>
 
@@ -37,17 +38,26 @@
     <Compile Update="Views\AuthView.axaml.cs">
       <DependentUpon>AuthView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Forms\EmailVerificationForm.axaml.cs">
+      <DependentUpon>EmailVerificationForm.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\NavBarView.axaml.cs">
       <DependentUpon>NavBarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\SignInFormView.axaml.cs">
-      <DependentUpon>SignInFormView.axaml</DependentUpon>
+    <Compile Update="Views\Forms\SignInForm.axaml.cs">
+      <DependentUpon>SignInForm.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\SignUpFormView.axaml.cs">
-      <DependentUpon>SignUpFormView.axaml</DependentUpon>
+    <Compile Update="Views\Forms\SignUpForm.axaml.cs">
+      <DependentUpon>SignUpForm.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\TestView.axaml.cs">
       <DependentUpon>TestView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Forms\PasswordResetForm.axaml.cs">
+      <DependentUpon>PasswordResetForm.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Forms\TwoFactorAuthForm.axaml.cs">
+      <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

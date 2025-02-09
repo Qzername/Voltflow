@@ -23,6 +23,7 @@ public static class EmailValidator
 		// Checks if host of the address has a dot in it.
 		// Examples (of invalid mails): 'politechnika@gdanska', 'hello@world', 'iwork@microsoft'
 		// Hosts (of examples above): 'gdanska', 'world', 'microsoft'
+		// These hosts don't contain any dots, so they're invalid.
 		string[] hostParts = mailAddress.Host.Split(".");
 		if (hostParts.Length == 1)
 			return false;
@@ -34,7 +35,7 @@ public static class EmailValidator
 
 		// Checks if the last part of the host (TLD) is less than 2 characters.
 		//       ↓ (dot that splits the address)
-		// heapy . xyz ← last part (TLD)
+		// heapy . xyz ← last part (which is a TLD)
 		// Examples: 'xyz', 'pl', 'com', 'de', 'eu'
 		if (hostParts[^1].Length < 2)
 			return false;

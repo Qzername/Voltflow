@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="Voltflow.Views.SignUpFormView"
+    x:Class="Voltflow.Views.Forms.SignUpForm"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,12 +15,12 @@
     </Design.DataContext>
 
     <UserControl.Resources>
-        <!--  AuthTypeConverter returns whether AuthType set in AuthViewModel is the same as here, which is AuthType.SignUp.  -->
+        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.SignUp.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
     <!--  Form  -->
-    <StackPanel IsVisible="{Binding AuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
+    <StackPanel IsEnabled="{Binding !SignUpForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
         <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
@@ -30,10 +30,7 @@
                 Kind="EnvelopeFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
-        <TextBox
-            IsEnabled="{Binding !Authenticating}"
-            Text="{Binding SignUpForm.Email}"
-            Watermark="example@gmail.com" />
+        <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@gmail.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
@@ -53,23 +50,22 @@
 
             <TextBox
                 Grid.Column="0"
-                IsEnabled="{Binding !Authenticating}"
                 MaxLength="32"
                 PasswordChar="*"
-                RevealPassword="{Binding ShowPassword}"
+                RevealPassword="{Binding SignUpForm.ShowPassword}"
                 Text="{Binding SignUpForm.Password}"
                 Watermark="Example123@" />
 
-            <Button Grid.Column="2" Command="{Binding RevealPassword}">
+            <Button Grid.Column="2" Command="{Binding SignUpForm.TogglePassword}">
                 <StackPanel>
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
-                        IsVisible="{Binding !ShowPassword}"
+                        IsVisible="{Binding !SignUpForm.ShowPassword}"
                         Kind="EyeFill" />
 
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
-                        IsVisible="{Binding ShowPassword}"
+                        IsVisible="{Binding SignUpForm.ShowPassword}"
                         Kind="EyeSlashFill" />
                 </StackPanel>
             </Button>
@@ -92,10 +88,7 @@
                         Kind="PersonFill" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="First Name" />
                 </StackPanel>
-                <TextBox
-                    IsEnabled="{Binding !Authenticating}"
-                    Text="{Binding SignUpForm.FirstName}"
-                    Watermark="Jan" />
+                <TextBox Text="{Binding SignUpForm.FirstName}" Watermark="Jan" />
             </StackPanel>
 
             <StackPanel Grid.Column="2">
@@ -107,10 +100,7 @@
                         Kind="PersonFill" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="Last Name" />
                 </StackPanel>
-                <TextBox
-                    IsEnabled="{Binding !Authenticating}"
-                    Text="{Binding SignUpForm.LastName}"
-                    Watermark="Kowalski" />
+                <TextBox Text="{Binding SignUpForm.LastName}" Watermark="Kowalski" />
             </StackPanel>
         </Grid>
 
@@ -135,11 +125,9 @@
                 VerticalAlignment="Center"
                 Classes="color-gray"
                 Text="+48" />
-            <NumericUpDown
+            <TextBox
                 Grid.Column="2"
-                IsEnabled="{Binding !Authenticating}"
-                Maximum="999999999"
-                ShowButtonSpinner="False"
+                MaxLength="9"
                 Text="{Binding SignUpForm.PhoneNumber}"
                 Watermark="123456789" />
         </Grid>
@@ -158,8 +146,7 @@
                 Grid.Column="0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Command="{Binding NavigateHome}"
-                IsEnabled="{Binding !Authenticating}">
+                Command="{Binding NavigateHome}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons
                         Width="16"
@@ -175,8 +162,7 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="color-green"
-                Command="{Binding ValidateSignUp}"
-                IsEnabled="{Binding !Authenticating}">
+                Command="{Binding SignUp}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons
                         Width="16"
@@ -198,12 +184,11 @@
             <TextBlock
                 x:Name="SignInHyperlink"
                 Classes="size-sm hyperlink"
-                IsEnabled="{Binding !Authenticating}"
                 Text="Sign in here!"
                 TextDecorations="Underline">
                 <Interaction.Behaviors>
                     <EventTriggerBehavior EventName="PointerPressed" SourceObject="{Binding #SignInHyperlink}">
-                        <InvokeCommandAction Command="{Binding SwitchForms}" />
+                        <InvokeCommandAction Command="{Binding SwitchSignForms}" />
                     </EventTriggerBehavior>
                 </Interaction.Behaviors>
             </TextBlock>

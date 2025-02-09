@@ -14,5 +14,5 @@ public class ViewModelBase(IScreen screen) : ReactiveObject, IRoutableViewModel
 	public string UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
 
 	// dependency injection stuff
-    protected T GetService<T>() => Locator.Current.GetService<T>()!;
+	protected T GetService<T>() => Locator.Current.GetService<T>()!;
 }

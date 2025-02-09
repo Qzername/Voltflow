@@ -3,9 +3,9 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:forms="clr-namespace:Voltflow.Views.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
-    xmlns:views="clr-namespace:Voltflow.Views"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -18,9 +18,11 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Classes="no-spacing">
-        <!--  Store all 3 forms here (I split them into each file so the code here looks *clean*). Each form knows when to display because of AuthTypeConverter and set AuthType in AuthViewModel.  -->
-        <views:SignUpFormView />
-        <views:SignInFormView />
-        <views:TwoFactorAuthView />
+        <!--  Store all forms here (I split them into each file so the code here looks *clean*). Each form knows when to display because of AuthTypeConverter and set AuthType in AuthViewModel.  -->
+        <forms:SignUpForm />
+        <forms:SignInForm />
+        <forms:TwoFactorAuthForm />
+        <forms:PasswordResetForm />
+        <forms:EmailVerificationForm />
     </StackPanel>
 </UserControl>
