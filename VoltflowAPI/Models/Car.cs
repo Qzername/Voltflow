@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+namespace VoltflowAPI.Models;
+
 public class Car
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string AccountId { get; set; }
     [Range(0,100)]
     public string Name { get; set; }

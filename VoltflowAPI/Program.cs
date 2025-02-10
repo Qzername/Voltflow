@@ -1,11 +1,6 @@
 /*
  * Before your first run:
  * You will have to modify appsettings in order to run the server
- * 
- * Required elements are:
- * - ConnectionStrings -> Default
- * - Jwt -> Key
- * 
  * Check the appsettings.template.json for example
  */
 
@@ -68,6 +63,19 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 	app.MapOpenApi();
+
+//Ensure admin role is created
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    //we only need admin role
+    //if user doesn't have a role, then he is a normal user
+    if (!roleManager.Roles.Any())
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+}
 
 app.UseHttpsRedirection();
 

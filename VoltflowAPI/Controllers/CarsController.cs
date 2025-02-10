@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoltflowAPI.Contexts;
+using VoltflowAPI.Models;
 
 namespace VoltflowAPI.Controllers;
 
@@ -113,7 +114,7 @@ public class CarsController : ControllerBase
 
     public struct PatchCarModel
     {
-        public string Id { get; set;}
+        public int Id { get; set;}
         public string? Name { get; set; }
         public int? BatteryCapacity { get; set; }
         public int? ChargingRate { get; set; }
@@ -121,6 +122,6 @@ public class CarsController : ControllerBase
 
     public struct DeleteCarModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }
