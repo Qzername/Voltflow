@@ -47,7 +47,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			TokenModel = new { Token = EmailVerificationForm.Token }
 		};
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/Authentication/confirm-email", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/Authentication/confirm-email", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 		{
@@ -71,7 +71,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 
 		var json = new { Email = PasswordResetForm.Email };
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/PasswordReset/send", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/PasswordReset/send", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 			PasswordResetForm.SentToken = true;
@@ -97,7 +97,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			TokenModel = new { Token = PasswordResetForm.Token }
 		};
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/PasswordReset/reset", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/PasswordReset/reset", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 		{
@@ -128,7 +128,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			Password = SignInForm.Password,
 		};
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/Authentication/login", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/Authentication/login", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 		{
@@ -140,7 +140,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			if (response.ContainsKey("requires2FA") && response.ContainsKey("twoFactorToken"))
 			{
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["twoFactorToken"]);
-				HttpResponseMessage twoFactorRequest = await client.PostAsync("/api/TwoFactor/send", null);
+				HttpResponseMessage twoFactorRequest = await client.PostAsync("/api/Identity/TwoFactor/send", null);
 
 				if (twoFactorRequest.StatusCode == HttpStatusCode.OK)
 					CurrentAuthType = AuthType.TwoFactorAuth;
@@ -184,7 +184,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			Phone = SignUpForm.PhoneNumber
 		};
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/Authentication/register", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/Authentication/register", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 		{
@@ -212,7 +212,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			Token = TwoFactorAuthForm.Token,
 		};
 		StringContent content = JsonConverter.ToStringContent(json);
-		HttpResponseMessage request = await client.PostAsync("/api/TwoFactor/verify", content);
+		HttpResponseMessage request = await client.PostAsync("/api/Identity/TwoFactor/verify", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
 		{

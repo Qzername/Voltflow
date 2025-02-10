@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using VoltflowAPI.Models.Endpoints;
 using VoltflowAPI.Services;
 
-namespace VoltflowAPI.Controllers;
+namespace VoltflowAPI.Controllers.Identity;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -22,12 +22,12 @@ public class AuthenticationController : ControllerBase
 
     #region Register process
     [HttpPost("register")]
-	public async Task<IActionResult> Register([FromBody] RegisterModel model)
-	{
-		var user = await _userManager.FindByEmailAsync(model.Email);
+    public async Task<IActionResult> Register([FromBody] RegisterModel model)
+    {
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
-		if (user is not null)
-			return BadRequest(new { AccountExist = true });
+        if (user is not null)
+            return BadRequest(new { AccountExist = true });
 
         user = new Account()
         {
@@ -38,7 +38,7 @@ public class AuthenticationController : ControllerBase
             PhoneNumber = model.Phone
         };
 
-		var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
             return BadRequest(result.Errors);
@@ -49,7 +49,7 @@ public class AuthenticationController : ControllerBase
         await _emailSender.SendEmailAsync(user.Email, "Email confirmation", message);
 
         return Ok();
-	}
+    }
 
     [HttpPost("confirm-email")]
     public async Task<IActionResult> ConfirmEmail(ConfirmEmailModel model)
@@ -61,7 +61,7 @@ public class AuthenticationController : ControllerBase
 
         var result = await _userManager.ConfirmEmailAsync(user, model.TokenModel.Token);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         return Ok();
@@ -76,7 +76,7 @@ public class AuthenticationController : ControllerBase
         if (user == null)
             return Unauthorized();
 
-        if(await _userManager.IsEmailConfirmedAsync(user) == false)
+        if (await _userManager.IsEmailConfirmedAsync(user) == false)
             return Unauthorized();
 
         if (!await _userManager.CheckPasswordAsync(user, model.Password))
@@ -104,10 +104,10 @@ public class AuthenticationController : ControllerBase
         public string Email { get; set; }
         public TokenModel TokenModel { get; set; }
     }
-    
+
     public struct LoginModel
-	{
-		public string Email { get; set; }
-		public string Password { get; set; }
-	}
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
 }

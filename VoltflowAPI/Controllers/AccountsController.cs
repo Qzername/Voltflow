@@ -25,7 +25,7 @@ public class AccountsController : ControllerBase
         if (user is null)
             return BadRequest();
 
-        if(accountModel.Name is not null)
+        if (accountModel.Name is not null)
             user.Name = accountModel.Name;
 
         if (accountModel.Surname is not null)
@@ -36,7 +36,7 @@ public class AccountsController : ControllerBase
 
         var result = await _userManager.UpdateAsync(user);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         return Ok();
@@ -52,7 +52,7 @@ public class AccountsController : ControllerBase
 
         var result = await _userManager.DeleteAsync(user);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         return Ok();
@@ -61,7 +61,7 @@ public class AccountsController : ControllerBase
     public struct PatchAccountModel
     {
         public string? Name { get; set; }
-        public string? Surname { get;set; }
+        public string? Surname { get; set; }
         public string? PhoneNumber { get; set; }
     }
 }

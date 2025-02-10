@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using VoltflowAPI.Models.Endpoints;
 
-namespace VoltflowAPI.Controllers;
+namespace VoltflowAPI.Controllers.Identity;
 
 /// <summary>
 /// Managers Two Factor login
 /// </summary>
-[Route("api/[controller]")]
+[Route("api/Identity/[controller]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class TwoFactorController : ControllerBase
@@ -18,14 +18,14 @@ public class TwoFactorController : ControllerBase
     readonly UserManager<Account> _userManager;
     Services.IEmailSender _emailSender;
     Services.IAccountTokenGenerator _tokenGenerator;
-     
+
     public TwoFactorController(UserManager<Account> userManager, Services.IAccountTokenGenerator generator, Services.IEmailSender emailSender)
     {
         _userManager = userManager;
         _tokenGenerator = generator;
         _emailSender = emailSender;
     }
-    
+
     #region 2FA setting control
     [HttpPost("enable")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -82,14 +82,14 @@ public class TwoFactorController : ControllerBase
         var email = claims.Single(x => x.Type == "TwoFactorEmail").Value;
 
         var user = await _userManager.FindByEmailAsync(email);
-        if (user == null) 
+        if (user == null)
             return Unauthorized();
 
         var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, model.Token);
-        if (!isValid) 
+        if (!isValid)
             return BadRequest("Invalid 2FA code");
 
-        return Ok(new {Token = _tokenGenerator.GenerateJwtToken(user)});
+        return Ok(new { Token = _tokenGenerator.GenerateJwtToken(user) });
     }
 
     #endregion

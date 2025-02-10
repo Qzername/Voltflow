@@ -6,9 +6,9 @@ using System.Security.Claims;
 using VoltflowAPI.Models.Endpoints;
 using VoltflowAPI.Services;
 
-namespace VoltflowAPI.Controllers;
+namespace VoltflowAPI.Controllers.Identity;
 
-[Route("api/[controller]")]
+[Route("api/Identity/[controller]")]
 [ApiController]
 public class PasswordResetController : ControllerBase
 {
@@ -46,7 +46,7 @@ public class PasswordResetController : ControllerBase
 
         var result = await _userManager.ResetPasswordAsync(user, password.TokenModel.Token, password.Password);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
             return BadRequest(result.Errors);
 
         return Ok();
