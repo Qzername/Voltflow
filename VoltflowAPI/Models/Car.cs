@@ -6,5 +6,6 @@ public class Car
     public string AccountId { get; set; }
     [Range(0,100)]
     public string Name { get; set; }
+    public int BatteryCapacity { get; set; }    
     public int ChargingRate { get; set; }
 }
