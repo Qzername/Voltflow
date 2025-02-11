@@ -4,9 +4,9 @@ using Voltflow.ViewModels;
 
 namespace Voltflow.Views;
 
-public partial class TestView : ReactiveUserControl<TestViewModel>
+public partial class MapView : ReactiveUserControl<MapViewModel>
 {
-	public TestView()
+	public MapView()
 	{
 		InitializeComponent();
 
@@ -18,14 +18,11 @@ public partial class TestView : ReactiveUserControl<TestViewModel>
          * because this library for some reason does not support this 
         */
 		DataContextChanged += TestView_DataContextChanged;
-
-		/* map.Tapped += Map_Tapped;
-		 map.DoubleTapped += Map_DoubleTapped;*/
 	}
 
 	private void TestView_DataContextChanged(object? sender, EventArgs e)
 	{
-		var viewModel = DataContext as TestViewModel;
+		var viewModel = DataContext as MapViewModel;
 		viewModel!.ConfigureMap();
 		MapControl.Map = viewModel.Map!;
 	}

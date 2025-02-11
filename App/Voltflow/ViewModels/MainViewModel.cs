@@ -17,7 +17,7 @@ public class MainViewModel : ReactiveObject, IScreen
 	/// </summary>
 	public MainViewModel()
 	{
-		Router.Navigate.Execute(new TestViewModel(this));
+		Router.Navigate.Execute(new MapViewModel(this));
 	}
 
 	/// <summary>

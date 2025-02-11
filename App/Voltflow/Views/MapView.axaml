@@ -1,0 +1,26 @@
+<UserControl
+    x:Class="Voltflow.Views.MapView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+	<Panel>
+		<!--Yes, no binding, see codebehind for more info-->
+		<mapsui:MapControl x:Name="MapControl" />
+		<StackPanel Width="250" Background="Gray" HorizontalAlignment="Right">
+			<TextBox Text="{Binding longitude}" Watermark="Longitutde"/>
+			<TextBox Text="{Binding latitude}" Watermark="Latitude"/>
+			<Separator/>
+			<TextBox Text="{Binding cost}" Watermark="Cost"/>
+			<TextBox Text="{Binding maxChargeRate}" Watermark="MaxChargeRate"/>
+			<Separator/>
+			<Button Command="{Binding CreateStation}" Content="Add Station"/>
+		</StackPanel>
+	</Panel>
+</UserControl>

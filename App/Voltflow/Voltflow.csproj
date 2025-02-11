@@ -50,8 +50,8 @@
     <Compile Update="Views\Forms\SignUpForm.axaml.cs">
       <DependentUpon>SignUpForm.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\TestView.axaml.cs">
-      <DependentUpon>TestView.axaml</DependentUpon>
+    <Compile Update="Views\MapView.axaml.cs">
+      <DependentUpon>MapView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Forms\PasswordResetForm.axaml.cs">
       <DependentUpon>PasswordResetForm.axaml</DependentUpon>

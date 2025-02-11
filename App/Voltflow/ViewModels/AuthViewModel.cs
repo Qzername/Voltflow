@@ -28,7 +28,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 	public EmailVerificationForm EmailVerificationForm { get; set; } = new();
 
 	// Commands
-	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new TestViewModel(screen));
+	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(screen));
 	public void NavigateBack() => CurrentAuthType = AuthType.SignIn;
 	public void SwitchSignForms() => CurrentAuthType = CurrentAuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
 	public void SwitchToPasswordReset() => CurrentAuthType = AuthType.PasswordReset;
