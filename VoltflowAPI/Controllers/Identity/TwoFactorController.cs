@@ -88,8 +88,17 @@ public class TwoFactorController : ControllerBase
         var isValid = await _userManager.VerifyTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider, model.Token);
         if (!isValid)
             return BadRequest("Invalid 2FA code");
+        
+        //Generate token
+        var roles = await _userManager.GetRolesAsync(user);
+        bool isAdmin = false;
 
-        return Ok(new { Token = _tokenGenerator.GenerateJwtToken(user) });
+        if (roles.Contains("Admin"))
+            isAdmin = true;
+
+        var token = _tokenGenerator.GenerateJwtToken(user, isAdmin);
+
+        return Ok(new { Token =token });
     }
 
     #endregion

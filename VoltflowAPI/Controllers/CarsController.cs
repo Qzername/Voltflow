@@ -56,6 +56,7 @@ public class CarsController : ControllerBase
             car.ChargingRate = model.ChargingRate.Value;
 
         await _applicationContext.AddAsync(car);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -83,6 +84,7 @@ public class CarsController : ControllerBase
             car.ChargingRate = model.ChargingRate.Value;
 
         _applicationContext.Update(car);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -101,6 +103,7 @@ public class CarsController : ControllerBase
             return BadRequest(new { CarExist = false });
 
         _applicationContext.Cars.Remove(car);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }

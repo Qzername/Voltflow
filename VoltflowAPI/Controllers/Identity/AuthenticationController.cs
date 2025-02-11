@@ -5,7 +5,7 @@ using VoltflowAPI.Services;
 
 namespace VoltflowAPI.Controllers.Identity;
 
-[Route("api/[controller]")]
+[Route("api/Identity/[controller]")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
@@ -86,8 +86,17 @@ public class AuthenticationController : ControllerBase
         if (user.TwoFactorEnabled)
             return Ok(new { Requires2FA = true, TwoFactorToken = _tokenGenerator.GenerateTwoFactorToken(user) });
 
-        var token = _tokenGenerator.GenerateJwtToken(user);
-        return Ok(new { Token = token });
+        var roles = await _userManager.GetRolesAsync(user);
+        bool isAdmin = false;
+
+        if (roles.Contains("Admin"))
+            isAdmin = true;
+        
+        var token = _tokenGenerator.GenerateJwtToken(user, isAdmin);
+
+        return Ok(new { 
+            Token = token,
+        });
     }
 
     public struct RegisterModel

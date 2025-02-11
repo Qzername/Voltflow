@@ -20,7 +20,7 @@ public class ChargingStationsController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetStations()
     {
         var chargingStations = await _applicationContext.ChargingStations.ToArrayAsync();
@@ -38,11 +38,12 @@ public class ChargingStationsController : ControllerBase
             Cost = model.Cost,
             MaxChargeRate = model.MaxChargeRate,
 
-            Status = ChargingStationStatus.Available,
+            Status = (int)ChargingStationStatus.Available,
             ServiceMode = false
         };
 
-        _applicationContext.ChargingStations.Add(chargingStation);
+        await _applicationContext.ChargingStations.AddAsync(chargingStation);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -66,12 +67,13 @@ public class ChargingStationsController : ControllerBase
             station.MaxChargeRate = patchStationModel.MaxChargeRate.Value;
 
         if (patchStationModel.Status is not null)
-            station.Status = patchStationModel.Status.Value;
+            station.Status = (int)patchStationModel.Status.Value;
 
         if (patchStationModel.ServiceMode is not null)
             station.ServiceMode = patchStationModel.ServiceMode.Value;
 
         _applicationContext.Update(station);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }
@@ -81,7 +83,9 @@ public class ChargingStationsController : ControllerBase
     public async Task<IActionResult> DeleteStation([FromBody] DeleteStationModel model)
     {
         var station = _applicationContext.ChargingStations.Single(x => x.Id == model.Id);
+
         _applicationContext.Remove(station);
+        await _applicationContext.SaveChangesAsync();
 
         return Ok();
     }

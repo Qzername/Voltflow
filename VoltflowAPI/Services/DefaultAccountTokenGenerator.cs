@@ -16,16 +16,21 @@ public class DefaultAccountTokenGenerator : IAccountTokenGenerator
         jwtKey = options.Value.Key;
     }
 
-    public string GenerateJwtToken(Account user)
+    public string GenerateJwtToken(Account user, bool isAdmin)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        List<Claim> claims = [
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email)
+        ];
+
+        if (isAdmin)
+            claims.Add(new(ClaimTypes.Role, "Admin"));
+
         var token = new JwtSecurityToken(
-            claims:
-            [
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email)
-            ],
+            claims: claims.ToArray(),
             expires: DateTime.UtcNow.AddDays(7),
             signingCredentials: creds
         );
@@ -34,15 +39,11 @@ public class DefaultAccountTokenGenerator : IAccountTokenGenerator
 
     public string GenerateTwoFactorToken(Account user)
     {
-        Console.WriteLine(user.Email);
-
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
         var token = new JwtSecurityToken(
-            claims:
-            [
-                new Claim("TwoFactorEmail", user.Email)
-            ],
+            claims: [new("TwoFactorEmail", user.Email)],
             expires: DateTime.UtcNow.AddMinutes(10),
             signingCredentials: creds
         );
