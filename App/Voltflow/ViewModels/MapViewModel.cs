@@ -1,5 +1,4 @@
-﻿using Iced.Intel;
-using Mapsui;
+﻿using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
@@ -8,7 +7,6 @@ using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Net.Mime;
 using Voltflow.Models;
 
 namespace Voltflow.ViewModels;
