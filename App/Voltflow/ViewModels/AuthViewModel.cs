@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
+using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Models.Forms;
 
@@ -19,6 +20,7 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 {
 	// AuthType
 	[Reactive] public AuthType CurrentAuthType { get; set; } = AuthType.SignIn;
+	public WindowToastManager? ToastManager { get; set; }
 
 	// Forms
 	public SignInForm SignInForm { get; set; } = new();
@@ -54,6 +56,13 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			EmailVerificationForm.Reset();
 			CurrentAuthType = AuthType.SignIn;
 		}
+		else
+			ToastManager?.Show(
+				new Toast("Invalid token!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		EmailVerificationForm.Working = false;
 	}
@@ -64,7 +73,16 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 	public async Task GetResetPasswordToken()
 	{
 		bool emailValid = EmailValidator.IsValid(PasswordResetForm.Email);
-		if (!emailValid) return;
+		if (!emailValid)
+		{
+			ToastManager?.Show(
+				new Toast("Provided credentials do not meet our rules!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
+		};
 
 		PasswordResetForm.Working = true;
 		HttpClient client = GetService<HttpClient>();
@@ -75,6 +93,13 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 
 		if (request.StatusCode == HttpStatusCode.OK)
 			PasswordResetForm.SentToken = true;
+		else
+			ToastManager?.Show(
+				new Toast($"Something went wrong..."),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		PasswordResetForm.Working = false;
 	}
@@ -85,7 +110,16 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 	public async Task ResetPassword()
 	{
 		bool passwordValid = PasswordValidator.IsValid(PasswordResetForm.Password);
-		if (!passwordValid) return;
+		if (!passwordValid)
+		{
+			ToastManager?.Show(
+				new Toast("Provided credentials do not meet our rules!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
+		};
 
 		PasswordResetForm.Working = true;
 		HttpClient client = GetService<HttpClient>();
@@ -104,12 +138,19 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			CurrentAuthType = AuthType.SignIn;
 			PasswordResetForm.Reset();
 		}
+		else
+			ToastManager?.Show(
+				new Toast("Invalid token!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		PasswordResetForm.Working = false;
 	}
 
 	/// <summary>
-	/// Validates the sign-in form (just for testing).
+	/// Sends a request which signs in the user.
 	/// </summary>
 	public async Task SignIn()
 	{
@@ -117,7 +158,15 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 		bool passwordValid = PasswordValidator.IsValid(SignInForm.Password);
 
 		if (!emailValid || !passwordValid)
+		{
+			ToastManager?.Show(
+				new Toast("Provided credentials do not meet our rules!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 			return;
+		}
 
 		SignInForm.Working = true;
 		HttpClient client = GetService<HttpClient>();
@@ -154,6 +203,13 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 				NavigateHome();
 			}
 		}
+		else if (request.StatusCode == HttpStatusCode.Unauthorized)
+			ToastManager?.Show(
+				new Toast("Provided credentials are invalid or user doesn't exist!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		SignInForm.Working = false;
 	}
@@ -170,7 +226,15 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 		bool phoneNumberValid = NumberValidator.IsValid(SignUpForm.PhoneNumber, 9);
 
 		if (!emailValid || !passwordValid || !firstNameValid || !lastNameValid || !phoneNumberValid)
+		{
+			ToastManager?.Show(
+				new Toast("Provided credentials do not meet our rules!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 			return;
+		}
 
 		SignUpForm.Working = true;
 		HttpClient client = GetService<HttpClient>();
@@ -192,6 +256,13 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 			EmailVerificationForm.Email = SignUpForm.Email;
 			SignUpForm.Reset();
 		}
+		else if (request.StatusCode == HttpStatusCode.BadRequest)
+			ToastManager?.Show(
+				new Toast("User already exists!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		SignUpForm.Working = false;
 	}
@@ -202,7 +273,16 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 	public async Task VerifyTwoFactorAuth()
 	{
 		bool codeValid = NumberValidator.IsValid(TwoFactorAuthForm.Token, 6);
-		if (!codeValid) return;
+		if (!codeValid)
+		{
+			ToastManager?.Show(
+				new Toast("Provided credentials do not meet our rules!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
+		};
 
 		TwoFactorAuthForm.Working = true;
 		HttpClient client = GetService<HttpClient>();
@@ -226,6 +306,13 @@ public class AuthViewModel(IScreen screen) : ViewModelBase(screen)
 				NavigateHome();
 			}
 		}
+		else
+			ToastManager?.Show(
+				new Toast("Invalid 2FA code!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 
 		TwoFactorAuthForm.Working = false;
 	}

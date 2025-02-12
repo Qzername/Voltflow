@@ -33,28 +33,4 @@
     <Style Selector="Button:disabled">
         <Setter Property="Background" Value="{DynamicResource BackgroundDisabled}" />
     </Style>
-
-    <!--  Green Button  -->
-    <Style Selector="Button.color-green">
-        <Setter Property="Background" Value="{DynamicResource BackgroundGreen}" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
-    <!--  Green hovered Button  -->
-    <Style Selector="Button.color-green:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
-    <!--  Green pressed Button  -->
-    <Style Selector="Button.color-green:pressed /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
-
-    <!--  Green disabled Button  -->
-    <Style Selector="Button.color-green:disabled">
-        <Setter Property="Background" Value="{DynamicResource BackgroundGreenDisabled}" />
-        <Setter Property="Foreground" Value="White" />
-    </Style>
 </Styles>

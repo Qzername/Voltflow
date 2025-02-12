@@ -60,7 +60,7 @@
                 Grid.Column="2"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Classes="color-green"
+                Classes="Success"
                 Command="{Binding VerifyTwoFactorAuth}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
