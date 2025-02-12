@@ -1,8 +1,8 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Ursa.Controls;
 using Voltflow.ViewModels;
-using Avalonia.Controls;
 
 namespace Voltflow.Views;
 
