@@ -41,7 +41,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -51,11 +51,7 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="ArrowLeft" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
                     <TextBlock VerticalAlignment="Center" Text="Go Back" />
                 </StackPanel>
             </Button>
@@ -67,11 +63,7 @@
                 Classes="color-green"
                 Command="{Binding VerifyTwoFactorAuth}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="Check2" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
                     <TextBlock VerticalAlignment="Center" Text="Verify" />
                 </StackPanel>
             </Button>

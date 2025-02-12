@@ -4,60 +4,57 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="Background" Color="Black" />
-                    <SolidColorBrush x:Key="BackgroundHover" Color="#3c3c3c" />
-                    <SolidColorBrush x:Key="Foreground" Color="White" />
-                    <SolidColorBrush x:Key="BackgroundGreen" Color="DarkGreen" />
+                    <SolidColorBrush x:Key="Foreground" Color="Black" />
+                    <SolidColorBrush x:Key="BackgroundDisabled" Color=" #fafbfa" />
+                    <SolidColorBrush x:Key="BackgroundGreen" Color="#009600" />
                     <SolidColorBrush x:Key="BackgroundGreenHover" Color="Green" />
+                    <SolidColorBrush x:Key="BackgroundGreenDisabled" Color="#4ca14c" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="Background" Color="White" />
-                    <SolidColorBrush x:Key="BackgroundHover" Color="LightGray" />
-                    <SolidColorBrush x:Key="Foreground" Color="Black" />
+                    <SolidColorBrush x:Key="Foreground" Color="White" />
+                    <SolidColorBrush x:Key="BackgroundDisabled" Color="#1f1e23" />
                     <SolidColorBrush x:Key="BackgroundGreen" Color="Green" />
-                    <SolidColorBrush x:Key="BackgroundGreenHover" Color="DarkGreen" />
+                    <SolidColorBrush x:Key="BackgroundGreenHover" Color="#009600" />
+                    <SolidColorBrush x:Key="BackgroundGreenDisabled" Color="#075e07" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 
-    <!--  Default Button style  -->
+    <!--  Default Button  -->
     <Style Selector="Button">
-        <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Background" Value="{DynamicResource Background}" />
         <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <!--  Default hovered Button style  -->
-    <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
-        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
+    <!--  Default disabled button  -->
+    <Style Selector="Button:disabled">
+        <Setter Property="Background" Value="{DynamicResource BackgroundDisabled}" />
     </Style>
 
-    <!--  Default pressed Button style  -->
-    <Style Selector="Button:pressed /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource BackgroundHover}" />
-        <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
-    </Style>
-
-    <!--  Green Button style  -->
+    <!--  Green Button  -->
     <Style Selector="Button.color-green">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreen}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <!--  Green hovered Button style  -->
+    <!--  Green hovered Button  -->
     <Style Selector="Button.color-green:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <!--  Green pressed Button style  -->
+    <!--  Green pressed Button  -->
     <Style Selector="Button.color-green:pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource BackgroundGreenHover}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <!--  Green disabled Button  -->
+    <Style Selector="Button.color-green:disabled">
+        <Setter Property="Background" Value="{DynamicResource BackgroundGreenDisabled}" />
         <Setter Property="Foreground" Value="White" />
     </Style>
 </Styles>

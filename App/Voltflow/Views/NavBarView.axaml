@@ -31,10 +31,7 @@
             Orientation="Horizontal">
             <Button Command="{Binding NavigateToAuthView}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        VerticalAlignment="Center"
-                        Classes="size-l"
-                        Kind="PeopleFill" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
                     <TextBlock VerticalAlignment="Center" Text="Sign In" />
                 </StackPanel>
             </Button>

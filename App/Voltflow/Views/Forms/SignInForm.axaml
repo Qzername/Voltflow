@@ -30,7 +30,7 @@
                 Kind="EnvelopeFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
-        <TextBox Text="{Binding SignInForm.Email}" Watermark="example@gmail.com" />
+        <TextBox Text="{Binding SignInForm.Email}" Watermark="example@email.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
@@ -44,7 +44,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -60,11 +60,13 @@
                 <StackPanel>
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
+                        Classes="size-xl"
                         IsVisible="{Binding !SignInForm.ShowPassword}"
                         Kind="EyeFill" />
 
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
+                        Classes="size-xl"
                         IsVisible="{Binding SignInForm.ShowPassword}"
                         Kind="EyeSlashFill" />
                 </StackPanel>
@@ -77,7 +79,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -87,11 +89,7 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateHome}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="ArrowLeft" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
                     <TextBlock VerticalAlignment="Center" Text="Go Back" />
                 </StackPanel>
             </Button>
@@ -103,11 +101,7 @@
                 Classes="color-green"
                 Command="{Binding SignIn}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="Check2" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
                     <TextBlock VerticalAlignment="Center" Text="Sign In" />
                 </StackPanel>
             </Button>
