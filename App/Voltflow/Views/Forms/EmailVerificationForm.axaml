@@ -38,7 +38,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -48,11 +48,7 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="ArrowLeft" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
                     <TextBlock VerticalAlignment="Center" Text="Go Back" />
                 </StackPanel>
             </Button>
@@ -61,14 +57,10 @@
                 Grid.Column="2"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Classes="color-green"
+                Classes="Success"
                 Command="{Binding VerifyEmail}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
-                        Width="16"
-                        Height="16"
-                        VerticalAlignment="Center"
-                        Kind="Check2" />
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
                     <TextBlock VerticalAlignment="Center" Text="Confirm" />
                 </StackPanel>
             </Button>

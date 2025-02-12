@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:forms="clr-namespace:Voltflow.Views.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:u="https://irihi.tech/ursa"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -18,8 +19,10 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Classes="no-spacing">
-        <!--  Store all forms here (I split them into each file so the code here looks *clean*). 
-		Each form knows when to display because of AuthTypeConverter and set AuthType in AuthViewModel.  -->
+        <!--
+            Store all forms here (I split them into each file so the code here looks *clean*).
+            Each form knows when to display because of AuthTypeConverter and set AuthType in AuthViewModel.
+        -->
         <forms:SignUpForm />
         <forms:SignInForm />
         <forms:TwoFactorAuthForm />
