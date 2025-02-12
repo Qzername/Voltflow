@@ -57,6 +57,8 @@ public class MapViewModel : ViewModelBase
         Map.Info += OnMapInteraction;
 
         Map.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
+        var center = SphericalMercator.FromLonLat(21.0122, 52.2297);
+        Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
 		Map.RefreshGraphics();
 
 		Map.Layers.Add(_pointsLayer);
