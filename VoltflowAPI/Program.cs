@@ -42,6 +42,8 @@ builder.Services.AddIdentity<Account, IdentityRole>()
 
 // --- Authentication and autorization --- 
 //Requires Jwt -> Key to be set
+builder.Services.AddCors();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(o =>
 	{
@@ -76,6 +78,11 @@ using (var scope = app.Services.CreateScope())
     if (!roleManager.Roles.Any())
         await roleManager.CreateAsync(new IdentityRole("Admin"));
 }
+
+app.UseCors(x => x.AllowAnyMethod()
+			      .AllowAnyHeader()
+			      .SetIsOriginAllowed(origin => true) // allow any origin
+				  .AllowCredentials()); // allow credentials
 
 app.UseHttpsRedirection();
 
