@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="Voltflow.Views.Forms.TwoFactorAuthForm"
+    x:Class="Voltflow.Views.Account.EmailVerificationForm"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,29 +11,26 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Design.DataContext>
-        <viewModels:AuthViewModel />
+        <viewModels:AccountViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
-        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.TwoFactorAuth.  -->
+        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.EmailVerification.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
     <!--  Form  -->
-    <StackPanel IsEnabled="{Binding !TwoFactorAuthForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactorAuth}">
-        <!--  2FA code input  -->
+    <StackPanel IsEnabled="{Binding !EmailVerificationForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=EmailVerification}">
+        <!--  Token input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
                 Kind="KeyFill" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="2FA Code" />
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Token" />
         </StackPanel>
-        <TextBox
-            MaxLength="6"
-            Text="{Binding TwoFactorAuthForm.Token}"
-            Watermark="123456" />
+        <TextBox Text="{Binding EmailVerificationForm.Token}" Watermark="Enter received token here" />
 
         <Separator />
 
@@ -61,10 +58,10 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="Success"
-                Command="{Binding VerifyTwoFactorAuth}">
+                Command="{Binding VerifyEmail}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
-                    <TextBlock VerticalAlignment="Center" Text="Verify" />
+                    <TextBlock VerticalAlignment="Center" Text="Confirm" />
                 </StackPanel>
             </Button>
         </Grid>

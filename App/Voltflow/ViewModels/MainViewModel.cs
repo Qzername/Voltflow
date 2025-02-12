@@ -21,12 +21,12 @@ public class MainViewModel : ReactiveObject, IScreen
 	}
 
 	/// <summary>
-	/// Currently, NavBar only has a "Sign In" button that navigates to AuthView.
-	/// If user is already in AuthView, don't navigate again.
+	/// Currently, NavBar only has a "Sign In" button that navigates to AccountView.
+	/// If user is already in AccountView, don't navigate again.
 	/// </summary>
-	public void NavigateToAuthView()
+	public void NavigateToAccountView()
 	{
-		if (Router.GetCurrentViewModel()?.GetType() != typeof(AuthViewModel)) Router.Navigate.Execute(new AuthViewModel(this));
+		if (Router.GetCurrentViewModel()?.GetType() != typeof(AccountViewModel)) Router.Navigate.Execute(new AccountViewModel(this));
 	}
 }
 

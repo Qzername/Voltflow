@@ -6,9 +6,9 @@ using Voltflow.ViewModels;
 
 namespace Voltflow.Views;
 
-public partial class AuthView : ReactiveUserControl<AuthViewModel>
+public partial class AccountView : ReactiveUserControl<AccountViewModel>
 {
-	public AuthView()
+	public AccountView()
 	{
 		InitializeComponent();
 	}
@@ -18,14 +18,14 @@ public partial class AuthView : ReactiveUserControl<AuthViewModel>
 	{
 		base.OnAttachedToVisualTree(e);
 		var topLevel = TopLevel.GetTopLevel(this);
-		if (DataContext is AuthViewModel viewModel)
+		if (DataContext is AccountViewModel viewModel)
 			viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
 	}
 
 	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
 	{
 		base.OnDetachedFromVisualTree(e);
-		if (DataContext is AuthViewModel viewModel)
+		if (DataContext is AccountViewModel viewModel)
 			viewModel.ToastManager?.Uninstall();
 	}
 }

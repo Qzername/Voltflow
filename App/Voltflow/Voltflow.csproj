@@ -41,28 +41,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\AuthView.axaml.cs">
-      <DependentUpon>AuthView.axaml</DependentUpon>
+    <Compile Update="Views\AccountView.axaml.cs">
+      <DependentUpon>AccountView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Forms\EmailVerificationForm.axaml.cs">
+    <Compile Update="Views\Accounmt\EmailVerificationForm.axaml.cs">
       <DependentUpon>EmailVerificationForm.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\NavBarView.axaml.cs">
       <DependentUpon>NavBarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Forms\SignInForm.axaml.cs">
+    <Compile Update="Views\Accounmt\SignInForm.axaml.cs">
       <DependentUpon>SignInForm.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Forms\SignUpForm.axaml.cs">
+    <Compile Update="Views\Accounmt\SignUpForm.axaml.cs">
       <DependentUpon>SignUpForm.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\MapView.axaml.cs">
       <DependentUpon>MapView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Forms\PasswordResetForm.axaml.cs">
+    <Compile Update="Views\Accounmt\PasswordResetForm.axaml.cs">
       <DependentUpon>PasswordResetForm.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Forms\TwoFactorAuthForm.axaml.cs">
+    <Compile Update="Views\Accounmt\TwoFactorAuthForm.axaml.cs">
       <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
     </Compile>
   </ItemGroup>

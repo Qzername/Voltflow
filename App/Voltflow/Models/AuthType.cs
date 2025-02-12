@@ -5,7 +5,7 @@ using System.Globalization;
 namespace Voltflow.Models;
 
 /// <summary>
-/// Enum with types for AuthViewModel to know which form to display.
+/// Enum with types for AccountViewModel to know which form to display.
 /// </summary>
 public enum AuthType
 {
@@ -13,7 +13,8 @@ public enum AuthType
 	SignUp = 1,
 	TwoFactorAuth = 2,
 	PasswordReset = 3,
-	EmailVerification = 4
+	EmailVerification = 4,
+	SignedIn = 5 // Not a form - shows account panel.
 }
 
 /// <summary>
