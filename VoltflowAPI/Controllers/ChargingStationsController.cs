@@ -78,11 +78,11 @@ public class ChargingStationsController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> DeleteStation([FromBody] DeleteStationModel model)
+    public async Task<IActionResult> DeleteStation(int id)
     {
-        var station = _applicationContext.ChargingStations.Single(x => x.Id == model.Id);
+        var station = _applicationContext.ChargingStations.Single(x => x.Id == id);
 
         _applicationContext.Remove(station);
         await _applicationContext.SaveChangesAsync();
@@ -107,10 +107,5 @@ public class ChargingStationsController : ControllerBase
         public int? MaxChargeRate { get; set; }
         public ChargingStationStatus? Status { get; set; }
         public bool? ServiceMode { get; set; }
-    }
-
-    public struct DeleteStationModel
-    {
-        public int Id { get; set; }
     }
 }
