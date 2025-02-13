@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using Voltflow.Models;
+using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Voltflow.ViewModels;
 
@@ -36,8 +37,10 @@ public class MapViewModel : ViewModelBase
 	};
 
 	PointFeature selectedNewPoint;
+	ChargingStation? current;
 
 	//data for view
+	[Reactive] string mode { get; set; }
 	[Reactive] double longitude { get; set; }
 	[Reactive] double latitude { get; set; }
 	[Reactive] int cost { get; set; }
@@ -55,52 +58,94 @@ public class MapViewModel : ViewModelBase
 
 		Map = new Map();
 		Map.Info += OnMapInteraction;
-
 		Map.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
+
+		//center at poland
 		var center = SphericalMercator.FromLonLat(21.0122, 52.2297);
 		Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
-		Map.RefreshGraphics();
-
+		
 		//add points to map
 		var response = await _client.GetAsync("/api/ChargingStations");
 		var stationsJson = await response.Content.ReadAsStringAsync();
+        var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
-		Debug.WriteLine(response.StatusCode);
-		Debug.WriteLine(stationsJson);
+        Debug.WriteLine(response.StatusCode);
 
-		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
-		var list = ((List<IFeature>)_pointsLayer.Features);
+		var list = (List<IFeature>)_pointsLayer.Features;
 
 		foreach (var chargingStation in chargingStations)
 		{
-			var point = SphericalMercator.FromLonLat(chargingStation.Latitude, chargingStation.Longitude);
-			var mpoint = new MPoint(point.x, point.y);
-			list.Add(new PointFeature(mpoint));
+			var point = SphericalMercator.FromLonLat(chargingStation.Longitude, chargingStation.Latitude);
+
+			var feature = new PointFeature(point.x, point.y);
+			feature["data"] = chargingStation;
+
+            list.Add(feature);
 		}
 
         Map.Layers.Add(_pointsLayer);
+        Map.RefreshGraphics();
 
-		_isConfigured = true;
+        _isConfigured = true;
 	}
 
 	void OnMapInteraction(object? sender, MapInfoEventArgs e)
 	{
-		if (selectedNewPoint is null)
+		if(e.MapInfo is null) return;
+
+        var point = (PointFeature)e.MapInfo.Feature;
+
+        if (point is null || point["data"] is null)
 		{
-			selectedNewPoint = new PointFeature(e.MapInfo!.WorldPosition!);
-			((List<IFeature>)_pointsLayer.Features).Add(selectedNewPoint);
-		}
+			mode = "New point mode";
+            NewPointMode(e.MapInfo.WorldPosition!);
+        }
+		else
+        {
+            var data = (ChargingStation)point["data"]!;
 
-		selectedNewPoint.Point.X = e.MapInfo!.WorldPosition!.X;
-		selectedNewPoint.Point.Y = e.MapInfo.WorldPosition.Y;
+            mode = $"Existing point mode (ID = {data.Id})";
+            ExisitingPointMode(point);
+        }
+    }
 
-		var lonLat = SphericalMercator.ToLonLat(selectedNewPoint.Point);
+	void NewPointMode(MPoint worldPosition)
+	{
+		current = null;
 
-		longitude = lonLat.X;
-		latitude = lonLat.Y;
+        if (selectedNewPoint is null)
+        {
+            selectedNewPoint = new PointFeature(worldPosition);
+            ((List<IFeature>)_pointsLayer.Features).Add(selectedNewPoint);
+        }
 
-		Map!.RefreshGraphics();
-	}
+        selectedNewPoint.Point.X = worldPosition.X;
+        selectedNewPoint.Point.Y = worldPosition.Y;
+
+        var lonLat = SphericalMercator.ToLonLat(selectedNewPoint.Point);
+
+        longitude = lonLat.X;
+        latitude = lonLat.Y;
+    }
+
+	void ExisitingPointMode(PointFeature feature)
+    {
+		if(selectedNewPoint is not null)
+		{
+            ((List<IFeature>)_pointsLayer.Features).Remove(selectedNewPoint);
+			selectedNewPoint = null!;
+        }
+
+        var data = (ChargingStation)feature["data"]!;
+
+        longitude = data.Longitude;
+        latitude = data.Latitude;
+
+        cost = data.Cost;
+        maxChargeRate = data.MaxChargeRate;
+    
+		current = data;
+    }
 
 	public async void CreateStation()
 	{
@@ -113,7 +158,27 @@ public class MapViewModel : ViewModelBase
 		});
 
 		var result = await _client.PostAsync("/api/ChargingStations", content);
-
 		Debug.WriteLine(result.StatusCode);
 	}
+
+	public async void UpdateStation()
+	{
+		StringContent content = JsonConverter.ToStringContent(new ChargingStation()
+		{
+			Id = current!.Value.Id,
+			Longitude = longitude,
+			Latitude = latitude,
+			Cost = cost,
+			MaxChargeRate = maxChargeRate
+		});
+		var result = await _client.PatchAsync("/api/ChargingStations", content);
+		Debug.WriteLine(result.StatusCode);
+	}
+
+
+    public async void DeleteStation()
+	{
+		var result = await _client.DeleteAsync("/api/ChargingStations/"+ current!.Value.Id);
+        Debug.WriteLine(result.StatusCode);
+    }
 }

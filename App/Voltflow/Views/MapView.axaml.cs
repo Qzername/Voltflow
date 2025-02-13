@@ -18,9 +18,23 @@ public partial class MapView : ReactiveUserControl<MapViewModel>
          * because this library for some reason does not support this 
         */
 		DataContextChanged += TestView_DataContextChanged;
-	}
 
-	private void TestView_DataContextChanged(object? sender, EventArgs e)
+        MapControl.Tapped += MapControl_Tapped; ;
+    }
+
+    private void MapControl_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        /*
+         * Another bad thing about this library - and this is a fix for it
+         * When you create a new point Mapsui does not update the view
+         * So the point is invisible until you move the map
+         * Refresh(), RefreshGraphics(), RefreshData() - neither of these works
+         * But InvalidateVisual() does the job
+         */
+        MapControl.InvalidateVisual();
+    }
+
+    private void TestView_DataContextChanged(object? sender, EventArgs e)
 	{
 		var viewModel = DataContext as MapViewModel;
 		viewModel!.ConfigureMap();

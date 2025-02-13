@@ -14,6 +14,8 @@
 		<!--Yes, no binding, see codebehind for more info-->
 		<mapsui:MapControl x:Name="MapControl" />
 		<StackPanel Width="250" Background="Gray" HorizontalAlignment="Right">
+			<TextBlock Text="{Binding mode}"/>
+			<Separator/>
 			<TextBox Text="{Binding longitude}" Watermark="Longitutde"/>
 			<TextBox Text="{Binding latitude}" Watermark="Latitude"/>
 			<Separator/>
@@ -21,6 +23,8 @@
 			<TextBox Text="{Binding maxChargeRate}" Watermark="MaxChargeRate"/>
 			<Separator/>
 			<Button Command="{Binding CreateStation}" Content="Add Station"/>
+			<Button Command="{Binding UpdateStation}" Content="Update Station"/>
+			<Button Command="{Binding DeleteStation}" Content="Delete Station"/>
 		</StackPanel>
 	</Panel>
 </UserControl>
