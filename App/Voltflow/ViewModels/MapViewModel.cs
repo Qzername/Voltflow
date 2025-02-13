@@ -48,7 +48,7 @@ public class MapViewModel : ViewModelBase
 		_client = GetService<HttpClient>();
 	}
 
-	public void ConfigureMap()
+	public async void ConfigureMap()
 	{
 		// Prevent from running multiple times, RUN ONLY ONCE!
 		if (_isConfigured) return;
@@ -61,7 +61,24 @@ public class MapViewModel : ViewModelBase
 		Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
 		Map.RefreshGraphics();
 
-		Map.Layers.Add(_pointsLayer);
+		//add points to map
+		var response = await _client.GetAsync("/api/ChargingStations");
+		var stationsJson = await response.Content.ReadAsStringAsync();
+
+		Debug.WriteLine(response.StatusCode);
+		Debug.WriteLine(stationsJson);
+
+		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
+		var list = ((List<IFeature>)_pointsLayer.Features);
+
+		foreach (var chargingStation in chargingStations)
+		{
+			var point = SphericalMercator.FromLonLat(chargingStation.Latitude, chargingStation.Longitude);
+			var mpoint = new MPoint(point.x, point.y);
+			list.Add(new PointFeature(mpoint));
+		}
+
+        Map.Layers.Add(_pointsLayer);
 
 		_isConfigured = true;
 	}
