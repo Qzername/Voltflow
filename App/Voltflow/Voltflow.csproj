@@ -42,11 +42,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\AccountView.axaml.cs">
+    <Compile Update="Views\Account\AccountView.axaml.cs">
       <DependentUpon>AccountView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Accounmt\EmailVerificationForm.axaml.cs">
       <DependentUpon>EmailVerificationForm.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Panels\EmailVerificationPanel.axaml.cs">
+      <DependentUpon>EmailVerificationPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Panels\PasswordResetPanel.axaml.cs">
+      <DependentUpon>PasswordResetPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Panels\SignInPanel.axaml.cs">
+      <DependentUpon>SignInPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Panels\SignUpPanel.axaml.cs">
+      <DependentUpon>SignUpPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\Panels\TwoFactorAuthPanel.axaml.cs">
+      <DependentUpon>TwoFactorAuthPanel.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\NavBarView.axaml.cs">
       <DependentUpon>NavBarView.axaml</DependentUpon>
@@ -57,7 +72,7 @@
     <Compile Update="Views\Accounmt\SignUpForm.axaml.cs">
       <DependentUpon>SignUpForm.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\MapView.axaml.cs">
+    <Compile Update="Views\Pages\Map\MapView.axaml.cs">
       <DependentUpon>MapView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Accounmt\PasswordResetForm.axaml.cs">
@@ -66,5 +81,9 @@
     <Compile Update="Views\Accounmt\TwoFactorAuthForm.axaml.cs">
       <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Pages\Map\SidePanels\" />
   </ItemGroup>
 </Project>

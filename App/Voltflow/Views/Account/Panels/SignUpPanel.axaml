@@ -1,26 +1,27 @@
 <UserControl
-    x:Class="Voltflow.Views.Account.SignInForm"
+    x:Class="Voltflow.Views.Account.Panels.SignUpForm"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Voltflow.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Voltflow.Models"
-    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    xmlns:viewModelsAccount="clr-namespace:Voltflow.ViewModels.Account"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Design.DataContext>
-        <viewModels:AccountViewModel />
+        <viewModelsAccount:AccountViewModel />
     </Design.DataContext>
 
     <UserControl.Resources>
-        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.SignIn.  -->
+        <!--  AuthTypeConverter checks if CurrentAuthType is AuthType.SignUp.  -->
         <models:AuthTypeConverter x:Key="AuthTypeConverter" />
     </UserControl.Resources>
 
     <!--  Form  -->
-    <StackPanel IsEnabled="{Binding !SignInForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignIn}">
+    <StackPanel IsEnabled="{Binding !SignUpForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
         <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconBootstrapIcons
@@ -30,7 +31,7 @@
                 Kind="EnvelopeFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
-        <TextBox Text="{Binding SignInForm.Email}" Watermark="example@email.com" />
+        <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@gmail.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
@@ -52,25 +53,84 @@
                 Grid.Column="0"
                 MaxLength="32"
                 PasswordChar="*"
-                RevealPassword="{Binding SignInForm.ShowPassword}"
-                Text="{Binding SignInForm.Password}"
+                RevealPassword="{Binding SignUpForm.ShowPassword}"
+                Text="{Binding SignUpForm.Password}"
                 Watermark="Example123@" />
 
-            <Button Grid.Column="2" Command="{Binding SignInForm.TogglePassword}">
+            <Button Grid.Column="2" Command="{Binding SignUpForm.TogglePassword}">
                 <StackPanel>
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
-                        Classes="size-xl"
-                        IsVisible="{Binding !SignInForm.ShowPassword}"
+                        IsVisible="{Binding !SignUpForm.ShowPassword}"
                         Kind="EyeFill" />
 
                     <iconPacks:PackIconBootstrapIcons
                         VerticalAlignment="Center"
-                        Classes="size-xl"
-                        IsVisible="{Binding SignInForm.ShowPassword}"
+                        IsVisible="{Binding SignUpForm.ShowPassword}"
                         Kind="EyeSlashFill" />
                 </StackPanel>
             </Button>
+        </Grid>
+
+        <!--  First and last name input  -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons
+                        VerticalAlignment="Center"
+                        Classes="size-sm color-gray"
+                        IsVisible="True"
+                        Kind="PersonFill" />
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="First Name" />
+                </StackPanel>
+                <TextBox Text="{Binding SignUpForm.FirstName}" Watermark="Jan" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons
+                        VerticalAlignment="Center"
+                        Classes="size-sm color-gray"
+                        IsVisible="True"
+                        Kind="PersonFill" />
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Last Name" />
+                </StackPanel>
+                <TextBox Text="{Binding SignUpForm.LastName}" Watermark="Kowalski" />
+            </StackPanel>
+        </Grid>
+
+        <!--  Phone number input  -->
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconBootstrapIcons
+                VerticalAlignment="Center"
+                Classes="size-sm color-gray"
+                IsVisible="True"
+                Kind="TelephoneFill" />
+            <TextBlock Classes="size-sm color-gray weight-bold" Text="Phone Number" />
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Classes="color-gray"
+                Text="+48" />
+            <controls:NumberBox
+                Grid.Column="2"
+                MaxLength="9"
+                Text="{Binding SignUpForm.PhoneNumber}"
+                Watermark="123456789" />
         </Grid>
 
         <Separator />
@@ -99,46 +159,32 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 Classes="Success"
-                Command="{Binding SignIn}">
+                Command="{Binding SignUp}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
-                    <TextBlock VerticalAlignment="Center" Text="Sign In" />
+                    <TextBlock VerticalAlignment="Center" Text="Sign Up" />
                 </StackPanel>
             </Button>
         </Grid>
 
-        <!--  Hyperlink which hides this form and shows SignUp form.  -->
+        <!--  Hyperlink which hides this form and shows SignIn form.  -->
         <StackPanel
             Margin="0,16,0,0"
             HorizontalAlignment="Center"
             Orientation="Horizontal"
             Spacing="4">
-            <TextBlock Classes="size-sm" Text="Don't have an account?" />
+            <TextBlock Classes="size-sm" Text="Used Voltflow before?" />
             <TextBlock
-                x:Name="SignUpHyperlink"
+                x:Name="SignInHyperlink"
                 Classes="size-sm hyperlink"
-                Text="Sign up here!"
+                Text="Sign in here!"
                 TextDecorations="Underline">
                 <Interaction.Behaviors>
-                    <EventTriggerBehavior EventName="PointerPressed" SourceObject="{Binding #SignUpHyperlink}">
+                    <EventTriggerBehavior EventName="PointerPressed" SourceObject="{Binding #SignInHyperlink}">
                         <InvokeCommandAction Command="{Binding SwitchSignForms}" />
                     </EventTriggerBehavior>
                 </Interaction.Behaviors>
             </TextBlock>
         </StackPanel>
-
-        <!--  Hyperlink which hides this form and shows PasswordReset form.  -->
-        <TextBlock
-            x:Name="PasswordResetHyperlink"
-            HorizontalAlignment="Center"
-            Classes="size-sm hyperlink"
-            Text="Forgot password?"
-            TextDecorations="Underline">
-            <Interaction.Behaviors>
-                <EventTriggerBehavior EventName="PointerPressed" SourceObject="{Binding #PasswordResetHyperlink}">
-                    <InvokeCommandAction Command="{Binding SwitchToPasswordReset}" />
-                </EventTriggerBehavior>
-            </Interaction.Behaviors>
-        </TextBlock>
     </StackPanel>
 </UserControl>

@@ -2,9 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Ursa.Controls;
-using Voltflow.ViewModels;
+using Voltflow.ViewModels.Account;
 
-namespace Voltflow.Views;
+namespace Voltflow.Views.Account;
 
 public partial class AccountView : ReactiveUserControl<AccountViewModel>
 {

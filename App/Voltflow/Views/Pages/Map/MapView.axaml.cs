@@ -3,9 +3,9 @@ using Avalonia.ReactiveUI;
 using System;
 using System.Reactive;
 using Voltflow.Models;
-using Voltflow.ViewModels;
+using Voltflow.ViewModels.Pages.Map;
 
-namespace Voltflow.Views;
+namespace Voltflow.Views.Pages.Map;
 
 public partial class MapView : ReactiveUserControl<MapViewModel>
 {
