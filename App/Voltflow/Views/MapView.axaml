@@ -5,26 +5,38 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Voltflow.Models"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:MapViewModel />
+    </Design.DataContext>
 
-	<Panel>
-		<!--Yes, no binding, see codebehind for more info-->
-		<mapsui:MapControl x:Name="MapControl" />
-		<StackPanel Width="250" Background="Gray" HorizontalAlignment="Right">
-			<TextBlock Text="{Binding mode}"/>
-			<Separator/>
-			<TextBox Text="{Binding longitude}" Watermark="Longitutde"/>
-			<TextBox Text="{Binding latitude}" Watermark="Latitude"/>
-			<Separator/>
-			<TextBox Text="{Binding cost}" Watermark="Cost"/>
-			<TextBox Text="{Binding maxChargeRate}" Watermark="MaxChargeRate"/>
-			<Separator/>
-			<Button Command="{Binding CreateStation}" Content="Add Station"/>
-			<Button Command="{Binding UpdateStation}" Content="Update Station"/>
-			<Button Command="{Binding DeleteStation}" Content="Delete Station"/>
-		</StackPanel>
-	</Panel>
+    <UserControl.Resources>
+        <models:DisplayModeConverter x:Key="DisplayModeConverter" />
+    </UserControl.Resources>
+
+    <Panel>
+        <!--  Yes, no binding, see code behind for more info  -->
+        <mapsui:MapControl x:Name="MapControl" />
+        <StackPanel
+            Width="250"
+            HorizontalAlignment="Right"
+            Background="Gray"
+            IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+            <TextBlock Text="{Binding Mode}" />
+            <Separator />
+            <TextBox Text="{Binding Longitude}" Watermark="Longitude" />
+            <TextBox Text="{Binding Latitude}" Watermark="Latitude" />
+            <Separator />
+            <TextBox Text="{Binding Cost}" Watermark="Cost" />
+            <TextBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+            <Separator />
+            <Button Command="{Binding CreateStation}" Content="Add Station" />
+            <Button Command="{Binding UpdateStation}" Content="Update Station" />
+            <Button Command="{Binding DeleteStation}" Content="Delete Station" />
+        </StackPanel>
+    </Panel>
 </UserControl>

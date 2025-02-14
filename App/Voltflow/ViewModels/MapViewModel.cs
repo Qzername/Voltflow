@@ -7,8 +7,8 @@ using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Voltflow.Models;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace Voltflow.ViewModels;
 
@@ -18,12 +18,12 @@ namespace Voltflow.ViewModels;
 /// <param name="screen"></param>
 public class MapViewModel : ViewModelBase
 {
-	//depenedency injection
-	readonly HttpClient _client;
+	// Dependency injection
+	private readonly HttpClient _client;
 
-	//map config
+	// Map config
 	[Reactive] public Map? Map { get; set; }
-	bool _isConfigured;
+	private bool _isConfigured;
 
 	readonly MemoryLayer _pointsLayer = new()
 	{
@@ -36,22 +36,23 @@ public class MapViewModel : ViewModelBase
 		}
 	};
 
-	PointFeature selectedNewPoint;
-	ChargingStation? current;
+	private PointFeature? _selectedNewPoint;
+	private ChargingStation? _current;
 
-	//data for view
-	[Reactive] string mode { get; set; }
-	[Reactive] double longitude { get; set; }
-	[Reactive] double latitude { get; set; }
-	[Reactive] int cost { get; set; }
-	[Reactive] int maxChargeRate { get; set; }
+	// Data for view
+	[Reactive] public string? Mode { get; set; }
+	[Reactive] public double Longitude { get; set; }
+	[Reactive] public double Latitude { get; set; }
+	[Reactive] public int Cost { get; set; }
+	[Reactive] public int MaxChargeRate { get; set; }
+	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Desktop;
 
 	public MapViewModel(IScreen screen) : base(screen)
 	{
 		_client = GetService<HttpClient>();
 	}
 
-	public async void ConfigureMap()
+	public async Task ConfigureMap()
 	{
 		// Prevent from running multiple times, RUN ONLY ONCE!
 		if (_isConfigured) return;
@@ -60,11 +61,11 @@ public class MapViewModel : ViewModelBase
 		Map.Info += OnMapInteraction;
 		Map.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
 
-		//center at poland
+		// Center at poland
 		var center = SphericalMercator.FromLonLat(21.0122, 52.2297);
 		Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
 		
-		//add points to map
+		// Add points to map
 		var response = await _client.GetAsync("/api/ChargingStations");
 		var stationsJson = await response.Content.ReadAsStringAsync();
         var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
@@ -89,96 +90,96 @@ public class MapViewModel : ViewModelBase
         _isConfigured = true;
 	}
 
-	void OnMapInteraction(object? sender, MapInfoEventArgs e)
+	private void OnMapInteraction(object? sender, MapInfoEventArgs e)
 	{
-		if(e.MapInfo is null) return;
+		if (e.MapInfo == null) return;
 
-        var point = (PointFeature)e.MapInfo.Feature;
+		var point = (PointFeature?)e.MapInfo.Feature;
 
-        if (point is null || point["data"] is null)
+        if (point?["data"] == null)
 		{
-			mode = "New point mode";
+			Mode = "New point mode";
             NewPointMode(e.MapInfo.WorldPosition!);
         }
 		else
         {
-            var data = (ChargingStation)point["data"]!;
+	        var data = (ChargingStation)point["data"]!;
 
-            mode = $"Existing point mode (ID = {data.Id})";
-            ExisitingPointMode(point);
+            Mode = $"Existing point mode (ID = {data.Id})";
+            ExistingPointMode(point);
         }
     }
 
-	void NewPointMode(MPoint worldPosition)
+	private void NewPointMode(MPoint worldPosition)
 	{
-		current = null;
+		_current = null;
 
-        if (selectedNewPoint is null)
+        if (_selectedNewPoint == null)
         {
-            selectedNewPoint = new PointFeature(worldPosition);
-            ((List<IFeature>)_pointsLayer.Features).Add(selectedNewPoint);
+	        _selectedNewPoint = new PointFeature(worldPosition);
+            ((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);
         }
 
-        selectedNewPoint.Point.X = worldPosition.X;
-        selectedNewPoint.Point.Y = worldPosition.Y;
+        _selectedNewPoint.Point.X = worldPosition.X;
+        _selectedNewPoint.Point.Y = worldPosition.Y;
 
-        var lonLat = SphericalMercator.ToLonLat(selectedNewPoint.Point);
+        var lonLat = SphericalMercator.ToLonLat(_selectedNewPoint.Point);
 
-        longitude = lonLat.X;
-        latitude = lonLat.Y;
+        Longitude = lonLat.X;
+        Latitude = lonLat.Y;
     }
 
-	void ExisitingPointMode(PointFeature feature)
+	private void ExistingPointMode(PointFeature feature)
     {
-		if(selectedNewPoint is not null)
+		if (_selectedNewPoint != null)
 		{
-            ((List<IFeature>)_pointsLayer.Features).Remove(selectedNewPoint);
-			selectedNewPoint = null!;
+            ((List<IFeature>)_pointsLayer.Features).Remove(_selectedNewPoint);
+            _selectedNewPoint = null!;
         }
 
-        var data = (ChargingStation)feature["data"]!;
+		var data = (ChargingStation)feature["data"]!;
 
-        longitude = data.Longitude;
-        latitude = data.Latitude;
+        Longitude = data.Longitude;
+        Latitude = data.Latitude;
 
-        cost = data.Cost;
-        maxChargeRate = data.MaxChargeRate;
+        Cost = data.Cost;
+        MaxChargeRate = data.MaxChargeRate;
     
-		current = data;
+		_current = data;
     }
 
-	public async void CreateStation()
+	public async Task CreateStation()
 	{
 		StringContent content = JsonConverter.ToStringContent(new
 		{
-			Longitude = longitude,
-			Latitude = latitude,
-			Cost = cost,
-			MaxChargeRate = maxChargeRate
+			Longitude = Longitude,
+			Latitude = Latitude,
+			Cost = Cost,
+			MaxChargeRate = MaxChargeRate
 		});
 
 		var result = await _client.PostAsync("/api/ChargingStations", content);
 		Debug.WriteLine(result.StatusCode);
 	}
 
-	public async void UpdateStation()
+	public async Task UpdateStation()
 	{
 		StringContent content = JsonConverter.ToStringContent(new ChargingStation()
 		{
-			Id = current!.Value.Id,
-			Longitude = longitude,
-			Latitude = latitude,
-			Cost = cost,
-			MaxChargeRate = maxChargeRate
+			Id = _current!.Value.Id,
+			Longitude = Longitude,
+			Latitude = Latitude,
+			Cost = Cost,
+			MaxChargeRate = MaxChargeRate
 		});
 		var result = await _client.PatchAsync("/api/ChargingStations", content);
 		Debug.WriteLine(result.StatusCode);
 	}
 
 
-    public async void DeleteStation()
+    public async Task DeleteStation()
 	{
-		var result = await _client.DeleteAsync("/api/ChargingStations/"+ current!.Value.Id);
+		var result = await _client.DeleteAsync("/api/ChargingStations/"+ _current!.Value.Id);
         Debug.WriteLine(result.StatusCode);
     }
 }

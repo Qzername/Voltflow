@@ -1,5 +1,8 @@
 ﻿using Avalonia.ReactiveUI;
 using System;
+using System.Reactive;
+using Avalonia;
+using Voltflow.Models;
 using Voltflow.ViewModels;
 
 namespace Voltflow.Views;
@@ -18,9 +21,14 @@ public partial class MapView : ReactiveUserControl<MapViewModel>
          * because this library for some reason does not support this 
         */
 		DataContextChanged += TestView_DataContextChanged;
+        MapControl.Tapped += MapControl_Tapped;
 
-        MapControl.Tapped += MapControl_Tapped; ;
-    }
+        this.GetObservable(BoundsProperty).Subscribe(Observer.Create<Rect>(bounds =>
+        {
+			if (DataContext is not MapViewModel viewModel) return;
+			viewModel.CurrentDisplayMode = bounds.Width >= 512 ? DisplayMode.Desktop : DisplayMode.Mobile;
+        }));
+	}
 
     private void MapControl_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
@@ -34,10 +42,10 @@ public partial class MapView : ReactiveUserControl<MapViewModel>
         MapControl.InvalidateVisual();
     }
 
-    private void TestView_DataContextChanged(object? sender, EventArgs e)
+    private async void TestView_DataContextChanged(object? sender, EventArgs e)
 	{
 		var viewModel = DataContext as MapViewModel;
-		viewModel!.ConfigureMap();
+		await viewModel!.ConfigureMap();
 		MapControl.Map = viewModel.Map!;
 	}
 }
