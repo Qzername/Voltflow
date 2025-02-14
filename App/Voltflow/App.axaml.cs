@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.IO;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -13,6 +14,9 @@ public partial class App : Application
 {
 	public override void Initialize()
 	{
+		if (!File.Exists("settings.json"))
+			File.Create("settings.json");
+
 		if (!(ApplicationLifetime is ISingleViewApplicationLifetime))
 			this.EnableHotReload();
 		AvaloniaXamlLoader.Load(this);
