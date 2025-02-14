@@ -13,8 +13,8 @@
 
     <Application.Styles>
         <!--  Use SemiTheme with Ursa  -->
-        <semi:SemiTheme />
-        <u-semi:SemiTheme />
+        <semi:SemiTheme Locale="en-us" />
+        <u-semi:SemiTheme Locale="en-us" />
 
         <!--  Include Semi.Avalonia styles  -->
         <StyleInclude Source="avares://Semi.Avalonia.ColorPicker/Index.axaml" />
