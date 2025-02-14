@@ -18,8 +18,9 @@ public partial class App : Application
 		if (!File.Exists($"{currentDirectory}/settings.json"))
 			File.Create($"{currentDirectory}/settings.json");
 
-		if (!(ApplicationLifetime is ISingleViewApplicationLifetime))
+		if (ApplicationLifetime is not ISingleViewApplicationLifetime)
 			this.EnableHotReload();
+
 		AvaloniaXamlLoader.Load(this);
 	}
 
