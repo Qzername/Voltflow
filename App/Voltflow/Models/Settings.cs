@@ -11,7 +11,21 @@ public interface ISettings
 
 public static class Settings
 {
-	public static readonly ISettings Current = new ConfigurationBuilder<ISettings>()
+	private static readonly ISettings Current = new ConfigurationBuilder<ISettings>()
 		.UseJsonFile($"{Directory.GetCurrentDirectory()}/settings.json")
 		.Build();
+
+	public static string? GetToken()
+	{
+		try
+		{
+			return Current.Token;
+		}
+		catch
+		{
+			return null;
+		}
+	}
+
+	public static void SetToken(string? token) => Current.Token = token;
 }

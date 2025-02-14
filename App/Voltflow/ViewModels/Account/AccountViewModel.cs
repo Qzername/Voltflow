@@ -19,7 +19,7 @@ namespace Voltflow.ViewModels.Account;
 /// <param name="screen"></param>
 public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 {
-    [Reactive] public AuthType CurrentAuthType { get; set; } = Settings.Current.Token == null ? AuthType.SignIn : AuthType.SignedIn;
+    [Reactive] public AuthType CurrentAuthType { get; set; } = Settings.GetToken() == null ? AuthType.SignIn : AuthType.SignedIn;
     public WindowToastManager? ToastManager { get; set; }
 
     // Forms
@@ -199,8 +199,8 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
             else if (response.ContainsKey("token"))
             {
                 CurrentAuthType = AuthType.SignedIn;
-                Settings.Current.Token = (string?)response["token"];
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Current.Token);
+                Settings.SetToken((string?)response["token"]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
                 SignInForm.Reset();
                 NavigateHome();
             }
@@ -304,8 +304,8 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
             if (response.ContainsKey("token"))
             {
                 CurrentAuthType = AuthType.SignedIn;
-                Settings.Current.Token = (string?)response["token"];
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Settings.Current.Token);
+                Settings.SetToken((string?)response["token"]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
                 TwoFactorAuthForm.Reset();
                 NavigateHome();
             }
