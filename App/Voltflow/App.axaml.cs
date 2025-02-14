@@ -15,8 +15,8 @@ public partial class App : Application
 	public override void Initialize()
 	{
 		string currentDirectory = Directory.GetCurrentDirectory();
-		if (!File.Exists($"{currentDirectory}settings.json"))
-			File.Create($"{currentDirectory}settings.json");
+		if (!File.Exists($"{currentDirectory}/settings.json"))
+			File.Create($"{currentDirectory}/settings.json");
 
 		if (!(ApplicationLifetime is ISingleViewApplicationLifetime))
 			this.EnableHotReload();
