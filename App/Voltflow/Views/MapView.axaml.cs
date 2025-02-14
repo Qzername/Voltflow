@@ -23,10 +23,12 @@ public partial class MapView : ReactiveUserControl<MapViewModel>
 		DataContextChanged += TestView_DataContextChanged;
 		MapControl.Tapped += MapControl_Tapped;
 
+		// X = set amount of pixels in Display.cs.
+		// Checks viewport width. If it's less than or equal X, set CurrentDisplayMode to Mobile - THIS WILL HIDE SOME ELEMENTS IN THE ADMIN PANEL!
 		this.GetObservable(BoundsProperty).Subscribe(Observer.Create<Rect>(bounds =>
 		{
 			if (DataContext is not MapViewModel viewModel) return;
-			viewModel.CurrentDisplayMode = bounds.Width >= 512 ? DisplayMode.Desktop : DisplayMode.Mobile;
+			viewModel.CurrentDisplayMode = bounds.Width > Display.MaxMobileWidth ? DisplayMode.Desktop : DisplayMode.Mobile;
 		}));
 	}
 

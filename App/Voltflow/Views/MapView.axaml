@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Voltflow.Models"
@@ -21,22 +22,71 @@
     <Panel>
         <!--  Yes, no binding, see code behind for more info  -->
         <mapsui:MapControl x:Name="MapControl" />
-        <StackPanel
-            Width="250"
+        <Panel
+            Width="256"
+            Margin="8"
             HorizontalAlignment="Right"
-            Background="Gray"
+            VerticalAlignment="Top"
             IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
-            <TextBlock Text="{Binding Mode}" />
-            <Separator />
-            <TextBox Text="{Binding Longitude}" Watermark="Longitude" />
-            <TextBox Text="{Binding Latitude}" Watermark="Latitude" />
-            <Separator />
-            <TextBox Text="{Binding Cost}" Watermark="Cost" />
-            <TextBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
-            <Separator />
-            <Button Command="{Binding CreateStation}" Content="Add Station" />
-            <Button Command="{Binding UpdateStation}" Content="Update Station" />
-            <Button Command="{Binding DeleteStation}" Content="Delete Station" />
-        </StackPanel>
+            <Border
+                Padding="10"
+                Classes="with-bg"
+                CornerRadius="10">
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="size-l color-gray weight-bold"
+                        Text="{Binding Mode}" />
+
+                    <Separator />
+
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Longitude" />
+                    <TextBox Text="{Binding Longitude}" />
+
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Latitude" />
+                    <TextBox Text="{Binding Latitude}" />
+
+                    <Separator />
+
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
+                    <TextBox Text="{Binding Cost}" />
+
+                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
+                    <TextBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+
+                    <Separator />
+
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Classes="Success"
+                        Command="{Binding CreateStation}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
+                            <TextBlock VerticalAlignment="Center" Text="Add Station" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Classes="Warning"
+                        Command="{Binding UpdateStation}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CloudUploadFill" />
+                            <TextBlock VerticalAlignment="Center" Text="Update Station" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Classes="Danger"
+                        Command="{Binding DeleteStation}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
+                            <TextBlock VerticalAlignment="Center" Text="Delete Station" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Panel>
     </Panel>
 </UserControl>

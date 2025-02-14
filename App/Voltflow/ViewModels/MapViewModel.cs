@@ -40,12 +40,12 @@ public class MapViewModel : ViewModelBase
 	private ChargingStation? _current;
 
 	// Data for view
-	[Reactive] public string? Mode { get; set; }
+	[Reactive] public string Mode { get; set; } = "Welcome!";
 	[Reactive] public double Longitude { get; set; }
 	[Reactive] public double Latitude { get; set; }
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }
-	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Desktop;
+	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
 
 	public MapViewModel(IScreen screen) : base(screen)
 	{
@@ -92,20 +92,21 @@ public class MapViewModel : ViewModelBase
 
 	private void OnMapInteraction(object? sender, MapInfoEventArgs e)
 	{
-		if (e.MapInfo == null) return;
+		// Disable interaction on mobile
+		if (e.MapInfo == null || CurrentDisplayMode == DisplayMode.Mobile) return;
 
 		var point = (PointFeature?)e.MapInfo.Feature;
 
 		if (point?["data"] == null)
 		{
-			Mode = "New point mode";
+			Mode = "New point";
 			NewPointMode(e.MapInfo.WorldPosition!);
 		}
 		else
 		{
 			var data = (ChargingStation)point["data"]!;
 
-			Mode = $"Existing point mode (ID = {data.Id})";
+			Mode = $"Existing point (ID: {data.Id})";
 			ExistingPointMode(point);
 		}
 	}

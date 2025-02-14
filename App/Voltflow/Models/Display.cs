@@ -4,6 +4,11 @@ using System.Globalization;
 
 namespace Voltflow.Models;
 
+public static class Display
+{
+	public static readonly int MaxMobileWidth = 800;
+}
+
 public enum DisplayMode
 {
 	Desktop = 0,

@@ -1,0 +1,22 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!--  Light Theme  -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="Background" Color="#fffefe" />
+                </ResourceDictionary>
+
+                <!--  Dark Theme  -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="Background" Color="#16161a" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <!--  Border with background  -->
+    <Style Selector="Border.with-bg">
+        <Setter Property="Background" Value="{DynamicResource Background}" />
+    </Style>
+</Styles>
