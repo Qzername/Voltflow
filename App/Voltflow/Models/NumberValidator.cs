@@ -22,7 +22,7 @@ public static class NumberValidator
 			return false;
 
 		// Checks if the number has any non-numeric characters.
-		if (!Regex.IsMatch(number, "[0-9]"))
+		if (!Regex.IsMatch(number, "^[0-9]+$"))
 			return false;
 
 		return true;
