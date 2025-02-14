@@ -24,8 +24,7 @@ public class MapViewModel : ViewModelBase
 	// Map config
 	[Reactive] public Map? Map { get; set; }
 	private bool _isConfigured;
-
-	readonly MemoryLayer _pointsLayer = new()
+	private readonly MemoryLayer _pointsLayer = new()
 	{
 		Name = "Points",
 		Features = new List<IFeature>(),
