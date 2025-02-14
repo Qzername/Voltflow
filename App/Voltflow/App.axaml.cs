@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -14,10 +13,6 @@ public partial class App : Application
 {
 	public override void Initialize()
 	{
-		string currentDirectory = Directory.GetCurrentDirectory();
-		if (!File.Exists($"{currentDirectory}/settings.json"))
-			File.Create($"{currentDirectory}/settings.json");
-
 		if (ApplicationLifetime is not ISingleViewApplicationLifetime)
 			this.EnableHotReload();
 
