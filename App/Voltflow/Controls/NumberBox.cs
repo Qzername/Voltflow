@@ -33,7 +33,7 @@ public partial class NumberBox : TextBox
 		{
 			if (!AllowFloats) return;
 			if (!string.IsNullOrEmpty(Text) && Text.Contains(".")) return; // If Text already contains a dot - return.
-			if (Text.Length + 2 > MaxLength) return; // If length of Text + ".0" is higher than maximum length set in the input - return.
+			if (Text.Length + 2 > MaxLength && MaxLength != 0) return; // If length of Text + ".0" is higher than maximum length set in the input - return.
 			e.Text = ".0";
 		}
 
