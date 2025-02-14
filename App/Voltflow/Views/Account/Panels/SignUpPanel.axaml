@@ -31,7 +31,7 @@
                 Kind="EnvelopeFill" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
-        <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@gmail.com" />
+        <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@email.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
