@@ -64,13 +64,13 @@ public class MapViewModel : ViewModelBase
 		// Center at poland
 		var center = SphericalMercator.FromLonLat(21.0122, 52.2297);
 		Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
-		
+
 		// Add points to map
 		var response = await _client.GetAsync("/api/ChargingStations");
 		var stationsJson = await response.Content.ReadAsStringAsync();
-        var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
+		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
-        Debug.WriteLine(response.StatusCode);
+		Debug.WriteLine(response.StatusCode);
 
 		var list = (List<IFeature>)_pointsLayer.Features;
 
@@ -81,13 +81,13 @@ public class MapViewModel : ViewModelBase
 			var feature = new PointFeature(point.x, point.y);
 			feature["data"] = chargingStation;
 
-            list.Add(feature);
+			list.Add(feature);
 		}
 
-        Map.Layers.Add(_pointsLayer);
-        Map.RefreshGraphics();
+		Map.Layers.Add(_pointsLayer);
+		Map.RefreshGraphics();
 
-        _isConfigured = true;
+		_isConfigured = true;
 	}
 
 	private void OnMapInteraction(object? sender, MapInfoEventArgs e)
@@ -96,57 +96,57 @@ public class MapViewModel : ViewModelBase
 
 		var point = (PointFeature?)e.MapInfo.Feature;
 
-        if (point?["data"] == null)
+		if (point?["data"] == null)
 		{
 			Mode = "New point mode";
-            NewPointMode(e.MapInfo.WorldPosition!);
-        }
+			NewPointMode(e.MapInfo.WorldPosition!);
+		}
 		else
-        {
-	        var data = (ChargingStation)point["data"]!;
+		{
+			var data = (ChargingStation)point["data"]!;
 
-            Mode = $"Existing point mode (ID = {data.Id})";
-            ExistingPointMode(point);
-        }
-    }
+			Mode = $"Existing point mode (ID = {data.Id})";
+			ExistingPointMode(point);
+		}
+	}
 
 	private void NewPointMode(MPoint worldPosition)
 	{
 		_current = null;
 
-        if (_selectedNewPoint == null)
-        {
-	        _selectedNewPoint = new PointFeature(worldPosition);
-            ((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);
-        }
+		if (_selectedNewPoint == null)
+		{
+			_selectedNewPoint = new PointFeature(worldPosition);
+			((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);
+		}
 
-        _selectedNewPoint.Point.X = worldPosition.X;
-        _selectedNewPoint.Point.Y = worldPosition.Y;
+		_selectedNewPoint.Point.X = worldPosition.X;
+		_selectedNewPoint.Point.Y = worldPosition.Y;
 
-        var lonLat = SphericalMercator.ToLonLat(_selectedNewPoint.Point);
+		var lonLat = SphericalMercator.ToLonLat(_selectedNewPoint.Point);
 
-        Longitude = lonLat.X;
-        Latitude = lonLat.Y;
-    }
+		Longitude = lonLat.X;
+		Latitude = lonLat.Y;
+	}
 
 	private void ExistingPointMode(PointFeature feature)
-    {
+	{
 		if (_selectedNewPoint != null)
 		{
-            ((List<IFeature>)_pointsLayer.Features).Remove(_selectedNewPoint);
-            _selectedNewPoint = null!;
-        }
+			((List<IFeature>)_pointsLayer.Features).Remove(_selectedNewPoint);
+			_selectedNewPoint = null!;
+		}
 
 		var data = (ChargingStation)feature["data"]!;
 
-        Longitude = data.Longitude;
-        Latitude = data.Latitude;
+		Longitude = data.Longitude;
+		Latitude = data.Latitude;
 
-        Cost = data.Cost;
-        MaxChargeRate = data.MaxChargeRate;
-    
+		Cost = data.Cost;
+		MaxChargeRate = data.MaxChargeRate;
+
 		_current = data;
-    }
+	}
 
 	public async Task CreateStation()
 	{
@@ -177,9 +177,9 @@ public class MapViewModel : ViewModelBase
 	}
 
 
-    public async Task DeleteStation()
+	public async Task DeleteStation()
 	{
-		var result = await _client.DeleteAsync("/api/ChargingStations/"+ _current!.Value.Id);
-        Debug.WriteLine(result.StatusCode);
-    }
+		var result = await _client.DeleteAsync("/api/ChargingStations/" + _current!.Value.Id);
+		Debug.WriteLine(result.StatusCode);
+	}
 }
