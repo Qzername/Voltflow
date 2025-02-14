@@ -60,31 +60,12 @@ public partial class NumberBox : TextBox
 		var clipboard = TopLevel.GetTopLevel(textBox)?.Clipboard;
 		if (clipboard == null) return;
 
-		// Cancel default paste operation.
-		e.Handled = true;
-
 		string? clipboardText = await clipboard.GetTextAsync();
 		if (string.IsNullOrEmpty(clipboardText)) return;
 
 		// Allow pasting numbers and floats (obviously only when AllowFloats is set to true).
 		// 3.14, 123.456, 2005 and the list goes on.
 		Regex numberRegex = new Regex($"^[0-9]+{(AllowFloats ? "(\\.[0-9]+)?" : "")}$");
-		if (!numberRegex.IsMatch(clipboardText)) return;
-
-		// Fixes for pasting when input is selected.
-		textBox.Text = PrepareText(textBox, clipboardText);
-		textBox.CaretIndex = textBox.SelectionStart + clipboardText.Length;
-	}
-
-	private string PrepareText(TextBox textBox, string input)
-	{
-		int start = textBox.SelectionStart;
-		int end = textBox.SelectionEnd;
-
-		string finalText = (textBox.Text ?? string.Empty)
-			.Remove(start, end - start)
-			.Insert(start, input);
-
-		return MaxLength == 0 ? finalText : finalText.Substring(0, MaxLength);
+		if (!numberRegex.IsMatch(clipboardText)) e.Handled = true;
 	}
 }
