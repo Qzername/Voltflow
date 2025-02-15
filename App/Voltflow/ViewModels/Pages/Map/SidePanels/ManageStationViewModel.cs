@@ -20,14 +20,44 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         // Dependency injection
         private readonly HttpClient _client;
 
+        // Data for view
+        [Reactive] public string ViewTitle { get; set; } = "Click on point/blank space to start";
         [Reactive] public double Longitude { get; set; }
         [Reactive] public double Latitude { get; set; }
         [Reactive] public int Cost { get; set; }
         [Reactive] public int MaxChargeRate { get; set; }
+        
+        bool _isOutOfService;
+        public bool IsOutOfService
+        {
+            get => _isOutOfService;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isOutOfService, value);
+                _isOutOfService = value;
 
-        // Data for view
-        [Reactive] public string Mode { get; set; } = "Click on point/blank space to start";
+                if(_isOutOfService == false)
+                {
+                    _isInServiceMode = false;
+                    this.RaisePropertyChanged(nameof(IsInServiceMode));
+                }
 
+                _ = UpdateStationStatus();
+            }
+        }
+
+        bool _isInServiceMode;
+        public bool IsInServiceMode
+        {
+            get => _isInServiceMode;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isInServiceMode, value);
+                _isInServiceMode = value;
+
+                _ = UpdateStationStatus();
+            }
+        }
         ChargingStation? _current;
         PointFeature? _selectedNewPoint;
 
@@ -42,14 +72,14 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
             if (point?["data"] == null)
             {
-                Mode = "New point";
+                ViewTitle = "New point";
                 NewPointMode(e.MapInfo.WorldPosition!);
             }
             else
             {
                 var data = (ChargingStation)point["data"]!;
 
-                Mode = $"Existing point (ID: {data.Id})";
+                ViewTitle = $"Existing point (ID: {data.Id})";
                 ExistingPointMode(point);
             }
         }
@@ -89,6 +119,12 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             Cost = data.Cost;
             MaxChargeRate = data.MaxChargeRate;
 
+            //update values, dont send updates to server
+            _isOutOfService = data.Status == ChargingStationStatus.OutOfOrder;
+            _isInServiceMode = data.ServiceMode;
+            this.RaisePropertyChanged(nameof(IsOutOfService));
+            this.RaisePropertyChanged(nameof(IsInServiceMode));
+
             _current = data;
         }
 
@@ -122,6 +158,17 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             Debug.WriteLine(result.StatusCode);
         }
 
+        public async Task UpdateStationStatus()
+        {
+            StringContent content = JsonConverter.ToStringContent(new
+            {
+                Id = _current!.Value.Id,
+                Status = IsOutOfService ? ChargingStationStatus.OutOfOrder : ChargingStationStatus.Available,
+                ServiceMode = IsInServiceMode
+            });
+            var result = await _client.PatchAsync("/api/ChargingStations/", content);
+            Debug.WriteLine(result.StatusCode);
+        }
 
         public async Task DeleteStation()
         {

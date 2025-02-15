@@ -71,6 +71,7 @@ public class MapViewModel : ViewModelBase, IScreen
         var stationsJson = await response.Content.ReadAsStringAsync();
         var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
+
         Debug.WriteLine(response.StatusCode);
 
         var list = (List<IFeature>)_pointsLayer.Features;
