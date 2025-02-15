@@ -82,8 +82,4 @@
       <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Pages\Map\SidePanels\" />
-  </ItemGroup>
 </Project>
