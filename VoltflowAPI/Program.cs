@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using VoltflowAPI.Contexts;
+using VoltflowAPI.Hubs;
 using VoltflowAPI.Models;
 using VoltflowAPI.Services;
 
@@ -58,6 +59,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			ValidateIssuer = false,
 		};
 	});
+
+// --- Use SignalR --- 
+builder.Services.AddSignalR();
+
 builder.Services.AddAuthorization();
 
 // --- App conifg ---
@@ -89,6 +94,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<ChargingHub>("/charginghub");
 app.MapControllers();
 
 app.Run();

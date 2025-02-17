@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
+using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.ViewModels;
@@ -30,5 +31,10 @@ public class MainViewModel : ReactiveObject, IScreen
 	{
 		if (Router.GetCurrentViewModel()?.GetType() != typeof(AccountViewModel)) Router.Navigate.Execute(new AccountViewModel(this));
 	}
+
+	public void NavigateToTestCharging()
+	{
+        if (Router.GetCurrentViewModel()?.GetType() != typeof(ChargingViewModel)) Router.Navigate.Execute(new ChargingViewModel(this));
+    }
 }
 

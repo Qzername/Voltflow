@@ -29,6 +29,9 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
+			<Button Command="{Binding NavigateToTestCharging}">
+				Test charging page
+			</Button>
             <Button Command="{Binding NavigateToAccountView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
