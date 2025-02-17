@@ -43,6 +43,7 @@
 					</reactiveUi:RoutedViewHost.ViewLocator>
 				</reactiveUi:RoutedViewHost>
             </Border>
-        </Panel>
+		</Panel>
+		<Button Command="{Binding ChangeMode}" Background="Gray" Margin="50" Padding="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">+</Button>
     </Panel>
 </UserControl>

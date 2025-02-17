@@ -1,0 +1,39 @@
+﻿using Mapsui;
+using Mapsui.Layers;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Voltflow.Models;
+
+namespace Voltflow.ViewModels.Pages.Map.SidePanels;
+
+public class StationInformationViewModel : MapSidePanelBase
+{
+    [Reactive] public string ViewTitle { get; set; } = "Click on point/blank space to start";
+    [Reactive] public string Status { get; set; }
+    [Reactive] public int Cost { get; set; }
+    [Reactive] public int MaxChargeRate { get; set; }
+
+    public StationInformationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
+    {
+    }
+
+    public override void MapClicked(MapInfoEventArgs e)
+    {
+        var point = (PointFeature?)e.MapInfo.Feature;
+
+        if (point is null || point["data"] is null)
+            return;
+
+        var data = (ChargingStation)point["data"]!;
+
+        ViewTitle = $"Existing point (ID: {data.Id})";
+        Status = data.Status.ToString();
+        Cost = data.Cost;
+        MaxChargeRate = data.MaxChargeRate;
+    }
+
+    public void Charge()
+    {
+
+    }
+}

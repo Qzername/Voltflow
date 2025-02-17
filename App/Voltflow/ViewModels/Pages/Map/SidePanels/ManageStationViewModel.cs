@@ -36,6 +36,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
                 this.RaiseAndSetIfChanged(ref _isOutOfService, value);
                 _isOutOfService = value;
 
+                // station cannot be in service when its not out of service
                 if(_isOutOfService == false)
                 {
                     _isInServiceMode = false;
@@ -70,7 +71,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         {
             var point = (PointFeature?)e.MapInfo.Feature;
 
-            if (point?["data"] == null)
+            if (point?["data"] is null)
             {
                 ViewTitle = "New point";
                 NewPointMode(e.MapInfo.WorldPosition!);
@@ -88,7 +89,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         {
             _current = null;
 
-            if (_selectedNewPoint == null)
+            if (_selectedNewPoint is null)
             {
                 _selectedNewPoint = new PointFeature(worldPosition);
                 ((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);

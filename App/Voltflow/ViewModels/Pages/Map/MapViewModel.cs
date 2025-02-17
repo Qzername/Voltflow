@@ -24,7 +24,8 @@ public class MapViewModel : ViewModelBase, IScreen
     private readonly HttpClient _client;
 
     public RoutingState Router { get; }
-    MapSidePanelBase currentMode;
+    MapSidePanelBase currentModeViewModel;
+    bool isCreatingMode = false;
 
     // Map config
     [Reactive] public M.Map? Map { get; set; }
@@ -44,11 +45,6 @@ public class MapViewModel : ViewModelBase, IScreen
         _client = GetService<HttpClient>();
 
         Router = new RoutingState();
-
-        currentMode = new ManageStationViewModel(_pointsLayer, this);
-
-        Router.Navigate.Execute(currentMode);
-
     }
 
     [Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
@@ -71,7 +67,6 @@ public class MapViewModel : ViewModelBase, IScreen
         var stationsJson = await response.Content.ReadAsStringAsync();
         var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
-
         Debug.WriteLine(response.StatusCode);
 
         var list = (List<IFeature>)_pointsLayer.Features;
@@ -92,10 +87,36 @@ public class MapViewModel : ViewModelBase, IScreen
 
     private void OnMapInteraction(object? sender, MapInfoEventArgs e)
     {
+        UpdateModeViewModel();
+
         // Disable interaction on mobile
         if (e.MapInfo == null || CurrentDisplayMode == DisplayMode.Mobile) return;
 
-        currentMode.MapClicked(e);
+        currentModeViewModel.MapClicked(e);
     }
 
+    void UpdateModeViewModel()
+    {
+        //1. if view model is not created, create it
+        //2. if view model is manage station, but user wants station information, change it
+        //3. if view model is station information, but user wants manage station, change it
+        if (currentModeViewModel is null ||
+            currentModeViewModel is StationInformationViewModel && isCreatingMode ||
+            currentModeViewModel is ManageStationViewModel && !isCreatingMode)
+        {
+            if (isCreatingMode)
+                currentModeViewModel = new ManageStationViewModel(_pointsLayer, this);
+            else
+                currentModeViewModel = new StationInformationViewModel(_pointsLayer, this);
+
+            Router.Navigate.Execute(currentModeViewModel);
+        }
+    }
+
+    public void ChangeMode()
+    {
+        isCreatingMode = !isCreatingMode;
+
+        UpdateModeViewModel();
+    }
 }
