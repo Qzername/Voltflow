@@ -1,68 +1,79 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
-			 xmlns:controls="clr-namespace:Voltflow.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.Views.Pages.Map.SidePanels.ManageStationView">
-	<StackPanel VerticalAlignment="Top">
-		<TextBlock
-			HorizontalAlignment="Center"
-			Classes="size-l color-gray weight-bold"
-			Text="{Binding ViewTitle}" />
+<UserControl
+    x:Class="Voltflow.Views.Pages.Map.SidePanels.ManageStationView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Voltflow.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sidePanels="clr-namespace:Voltflow.ViewModels.Pages.Map.SidePanels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <sidePanels:ManageStationViewModel />
+    </Design.DataContext>
 
-		<Separator />
+    <StackPanel VerticalAlignment="Top">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Classes="size-sm color-gray weight-bold"
+            Text="{Binding ViewTitle}" />
 
-		<TextBlock Classes="size-sm color-gray weight-bold" Text="Longitude" />
-		<controls:NumberBox AllowFloats="True" Text="{Binding Longitude}" />
+        <Separator />
 
-		<TextBlock Classes="size-sm color-gray weight-bold" Text="Latitude" />
-		<controls:NumberBox AllowFloats="True" Text="{Binding Latitude}" />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="Longitude" />
+        <controls:NumberBox AllowFloats="True" Text="{Binding Longitude}" />
 
-		<Separator />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="Latitude" />
+        <controls:NumberBox AllowFloats="True" Text="{Binding Latitude}" />
 
-		<TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
-		<controls:NumberBox Text="{Binding Cost}" />
+        <Separator />
 
-		<TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
-		<controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
+        <controls:NumberBox Text="{Binding Cost}" />
 
-		<Separator />
+        <TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
+        <controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
 
-		<Button
-			HorizontalAlignment="Stretch"
-			Classes="Success"
-			Command="{Binding CreateStation}">
-			<StackPanel Orientation="Horizontal">
-				<iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
-				<TextBlock VerticalAlignment="Center" Text="Add Station" />
-			</StackPanel>
-		</Button>
+        <Separator />
 
-		<Button
-			HorizontalAlignment="Stretch"
-			Classes="Warning"
-			Command="{Binding UpdateStation}">
-			<StackPanel Orientation="Horizontal">
-				<iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CloudUploadFill" />
-				<TextBlock VerticalAlignment="Center" Text="Update Station" />
-			</StackPanel>
-		</Button>
+        <Button
+            HorizontalAlignment="Stretch"
+            Classes="Success"
+            Command="{Binding CreateStation}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
+                <TextBlock VerticalAlignment="Center" Text="Add Station" />
+            </StackPanel>
+        </Button>
 
-		<Button
-			HorizontalAlignment="Stretch"
-			Classes="Danger"
-			Command="{Binding DeleteStation}">
-			<StackPanel Orientation="Horizontal">
-				<iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
-				<TextBlock VerticalAlignment="Center" Text="Delete Station" />
-			</StackPanel>
-		</Button>
+        <Button
+            HorizontalAlignment="Stretch"
+            Classes="Warning"
+            Command="{Binding UpdateStation}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CloudUploadFill" />
+                <TextBlock VerticalAlignment="Center" Text="Update Station" />
+            </StackPanel>
+        </Button>
 
-		<Separator />
-		
-		<CheckBox IsChecked="{Binding IsOutOfService}" Content="Out of service"/>
-		<CheckBox IsChecked="{Binding IsInServiceMode}" IsEnabled="{Binding IsOutOfService}" Content="Service mode"/>
-	</StackPanel>
+        <Button
+            HorizontalAlignment="Stretch"
+            Classes="Danger"
+            Command="{Binding DeleteStation}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
+                <TextBlock VerticalAlignment="Center" Text="Delete Station" />
+            </StackPanel>
+        </Button>
+
+        <Separator />
+
+        <CheckBox Content="Out of Service" IsChecked="{Binding IsOutOfService}" />
+        <CheckBox
+            Content="Service Mode"
+            IsChecked="{Binding IsInServiceMode}"
+            IsEnabled="{Binding IsOutOfService}" />
+    </StackPanel>
 </UserControl>

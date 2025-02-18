@@ -3,19 +3,16 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Voltflow.Models"
-    xmlns:controls="clr-namespace:Voltflow.Controls"
-    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
-	xmlns:reactiveUi="http://reactiveui.net"
-	xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     xmlns:viewModelsMap="clr-namespace:Voltflow.ViewModels.Pages.Map"
-	
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-	
+
     <Design.DataContext>
         <viewModelsMap:MapViewModel />
     </Design.DataContext>
@@ -27,23 +24,36 @@
     <Panel>
         <!--  Yes, no binding, see code behind for more info  -->
         <mapsui:MapControl x:Name="MapControl" />
-        <Panel
-            Width="256"
-            Margin="8"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+
+        <Panel>
             <Border
-                Padding="10"
+                Width="256"
+                Margin="16"
+                Padding="16"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
                 Classes="with-bg"
-                CornerRadius="10">
-				<reactiveUi:RoutedViewHost Router="{Binding Router}">
-					<reactiveUi:RoutedViewHost.ViewLocator>
-						<viewLocators:ReactiveViewLocator />
-					</reactiveUi:RoutedViewHost.ViewLocator>
-				</reactiveUi:RoutedViewHost>
+                CornerRadius="8"
+                IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+                <reactiveUi:RoutedViewHost Router="{Binding Router}">
+                    <reactiveUi:RoutedViewHost.ViewLocator>
+                        <viewLocators:ReactiveViewLocator />
+                    </reactiveUi:RoutedViewHost.ViewLocator>
+                </reactiveUi:RoutedViewHost>
             </Border>
-		</Panel>
-		<Button Command="{Binding ChangeMode}" Background="Gray" Margin="50" Padding="10" HorizontalAlignment="Right" VerticalAlignment="Bottom">+</Button>
+        </Panel>
+
+
+        <Button
+            Width="48"
+            Height="48"
+            Margin="16"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding ChangeMode}"
+            CornerRadius="8"
+            IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+            +
+        </Button>
     </Panel>
 </UserControl>
