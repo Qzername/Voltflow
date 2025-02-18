@@ -1,4 +1,4 @@
-﻿namespace VoltflowAPI.Models;
+﻿namespace VoltflowAPI.Models.Settings;
 
 public class JwtSettings
 {

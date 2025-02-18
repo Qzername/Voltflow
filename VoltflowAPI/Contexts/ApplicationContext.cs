@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VoltflowAPI.Models;
+using VoltflowAPI.Models.Identity;
 
 namespace VoltflowAPI.Contexts;
 

@@ -13,7 +13,7 @@ using System.Text;
 
 using VoltflowAPI.Contexts;
 using VoltflowAPI.Hubs;
-using VoltflowAPI.Models;
+using VoltflowAPI.Models.Settings;
 using VoltflowAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
