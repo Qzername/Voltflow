@@ -4,12 +4,12 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="Background" Color="#fffefe" />
+                    <SolidColorBrush x:Key="BorderBackground" Color="#fffefe" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="Background" Color="#16161a" />
+                    <SolidColorBrush x:Key="BorderBackground" Color="#16161a" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -17,6 +17,6 @@
 
     <!--  Border with background  -->
     <Style Selector="Border.with-bg">
-        <Setter Property="Background" Value="{DynamicResource Background}" />
+        <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
     </Style>
 </Styles>

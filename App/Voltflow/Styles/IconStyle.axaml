@@ -7,14 +7,14 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="ForegroundGray" Color="DimGray" />
-                    <SolidColorBrush x:Key="ForegroundGrayDisabled" Color="LightGray" />
+                    <SolidColorBrush x:Key="IconForegroundGray" Color="DimGray" />
+                    <SolidColorBrush x:Key="IconForegroundGrayDisabled" Color="LightGray" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ForegroundGray" Color="LightGray" />
-                    <SolidColorBrush x:Key="ForegroundGrayDisabled" Color="DimGray" />
+                    <SolidColorBrush x:Key="IconForegroundGray" Color="LightGray" />
+                    <SolidColorBrush x:Key="IconForegroundGrayDisabled" Color="DimGray" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -22,12 +22,12 @@
 
     <!--  Gray icon  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.color-gray">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundGray}" />
+        <Setter Property="Foreground" Value="{DynamicResource IconForegroundGray}" />
     </Style>
 
     <!--  Gray disabled icon  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.color-gray:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundGrayDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource IconForegroundGrayDisabled}" />
     </Style>
 
     <!--  Tiny icon  -->

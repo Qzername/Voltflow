@@ -3,16 +3,15 @@ using ReactiveUI;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.ViewModels.Pages.Charging
 {
-    public class ChargingViewModel : ViewModelBase
+    public class ChargingViewModel(IScreen screen) : ViewModelBase(screen)
     {
-        public ChargingViewModel(IScreen screen) : base(screen)
-        {
-        }
+	    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(screen));
 
-        public async Task Start()
+		public async Task Start()
         {
             try
             {

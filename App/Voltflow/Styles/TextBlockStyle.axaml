@@ -4,18 +4,18 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="ForegroundGray" Color="DimGray" />
-                    <SolidColorBrush x:Key="ForegroundGrayDisabled" Color="LightGray" />
-                    <SolidColorBrush x:Key="ForegroundHyperlink" Color="LightSkyBlue" />
-                    <SolidColorBrush x:Key="ForegroundHyperlinkDisabled" Color="#c4e9ff" />
+                    <SolidColorBrush x:Key="TextBlockForegroundGray" Color="DimGray" />
+                    <SolidColorBrush x:Key="TextBlockForegroundGrayDisabled" Color="LightGray" />
+                    <SolidColorBrush x:Key="TextBlockForegroundHyperlink" Color="LightSkyBlue" />
+                    <SolidColorBrush x:Key="TextBlockForegroundHyperlinkDisabled" Color="#c4e9ff" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ForegroundGray" Color="LightGray" />
-                    <SolidColorBrush x:Key="ForegroundGrayDisabled" Color="DimGray" />
-                    <SolidColorBrush x:Key="ForegroundHyperlink" Color="LightSkyBlue" />
-                    <SolidColorBrush x:Key="ForegroundHyperlinkDisabled" Color="#537991" />
+                    <SolidColorBrush x:Key="TextBlockForegroundGray" Color="LightGray" />
+                    <SolidColorBrush x:Key="TextBlockForegroundGrayDisabled" Color="DimGray" />
+                    <SolidColorBrush x:Key="TextBlockForegroundHyperlink" Color="LightSkyBlue" />
+                    <SolidColorBrush x:Key="TextBlockForegroundHyperlinkDisabled" Color="#537991" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -53,23 +53,23 @@
 
     <!--  Gray TextBlock  -->
     <Style Selector="TextBlock.color-gray">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundGray}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundGray}" />
     </Style>
 
     <!--  Gray disabled TextBlock  -->
     <Style Selector="TextBlock.color-gray:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundGrayDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundGrayDisabled}" />
     </Style>
 
     <!--  Hyperlink TextBlock  -->
     <Style Selector="TextBlock.hyperlink">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundHyperlink}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundHyperlink}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
     <!--  Hyperlink disabled TextBlock  -->
     <Style Selector="TextBlock.hyperlink:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource ForegroundHyperlinkDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundHyperlinkDisabled}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 </Styles>
