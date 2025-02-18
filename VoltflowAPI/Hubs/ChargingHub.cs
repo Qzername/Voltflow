@@ -63,13 +63,10 @@ public class ChargingHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        Console.WriteLine(Context.User is null);
-        Console.WriteLine(Context.User.Identity is null);
         var id = Context.User.Claims.ToList().Single(x=>x.Type == ClaimTypes.NameIdentifier);
 
         //get user
         var userName = Context.User?.Identity.Name;
-        Console.WriteLine(id.Value);
         var user = await _userManager.FindByIdAsync(id.Value);
 
         //register time
