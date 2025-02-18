@@ -2,6 +2,7 @@
 using ReactiveUI;
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Voltflow.ViewModels.Pages.Map;
 
@@ -15,7 +16,11 @@ namespace Voltflow.ViewModels.Pages.Charging
         {
             try
             {
-                var connection = new HubConnectionBuilder().WithUrl("ws://localhost:5000/charginghub").Build();
+                var connection = new HubConnectionBuilder().WithUrl("ws://localhost:5000/charginghub?stationId=9", (options) =>
+                {
+                    
+                    options.AccessTokenProvider = () => Task.FromResult("token goes here");
+                }).Build();
 
                 await connection.StartAsync();
             }
@@ -23,6 +28,8 @@ namespace Voltflow.ViewModels.Pages.Charging
             {
                 Debug.WriteLine(ex.Message);
             }
+
+            Debug.WriteLine("done");
         }
     }
 }
