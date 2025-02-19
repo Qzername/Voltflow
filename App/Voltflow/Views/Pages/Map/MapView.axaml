@@ -17,10 +17,6 @@
         <viewModelsMap:MapViewModel />
     </Design.DataContext>
 
-    <UserControl.Resources>
-        <models:DisplayModeConverter x:Key="DisplayModeConverter" />
-    </UserControl.Resources>
-
     <Panel>
         <!--  Yes, no binding, see code behind for more info  -->
         <mapsui:MapControl x:Name="MapControl" />
@@ -34,7 +30,7 @@
                 VerticalAlignment="Top"
                 Classes="with-bg"
                 CornerRadius="8"
-                IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+                IsVisible="{Binding !IsMobile}">
                 <reactiveUi:RoutedViewHost Router="{Binding Router}">
                     <reactiveUi:RoutedViewHost.ViewLocator>
                         <viewLocators:ReactiveViewLocator />
@@ -52,7 +48,7 @@
             VerticalAlignment="Bottom"
             Command="{Binding ChangeMode}"
             CornerRadius="8"
-            IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}">
+            IsVisible="{Binding !IsMobile}">
             +
         </Button>
     </Panel>

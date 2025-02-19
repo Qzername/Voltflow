@@ -9,7 +9,7 @@ namespace Voltflow.ViewModels.Pages.Charging;
 
 public class ChargingViewModel(IScreen screen) : ViewModelBase(screen)
 {
-	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(screen));
+	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
 
 	public async Task Start()
 	{

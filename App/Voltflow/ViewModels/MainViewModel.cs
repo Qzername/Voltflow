@@ -2,7 +2,6 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive;
-using Voltflow.Models;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
@@ -18,7 +17,7 @@ public class MainViewModel : ReactiveObject, IScreen
 	public RoutingState Router { get; } = new();
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
 
-	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
+	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
 	[Reactive] public bool Authenticated { get; set; }
 
 	/// <summary>
@@ -27,8 +26,7 @@ public class MainViewModel : ReactiveObject, IScreen
 	/// </summary>
 	public MainViewModel()
 	{
-		bool isMobile = OperatingSystem.IsAndroid();
-		if (isMobile)
+		if (IsMobile)
 			Router.Navigate.Execute(new AccountViewModel(this));
 		else
 			Router.Navigate.Execute(new MapViewModel(this));

@@ -274,6 +274,8 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 	public async Task SignOut()
 	{
 		await Preferences.SetAsync<string?>("token", null);
+		if (HostScreen is MainViewModel screen)
+			screen.Authenticated = false;
 		CurrentAuthType = AuthType.SignIn;
 	}
 

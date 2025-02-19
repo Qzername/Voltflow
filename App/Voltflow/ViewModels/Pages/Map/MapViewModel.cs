@@ -4,6 +4,7 @@ using Mapsui.Projections;
 using Mapsui.Styles;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -20,6 +21,8 @@ namespace Voltflow.ViewModels.Pages.Map;
 /// <param name="screen"></param>
 public class MapViewModel : ViewModelBase, IScreen
 {
+	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
+
 	// Dependency injection
 	private readonly HttpClient _client;
 
@@ -47,8 +50,6 @@ public class MapViewModel : ViewModelBase, IScreen
 		Router = new RoutingState();
 		Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, this));
 	}
-
-	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
 
 	public async Task ConfigureMap()
 	{
@@ -91,7 +92,7 @@ public class MapViewModel : ViewModelBase, IScreen
 		UpdateModeViewModel();
 
 		// Disable interaction on mobile
-		if (e.MapInfo == null || CurrentDisplayMode == DisplayMode.Mobile) return;
+		if (e.MapInfo == null || IsMobile) return;
 
 		_currentModeViewModel?.MapClicked(e);
 	}

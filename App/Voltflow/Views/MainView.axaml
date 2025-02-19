@@ -16,10 +16,6 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <UserControl.Resources>
-        <models:DisplayModeConverter x:Key="DisplayModeConverter" />
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -27,7 +23,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <views:NavBarView Grid.Row="0" IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}" />
+        <views:NavBarView Grid.Row="0" IsVisible="{Binding !IsMobile}" />
 
         <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
             <reactiveUi:RoutedViewHost.ViewLocator>
@@ -35,6 +31,6 @@
             </reactiveUi:RoutedViewHost.ViewLocator>
         </reactiveUi:RoutedViewHost>
 
-        <views:MobileNavBarView Grid.Row="2" IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Mobile}" />
+        <views:MobileNavBarView Grid.Row="2" IsVisible="{Binding IsMobile}" />
     </Grid>
 </UserControl>

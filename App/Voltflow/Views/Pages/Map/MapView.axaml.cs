@@ -1,8 +1,5 @@
-﻿using Avalonia;
-using Avalonia.ReactiveUI;
+﻿using Avalonia.ReactiveUI;
 using System;
-using System.Reactive;
-using Voltflow.Models;
 using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.Views.Pages.Map;
@@ -22,14 +19,6 @@ public partial class MapView : ReactiveUserControl<MapViewModel>
         */
 		DataContextChanged += TestView_DataContextChanged;
 		MapControl.Tapped += MapControl_Tapped;
-
-		// X = set amount of pixels in Display.cs.
-		// Checks viewport width. If it's less than or equal X, set CurrentDisplayMode to Mobile - THIS WILL HIDE SOME ELEMENTS IN THE ADMIN PANEL!
-		this.GetObservable(BoundsProperty).Subscribe(Observer.Create<Rect>(bounds =>
-		{
-			if (DataContext is not MapViewModel viewModel) return;
-			viewModel.CurrentDisplayMode = bounds.Width > Display.MaxMobileWidth ? DisplayMode.Desktop : DisplayMode.Mobile;
-		}));
 	}
 
 	private void MapControl_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
