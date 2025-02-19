@@ -19,13 +19,15 @@ public partial class AccountView : ReactiveUserControl<AccountViewModel>
 	protected async override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 	{
 		base.OnAttachedToVisualTree(e);
+
+		if (DataContext is not AccountViewModel viewModel)
+			return;
+
 		var topLevel = TopLevel.GetTopLevel(this);
-		if (DataContext is AccountViewModel viewModel)
-		{
-			viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
-			var token = await Preferences.GetAsync<string>("token", null);
-			viewModel.CurrentAuthType = token == null ? AuthType.SignIn : AuthType.SignedIn;
-		}
+		viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
+
+		var token = await Preferences.GetAsync<string>("token", null);
+		viewModel.CurrentAuthType = token == null ? AuthType.SignIn : AuthType.SignedIn;
 	}
 
 	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
