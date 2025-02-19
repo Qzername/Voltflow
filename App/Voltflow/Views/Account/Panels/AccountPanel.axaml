@@ -30,7 +30,7 @@
         <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Cash" />
-                <TextBlock VerticalAlignment="Center" Text="Scraps" />
+                <TextBlock VerticalAlignment="Center" Text="Discounts" />
             </StackPanel>
         </Button>
 
