@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
+using Avalonia.SimplePreferences;
 using Ursa.Controls;
+using Voltflow.Models;
 using Voltflow.ViewModels.Account;
 
 namespace Voltflow.Views.Account;
@@ -14,12 +16,16 @@ public partial class AccountView : ReactiveUserControl<AccountViewModel>
 	}
 
 	// https://github.com/irihitech/Ursa.Avalonia/blob/main/demo/Ursa.Demo/Pages/ToastDemo.axaml.cs
-	protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+	protected async override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 	{
 		base.OnAttachedToVisualTree(e);
 		var topLevel = TopLevel.GetTopLevel(this);
 		if (DataContext is AccountViewModel viewModel)
+		{
 			viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
+			var token = await Preferences.GetAsync<string>("token", null);
+			viewModel.CurrentAuthType = token == null ? AuthType.SignIn : AuthType.SignedIn;
+		}
 	}
 
 	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)

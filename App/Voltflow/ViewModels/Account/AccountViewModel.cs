@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using System.Diagnostics;
+using Avalonia.Controls.Notifications;
 using Newtonsoft.Json.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Avalonia.SimplePreferences;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Models.Forms;
@@ -19,26 +21,26 @@ namespace Voltflow.ViewModels.Account;
 /// <param name="screen"></param>
 public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 {
-    [Reactive] public AuthType CurrentAuthType { get; set; } = Settings.GetToken() == null ? AuthType.SignIn : AuthType.SignedIn;
-    public WindowToastManager? ToastManager { get; set; }
+	public WindowToastManager? ToastManager;
+	[Reactive] public AuthType CurrentAuthType { get; set; }
 
-    // Forms
-    public SignInForm SignInForm { get; set; } = new();
+	// Forms
+	public SignInForm SignInForm { get; set; } = new();
     public SignUpForm SignUpForm { get; set; } = new();
     public TwoFactorAuthForm TwoFactorAuthForm { get; set; } = new();
     public PasswordResetForm PasswordResetForm { get; set; } = new();
     public EmailVerificationForm EmailVerificationForm { get; set; } = new();
 
     // Commands
-    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(screen));
+    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
     public void NavigateBack() => CurrentAuthType = AuthType.SignIn;
     public void SwitchSignForms() => CurrentAuthType = CurrentAuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
     public void SwitchToPasswordReset() => CurrentAuthType = AuthType.PasswordReset;
 
-    /// <summary>
-    /// Sends a request which verifies the email.
-    /// </summary>
-    public async Task VerifyEmail()
+	/// <summary>
+	/// Sends a request which verifies the email.
+	/// </summary>
+	public async Task VerifyEmail()
     {
         EmailVerificationForm.Working = true;
         HttpClient client = GetService<HttpClient>();
@@ -199,7 +201,7 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
             else if (response.ContainsKey("token"))
             {
                 CurrentAuthType = AuthType.SignedIn;
-                Settings.SetToken((string?)response["token"]);
+                await Preferences.SetAsync("token", (string?)response["token"]);
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
                 SignInForm.Reset();
                 NavigateHome();
@@ -269,10 +271,10 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
         SignUpForm.Working = false;
     }
 
-    public void SignOut()
+    public async Task SignOut()
     {
-        Settings.SetToken(null);
-        CurrentAuthType = AuthType.SignIn;
+		await Preferences.SetAsync<string?>("token", null);
+		CurrentAuthType = AuthType.SignIn;
     }
 
 	/// <summary>
@@ -310,8 +312,8 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
             if (response.ContainsKey("token"))
             {
                 CurrentAuthType = AuthType.SignedIn;
-                Settings.SetToken((string?)response["token"]);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
+                await Preferences.SetAsync("token", (string?)response["token"]);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
                 TwoFactorAuthForm.Reset();
                 NavigateHome();
             }

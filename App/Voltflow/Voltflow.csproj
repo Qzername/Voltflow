@@ -36,6 +36,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Quick.AvaloniaFonts.Roboto" Version="1.0.0" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageReference Include="Sandreas.Avalonia.SimplePreferences" Version="0.0.4" />
     <PackageReference Include="Semi.Avalonia" Version="11.2.1.4" />
     <PackageReference Include="Semi.Avalonia.ColorPicker" Version="11.2.1.4" />
     <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.4" />
