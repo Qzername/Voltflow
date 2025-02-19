@@ -89,15 +89,15 @@ public class CarsController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteCar([FromBody] DeleteCarModel model)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCar(int id)
     {
         var user = _userManager.GetUserAsync(User).Result;
 
         if (user is null)
             return BadRequest();
 
-        var car = _applicationContext.Cars.Single(x => x.Id == model.Id);
+        var car = _applicationContext.Cars.Single(x => x.Id == id);
 
         if (car is null)
             return BadRequest(new { CarExist = false });
