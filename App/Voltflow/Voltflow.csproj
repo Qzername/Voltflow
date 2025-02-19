@@ -43,6 +43,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaXaml Update="Views\MobileNavBarView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Views\Account\AccountView.axaml.cs">
       <DependentUpon>AccountView.axaml</DependentUpon>
     </Compile>
@@ -63,6 +69,10 @@
     </Compile>
     <Compile Update="Views\Account\Panels\TwoFactorAuthPanel.axaml.cs">
       <DependentUpon>TwoFactorAuthPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MobileNavBarView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MobileNavBarView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\NavBarView.axaml.cs">
       <DependentUpon>NavBarView.axaml</DependentUpon>

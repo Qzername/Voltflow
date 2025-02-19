@@ -269,10 +269,16 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
         SignUpForm.Working = false;
     }
 
-    /// <summary>
-    /// Sends a request which verifies 2FA.
-    /// </summary>
-    public async Task VerifyTwoFactorAuth()
+    public void SignOut()
+    {
+        Settings.SetToken(null);
+        CurrentAuthType = AuthType.SignIn;
+    }
+
+	/// <summary>
+	/// Sends a request which verifies 2FA.
+	/// </summary>
+	public async Task VerifyTwoFactorAuth()
     {
         bool codeValid = NumberValidator.IsValid(TwoFactorAuthForm.Token, 6);
         if (!codeValid)

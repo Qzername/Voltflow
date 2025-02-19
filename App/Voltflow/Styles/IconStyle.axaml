@@ -7,18 +7,25 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="IconForegroundDisabled" Color="#b0b0b3" />
                     <SolidColorBrush x:Key="IconForegroundGray" Color="DimGray" />
                     <SolidColorBrush x:Key="IconForegroundGrayDisabled" Color="LightGray" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="IconForegroundDisabled" Color="#656568" />
                     <SolidColorBrush x:Key="IconForegroundGray" Color="LightGray" />
                     <SolidColorBrush x:Key="IconForegroundGrayDisabled" Color="DimGray" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
+
+    <!--  Default disabled icon  -->
+    <Style Selector="iconPacks|PackIconBootstrapIcons:disabled">
+        <Setter Property="Foreground" Value="{DynamicResource IconForegroundDisabled}" />
+    </Style>
 
     <!--  Gray icon  -->
     <Style Selector="iconPacks|PackIconBootstrapIcons.color-gray">

@@ -29,5 +29,16 @@
                 <TextBlock VerticalAlignment="Center" Text="Go Back" />
             </StackPanel>
         </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Classes="Danger"
+            Command="{Binding SignOut}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
+                <TextBlock VerticalAlignment="Center" Text="Sign Out" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>

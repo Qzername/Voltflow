@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="Voltflow.Views.MobileNavBarView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <StackPanel
+            Margin="12"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="72"
+                Padding="8"
+                Command="{Binding NavigateToMapView}">
+                <StackPanel Classes="sm-spacing">
+                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="GeoAltFill" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="weight-bold size-sm"
+                        Text="Map" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Width="72"
+                Padding="8"
+                Command="{Binding NavigateToAccountView}">
+                <StackPanel Classes="sm-spacing">
+                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="PeopleFill" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="weight-bold size-sm"
+                        Text="Account" />
+                </StackPanel>
+            </Button>
+
+
+            <Button
+                Width="72"
+                Padding="8"
+                IsEnabled="False">
+                <StackPanel Classes="sm-spacing">
+                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="GearFill" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="weight-bold size-sm"
+                        Text="Settings" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Panel>
+</UserControl>

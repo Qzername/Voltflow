@@ -1,5 +1,9 @@
-﻿using ReactiveUI;
+﻿using System;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Reactive;
+using Avalonia.Controls;
+using Voltflow.Models;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
@@ -14,6 +18,8 @@ public class MainViewModel : ReactiveObject, IScreen
 	public RoutingState Router { get; } = new();
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
 
+	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
+
 	/// <summary>
 	/// Constructor for MainViewModel.
 	/// When constructed, the router navigates to TestView by default.
@@ -23,18 +29,30 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new MapViewModel(this));
 	}
 
-	/// <summary>
-	/// Currently, NavBar only has a "Sign In" button that navigates to AccountView.
-	/// If user is already in AccountView, don't navigate again.
-	/// </summary>
+	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
+
+	public void NavigateToMapView()
+	{
+		if (GetCurrentViewModel() == typeof(MapViewModel))
+			return;
+
+		Router.Navigate.Execute(new MapViewModel(this));
+	}
+
 	public void NavigateToAccountView()
 	{
-		if (Router.GetCurrentViewModel()?.GetType() != typeof(AccountViewModel)) Router.Navigate.Execute(new AccountViewModel(this));
+		if (GetCurrentViewModel() == typeof(AccountViewModel))
+			return;
+		
+		Router.Navigate.Execute(new AccountViewModel(this));
 	}
 
 	public void NavigateToTestCharging()
 	{
-        if (Router.GetCurrentViewModel()?.GetType() != typeof(ChargingViewModel)) Router.Navigate.Execute(new ChargingViewModel(this));
-    }
+		if (GetCurrentViewModel() == typeof(ChargingViewModel))
+			return;
+
+	    Router.Navigate.Execute(new ChargingViewModel(this));
+	}
 }
 

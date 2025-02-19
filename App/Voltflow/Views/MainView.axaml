@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Voltflow.Models"
     xmlns:reactiveUi="http://reactiveui.net"
     xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
     xmlns:viewModels="clr-namespace:Voltflow.ViewModels"
@@ -15,18 +16,25 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <models:DisplayModeConverter x:Key="DisplayModeConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <views:NavBarView Grid.Row="0" />
+        <views:NavBarView Grid.Row="0" IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Desktop}" />
 
         <reactiveUi:RoutedViewHost Grid.Row="1" Router="{Binding Router}">
             <reactiveUi:RoutedViewHost.ViewLocator>
                 <viewLocators:ReactiveViewLocator />
             </reactiveUi:RoutedViewHost.ViewLocator>
         </reactiveUi:RoutedViewHost>
+
+        <views:MobileNavBarView Grid.Row="2" IsVisible="{Binding CurrentDisplayMode, Converter={StaticResource DisplayModeConverter}, ConverterParameter=Mobile}" />
     </Grid>
 </UserControl>

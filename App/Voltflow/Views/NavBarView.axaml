@@ -16,7 +16,7 @@
     <Panel>
         <!--  Left side  -->
         <StackPanel
-            Margin="8"
+            Margin="16,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
@@ -29,9 +29,9 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-			<Button Command="{Binding NavigateToTestCharging}">
-				Test charging page
-			</Button>
+            <Button Command="{Binding NavigateToTestCharging}">
+                Test charging page
+            </Button>
             <Button Command="{Binding NavigateToAccountView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
