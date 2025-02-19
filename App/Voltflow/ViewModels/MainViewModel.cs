@@ -1,6 +1,11 @@
-﻿using ReactiveUI;
+﻿using Avalonia.SimplePreferences;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using RTools_NTS.Util;
+using Splat;
 using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Charging;
@@ -25,8 +30,15 @@ public class MainViewModel : ReactiveObject, IScreen
 	/// When constructed, the router navigates to MapView (if on Desktop/Browser) or AccountView (if on Mobile).
 	/// </summary>
 	public MainViewModel()
-	{
-		if (IsMobile)
+    {
+		//setup httpClient
+		var token = Preferences.Get<string?>("token", null);
+
+		if(token is not null)
+            Locator.Current.GetService<HttpClient>()!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        //setup views
+        if (IsMobile)
 			Router.Navigate.Execute(new AccountViewModel(this));
 		else
 			Router.Navigate.Execute(new MapViewModel(this));
