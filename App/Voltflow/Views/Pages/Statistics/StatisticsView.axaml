@@ -1,0 +1,52 @@
+<UserControl
+    x:Class="Voltflow.Views.Pages.Statistics.StatisticsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statistics="clr-namespace:Voltflow.ViewModels.Pages.Statistics"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <statistics:StatisticsViewModel />
+    </Design.DataContext>
+
+    <StackPanel
+        MaxWidth="256"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center">
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="QuestionCircleFill" />
+                <TextBlock VerticalAlignment="Center" Text="Statistics" />
+            </StackPanel>
+        </Button>
+
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="FlagFill" />
+                <TextBlock VerticalAlignment="Center" Text="Generate Report" />
+            </StackPanel>
+        </Button>
+
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Cash" />
+                <TextBlock VerticalAlignment="Center" Text="Transaction History" />
+            </StackPanel>
+        </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding NavigateHome}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
+                <TextBlock VerticalAlignment="Center" Text="Go Back" />
+            </StackPanel>
+        </Button>
+
+    </StackPanel>
+</UserControl>
