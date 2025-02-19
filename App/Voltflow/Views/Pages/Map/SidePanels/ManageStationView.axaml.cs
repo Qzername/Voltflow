@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Map.SidePanels;
 
 public partial class ManageStationView : ReactiveUserControl<ManageStationViewModel>
 {
-    public ManageStationView()
-    {
-        InitializeComponent();
-    }
+	public ManageStationView()
+	{
+		InitializeComponent();
+	}
 }

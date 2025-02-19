@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Charging;
 
 public partial class ChargingView : ReactiveUserControl<ChargingViewModel>
 {
-    public ChargingView()
-    {
-        InitializeComponent();
-    }
+	public ChargingView()
+	{
+		InitializeComponent();
+	}
 }

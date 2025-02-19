@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:charging="clr-namespace:Voltflow.ViewModels.Pages.Charging"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -12,8 +13,28 @@
         <charging:ChargingViewModel />
     </Design.DataContext>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Command="{Binding Start}">Test Webhook</Button>
-        <Button Command="{Binding NavigateHome}">Go Back</Button>
+    <StackPanel
+        Width="256"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding Start}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Question" />
+                <TextBlock VerticalAlignment="Center" Text="Test Webhook" />
+            </StackPanel>
+        </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding NavigateHome}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
+                <TextBlock VerticalAlignment="Center" Text="Go Back" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>

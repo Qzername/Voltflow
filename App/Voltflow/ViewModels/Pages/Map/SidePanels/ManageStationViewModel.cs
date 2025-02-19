@@ -11,166 +11,166 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels
 {
-    public class ManageStationViewModel : MapSidePanelBase
-    {
-        // Dependency injection
-        private readonly HttpClient _client;
+	public class ManageStationViewModel : MapSidePanelBase
+	{
+		// Dependency injection
+		private readonly HttpClient _client;
 
-        // Data for view
-        [Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space to start.";
-        [Reactive] public double Longitude { get; set; }
-        [Reactive] public double Latitude { get; set; }
-        [Reactive] public int Cost { get; set; }
-        [Reactive] public int MaxChargeRate { get; set; }
-        
-        bool _isOutOfService;
-        public bool IsOutOfService
-        {
-            get => _isOutOfService;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _isOutOfService, value);
-                _isOutOfService = value;
+		// Data for view
+		[Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space to start.";
+		[Reactive] public double Longitude { get; set; }
+		[Reactive] public double Latitude { get; set; }
+		[Reactive] public int Cost { get; set; }
+		[Reactive] public int MaxChargeRate { get; set; }
 
-                // station cannot be in service when its not out of service
-                if(_isOutOfService == false)
-                {
-                    _isInServiceMode = false;
-                    this.RaisePropertyChanged(nameof(IsInServiceMode));
-                }
+		bool _isOutOfService;
+		public bool IsOutOfService
+		{
+			get => _isOutOfService;
+			set
+			{
+				this.RaiseAndSetIfChanged(ref _isOutOfService, value);
+				_isOutOfService = value;
 
-                _ = UpdateStationStatus();
-            }
-        }
+				// station cannot be in service when its not out of service
+				if (_isOutOfService == false)
+				{
+					_isInServiceMode = false;
+					this.RaisePropertyChanged(nameof(IsInServiceMode));
+				}
 
-        bool _isInServiceMode;
-        public bool IsInServiceMode
-        {
-            get => _isInServiceMode;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _isInServiceMode, value);
-                _isInServiceMode = value;
+				_ = UpdateStationStatus();
+			}
+		}
 
-                _ = UpdateStationStatus();
-            }
-        }
-        ChargingStation? _current;
-        PointFeature? _selectedNewPoint;
+		bool _isInServiceMode;
+		public bool IsInServiceMode
+		{
+			get => _isInServiceMode;
+			set
+			{
+				this.RaiseAndSetIfChanged(ref _isInServiceMode, value);
+				_isInServiceMode = value;
 
-        public ManageStationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
-        {
-            _client = GetService<HttpClient>();
-        }
+				_ = UpdateStationStatus();
+			}
+		}
+		ChargingStation? _current;
+		PointFeature? _selectedNewPoint;
 
-        public override void MapClicked(MapInfoEventArgs e)
-        {
-            var point = (PointFeature?)e.MapInfo.Feature;
+		public ManageStationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
+		{
+			_client = GetService<HttpClient>();
+		}
 
-            if (point?["data"] is null)
-            {
-                ViewTitle = "New point";
-                NewPointMode(e.MapInfo.WorldPosition!);
-            }
-            else
-            {
-                var data = (ChargingStation)point["data"]!;
+		public override void MapClicked(MapInfoEventArgs e)
+		{
+			var point = (PointFeature?)e.MapInfo.Feature;
 
-                ViewTitle = $"Existing point (ID: {data.Id})";
-                ExistingPointMode(point);
-            }
-        }
+			if (point?["data"] is null)
+			{
+				ViewTitle = "New point";
+				NewPointMode(e.MapInfo.WorldPosition!);
+			}
+			else
+			{
+				var data = (ChargingStation)point["data"]!;
 
-        private void NewPointMode(MPoint worldPosition)
-        {
-            _current = null;
+				ViewTitle = $"Existing point (ID: {data.Id})";
+				ExistingPointMode(point);
+			}
+		}
 
-            if (_selectedNewPoint is null)
-            {
-                _selectedNewPoint = new PointFeature(worldPosition);
-                ((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);
-            }
+		private void NewPointMode(MPoint worldPosition)
+		{
+			_current = null;
 
-            _selectedNewPoint.Point.X = worldPosition.X;
-            _selectedNewPoint.Point.Y = worldPosition.Y;
+			if (_selectedNewPoint is null)
+			{
+				_selectedNewPoint = new PointFeature(worldPosition);
+				((List<IFeature>)_pointsLayer.Features).Add(_selectedNewPoint);
+			}
 
-            var lonLat = SphericalMercator.ToLonLat(_selectedNewPoint.Point);
+			_selectedNewPoint.Point.X = worldPosition.X;
+			_selectedNewPoint.Point.Y = worldPosition.Y;
 
-            Longitude = lonLat.X;
-            Latitude = lonLat.Y;
-        }
+			var lonLat = SphericalMercator.ToLonLat(_selectedNewPoint.Point);
 
-        private void ExistingPointMode(PointFeature feature)
-        {
-            if (_selectedNewPoint != null)
-            {
-                ((List<IFeature>)_pointsLayer.Features).Remove(_selectedNewPoint);
-                _selectedNewPoint = null!;
-            }
+			Longitude = lonLat.X;
+			Latitude = lonLat.Y;
+		}
 
-            var data = (ChargingStation)feature["data"]!;
+		private void ExistingPointMode(PointFeature feature)
+		{
+			if (_selectedNewPoint != null)
+			{
+				((List<IFeature>)_pointsLayer.Features).Remove(_selectedNewPoint);
+				_selectedNewPoint = null!;
+			}
 
-            Longitude = data.Longitude;
-            Latitude = data.Latitude;
+			var data = (ChargingStation)feature["data"]!;
 
-            Cost = data.Cost;
-            MaxChargeRate = data.MaxChargeRate;
+			Longitude = data.Longitude;
+			Latitude = data.Latitude;
 
-            //update values, dont send updates to server
-            _isOutOfService = data.Status == ChargingStationStatus.OutOfOrder;
-            _isInServiceMode = data.ServiceMode;
-            this.RaisePropertyChanged(nameof(IsOutOfService));
-            this.RaisePropertyChanged(nameof(IsInServiceMode));
+			Cost = data.Cost;
+			MaxChargeRate = data.MaxChargeRate;
 
-            _current = data;
-        }
+			//update values, dont send updates to server
+			_isOutOfService = data.Status == ChargingStationStatus.OutOfOrder;
+			_isInServiceMode = data.ServiceMode;
+			this.RaisePropertyChanged(nameof(IsOutOfService));
+			this.RaisePropertyChanged(nameof(IsInServiceMode));
 
-        // -------------------- For View --------------------
+			_current = data;
+		}
 
-        public async Task CreateStation()
-        {
-            StringContent content = JsonConverter.ToStringContent(new
-            {
-                Longitude,
-                Latitude,
-                Cost,
-                MaxChargeRate
-            });
+		// -------------------- For View --------------------
 
-            var result = await _client.PostAsync("/api/ChargingStations", content);
-            Debug.WriteLine(result.StatusCode);
-        }
+		public async Task CreateStation()
+		{
+			StringContent content = JsonConverter.ToStringContent(new
+			{
+				Longitude,
+				Latitude,
+				Cost,
+				MaxChargeRate
+			});
 
-        public async Task UpdateStation()
-        {
-            StringContent content = JsonConverter.ToStringContent(new ChargingStation()
-            {
-                Id = _current!.Value.Id,
-                Longitude = Longitude,
-                Latitude = Latitude,
-                Cost = Cost,
-                MaxChargeRate = MaxChargeRate
-            });
-            var result = await _client.PatchAsync("/api/ChargingStations", content);
-            Debug.WriteLine(result.StatusCode);
-        }
+			var result = await _client.PostAsync("/api/ChargingStations", content);
+			Debug.WriteLine(result.StatusCode);
+		}
 
-        public async Task UpdateStationStatus()
-        {
-            StringContent content = JsonConverter.ToStringContent(new
-            {
-                Id = _current!.Value.Id,
-                Status = IsOutOfService ? ChargingStationStatus.OutOfOrder : ChargingStationStatus.Available,
-                ServiceMode = IsInServiceMode
-            });
-            var result = await _client.PatchAsync("/api/ChargingStations/", content);
-            Debug.WriteLine(result.StatusCode);
-        }
+		public async Task UpdateStation()
+		{
+			StringContent content = JsonConverter.ToStringContent(new ChargingStation()
+			{
+				Id = _current!.Value.Id,
+				Longitude = Longitude,
+				Latitude = Latitude,
+				Cost = Cost,
+				MaxChargeRate = MaxChargeRate
+			});
+			var result = await _client.PatchAsync("/api/ChargingStations", content);
+			Debug.WriteLine(result.StatusCode);
+		}
 
-        public async Task DeleteStation()
-        {
-            var result = await _client.DeleteAsync("/api/ChargingStations/" + _current!.Value.Id);
-            Debug.WriteLine(result.StatusCode);
-        }
-    }
+		public async Task UpdateStationStatus()
+		{
+			StringContent content = JsonConverter.ToStringContent(new
+			{
+				Id = _current!.Value.Id,
+				Status = IsOutOfService ? ChargingStationStatus.OutOfOrder : ChargingStationStatus.Available,
+				ServiceMode = IsInServiceMode
+			});
+			var result = await _client.PatchAsync("/api/ChargingStations/", content);
+			Debug.WriteLine(result.StatusCode);
+		}
+
+		public async Task DeleteStation()
+		{
+			var result = await _client.DeleteAsync("/api/ChargingStations/" + _current!.Value.Id);
+			Debug.WriteLine(result.StatusCode);
+		}
+	}
 }

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Voltflow.Controls;

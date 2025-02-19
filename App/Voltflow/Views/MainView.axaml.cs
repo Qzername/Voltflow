@@ -1,9 +1,8 @@
-using System.Reactive;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using System.Reactive;
 using Voltflow.Models;
 using Voltflow.ViewModels;
-using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.Views;
 

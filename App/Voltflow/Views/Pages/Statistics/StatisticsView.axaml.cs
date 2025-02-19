@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Statistics;
 
 public partial class StatisticsView : ReactiveUserControl<StatisticsViewModel>
 {
-    public StatisticsView()
-    {
-        InitializeComponent();
-    }
+	public StatisticsView()
+	{
+		InitializeComponent();
+	}
 }

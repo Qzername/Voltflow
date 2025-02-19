@@ -75,37 +75,16 @@
 
         <Separator />
 
-        <!--  Buttons  -->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Command="{Binding NavigateHome}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
-                    <TextBlock VerticalAlignment="Center" Text="Go Back" />
-                </StackPanel>
-            </Button>
-
-            <Button
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Classes="Success"
-                Command="{Binding SignIn}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
-                    <TextBlock VerticalAlignment="Center" Text="Sign In" />
-                </StackPanel>
-            </Button>
-        </Grid>
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Classes="Success"
+            Command="{Binding SignIn}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
+                <TextBlock VerticalAlignment="Center" Text="Sign In" />
+            </StackPanel>
+        </Button>
 
         <!--  Hyperlink which hides this form and shows SignUp form.  -->
         <StackPanel

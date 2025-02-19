@@ -13,14 +13,14 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <Panel>
+    <Panel IsVisible="{Binding Authenticated}">
         <StackPanel
             Margin="12"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Button
-                Width="72"
+                Width="96"
                 Padding="8"
                 Command="{Binding NavigateToMapView}">
                 <StackPanel Classes="sm-spacing">
@@ -33,7 +33,20 @@
             </Button>
 
             <Button
-                Width="72"
+                Width="96"
+                Padding="8"
+                Command="{Binding NavigateToStatisticsView}">
+                <StackPanel Classes="sm-spacing">
+                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="LightningChargeFill" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="weight-bold size-sm"
+                        Text="Statistics" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Width="96"
                 Padding="8"
                 Command="{Binding NavigateToAccountView}">
                 <StackPanel Classes="sm-spacing">
@@ -42,20 +55,6 @@
                         HorizontalAlignment="Center"
                         Classes="weight-bold size-sm"
                         Text="Account" />
-                </StackPanel>
-            </Button>
-
-
-            <Button
-                Width="72"
-                Padding="8"
-                IsEnabled="False">
-                <StackPanel Classes="sm-spacing">
-                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="GearFill" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Classes="weight-bold size-sm"
-                        Text="Settings" />
                 </StackPanel>
             </Button>
         </StackPanel>

@@ -1,12 +1,12 @@
-﻿using System;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Reactive;
-using Avalonia.Controls;
 using Voltflow.Models;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
+using Voltflow.ViewModels.Pages.Statistics;
 
 namespace Voltflow.ViewModels;
 
@@ -19,14 +19,19 @@ public class MainViewModel : ReactiveObject, IScreen
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
 
 	[Reactive] public DisplayMode CurrentDisplayMode { get; set; } = DisplayMode.Mobile;
+	[Reactive] public bool Authenticated { get; set; }
 
 	/// <summary>
 	/// Constructor for MainViewModel.
-	/// When constructed, the router navigates to TestView by default.
+	/// When constructed, the router navigates to MapView (if on Desktop/Browser) or AccountView (if on Mobile).
 	/// </summary>
 	public MainViewModel()
 	{
-		Router.Navigate.Execute(new MapViewModel(this));
+		bool isMobile = OperatingSystem.IsAndroid();
+		if (isMobile)
+			Router.Navigate.Execute(new AccountViewModel(this));
+		else
+			Router.Navigate.Execute(new MapViewModel(this));
 	}
 
 	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
@@ -43,16 +48,24 @@ public class MainViewModel : ReactiveObject, IScreen
 	{
 		if (GetCurrentViewModel() == typeof(AccountViewModel))
 			return;
-		
+
 		Router.Navigate.Execute(new AccountViewModel(this));
 	}
 
-	public void NavigateToTestCharging()
+	public void NavigateToChargeView()
 	{
 		if (GetCurrentViewModel() == typeof(ChargingViewModel))
 			return;
 
-	    Router.Navigate.Execute(new ChargingViewModel(this));
+		Router.Navigate.Execute(new ChargingViewModel(this));
+	}
+
+	public void NavigateToStatisticsView()
+	{
+		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
+			return;
+
+		Router.Navigate.Execute(new StatisticsViewModel(this));
 	}
 }
 

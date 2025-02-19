@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Map.SidePanels;
 
 public partial class StationInformationView : ReactiveUserControl<StationInformationViewModel>
 {
-    public StationInformationView()
-    {
-        InitializeComponent();
-    }
+	public StationInformationView()
+	{
+		InitializeComponent();
+	}
 }

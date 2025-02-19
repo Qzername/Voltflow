@@ -19,13 +19,13 @@ public class ReactiveViewLocator : IViewLocator
 
 		var type = Type.GetType(name);
 
-		if(type is null)
-            throw new Exception($"Did not found view with name {name}\nIs the view in correct namespace?");
+		if (type is null)
+			throw new Exception($"Did not found view with name {name}\nIs the view in correct namespace?");
 
 		//!!!write more detailed exception message when you encounter this error!!!
-		if(Activator.CreateInstance(type) is null)
-            throw new Exception($"View not found for {viewModel.GetType().FullName}");
+		if (Activator.CreateInstance(type) is null)
+			throw new Exception($"View not found for {viewModel.GetType().FullName}");
 
-        return (IViewFor)Activator.CreateInstance(type)!;
+		return (IViewFor)Activator.CreateInstance(type)!;
 	}
 }

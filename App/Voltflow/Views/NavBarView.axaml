@@ -16,11 +16,16 @@
     <Panel>
         <!--  Left side  -->
         <StackPanel
-            Margin="16,0"
+            Margin="8"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <TextBlock Classes="size-l weight-bold" Text="Voltflow" />
+            <Button Command="{Binding NavigateToMapView}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+                    <TextBlock VerticalAlignment="Center" Text="Home" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!--  Right side  -->
@@ -29,9 +34,20 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <Button Command="{Binding NavigateToTestCharging}">
-                Test charging page
+            <Button Command="{Binding NavigateToChargeView}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+                    <TextBlock VerticalAlignment="Center" Text="Charge" />
+                </StackPanel>
             </Button>
+
+            <Button Command="{Binding NavigateToStatisticsView}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+                    <TextBlock VerticalAlignment="Center" Text="Statistics" />
+                </StackPanel>
+            </Button>
+
             <Button Command="{Binding NavigateToAccountView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
@@ -40,5 +56,4 @@
             </Button>
         </StackPanel>
     </Panel>
-
 </UserControl>

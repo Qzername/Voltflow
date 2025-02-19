@@ -11,7 +11,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 /// </summary>
 public abstract class MapSidePanelBase(MemoryLayer layer, IScreen screen) : ViewModelBase(screen)
 {
-    protected MemoryLayer _pointsLayer = layer;
+	protected MemoryLayer _pointsLayer = layer;
 
 	public abstract void MapClicked(MapInfoEventArgs e);
 }
