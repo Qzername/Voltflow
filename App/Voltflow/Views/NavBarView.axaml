@@ -34,6 +34,13 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
+			<Button Command="{Binding NavigateToCarsView}">
+				<StackPanel Orientation="Horizontal">
+					<iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+					<TextBlock VerticalAlignment="Center" Text="Cars" />
+				</StackPanel>
+			</Button>
+			
             <Button Command="{Binding NavigateToChargeView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />

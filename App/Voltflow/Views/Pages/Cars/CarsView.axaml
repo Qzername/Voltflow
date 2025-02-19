@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Voltflow.Views.Pages.Cars.CarsView">
+	<Panel>
+		<ItemsControl ItemsSource="{Binding cars}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+
+					<StackPanel Background="Black" Margin="10">
+						<TextBlock Text="{Binding Name}"/>
+						<Button Content="settings" Command="{Binding $parent[ItemsControl].DataContext.NavigateToCarDetails}" CommandParameter="{Binding}"/>
+					</StackPanel>
+
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+		
+		<Button
+			Width="48"
+			Height="48"
+			Margin="16"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom"
+			CornerRadius="8"
+			Content="+"
+			Command="{Binding NavigateToCreateCar}"/>
+	</Panel>
+	
+</UserControl>

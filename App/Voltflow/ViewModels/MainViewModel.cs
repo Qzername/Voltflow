@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
+using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
 using Voltflow.ViewModels.Pages.Statistics;
@@ -45,6 +46,14 @@ public class MainViewModel : ReactiveObject, IScreen
 	}
 
 	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
+
+	public void NavigateToCarsView()
+	{
+        if (GetCurrentViewModel() == typeof(CarsViewModel))
+            return;
+
+        Router.Navigate.Execute(new CarsViewModel(this));
+    }
 
 	public void NavigateToMapView()
 	{

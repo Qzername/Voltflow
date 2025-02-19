@@ -15,7 +15,6 @@ public class ReactiveViewLocator : IViewLocator
 	IViewFor IViewLocator.ResolveView<T>(T viewModel, string contract)
 	{
 		var name = viewModel!.GetType().FullName!.Replace("ViewModel", "View");
-		Debug.WriteLine(name);
 
 		var type = Type.GetType(name);
 

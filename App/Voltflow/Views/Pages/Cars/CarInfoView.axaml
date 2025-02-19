@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Voltflow.Views.Pages.Cars.CarInfoView">
+	<StackPanel>
+		<TextBlock Text="{Binding Name}"/>
+		<TextBox Text="{Binding BatteryCapacity}" Watermark="battery capacity"/>
+		<TextBox Text="{Binding ChargingRate}" Watermark="max charge rate"/>
+		<Button Content="Update"/>
+		<Button Content="Delete"/>
+		<Button Content="Go back"/>
+	</StackPanel>
+</UserControl>
