@@ -8,6 +8,6 @@ public class Transaction
     public int ChargingStationId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int EnergyConsumed { get; set; }
-    public int Cost { get; set; }
+    public double EnergyConsumed { get; set; }
+    public double Cost { get; set; }
 }

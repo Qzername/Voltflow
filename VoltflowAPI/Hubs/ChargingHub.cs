@@ -26,13 +26,30 @@ public class ChargingHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        var httpContext = Context.GetHttpContext();
-        var stationId = httpContext.Request.Query["stationId"].ToString();
-
-        var station = _applicationContext.ChargingStations.Find(Convert.ToInt32(stationId));
-
         Console.WriteLine("Connection started");
 
+        var httpContext = Context.GetHttpContext();
+
+        if (httpContext is null ||
+            !httpContext.Request.Query.ContainsKey("stationId") ||
+            !httpContext.Request.Query.ContainsKey("carId"))
+        {
+            await Clients.Caller.SendAsync("Error", "Invalid request");
+            Context.Abort();
+        }
+
+        var stationId = httpContext!.Request.Query["stationId"].ToString();
+        var carIdString = httpContext.Request.Query["carId"].ToString();
+        int carId = 0;
+
+        if(!int.TryParse(carIdString, out carId))
+        {
+            await Clients.Caller.SendAsync("Error", "Invalid request");
+            Context.Abort();
+        }
+
+        var station = _applicationContext.ChargingStations.Find(Convert.ToInt32(stationId));
+        
         if (station is null)
         {
             await Clients.Caller.SendAsync("Error", "Station not found");
@@ -55,7 +72,8 @@ public class ChargingHub : Hub
         _connections[Context.ConnectionId] = new ChargingInfo()
         {
             StartDate = utcNow,
-            StationId = station.Id
+            StationId = station.Id,
+            CarId = carId
         };
 
         Console.WriteLine("Charging started");
@@ -83,21 +101,29 @@ public class ChargingHub : Hub
         //remove connection
         _connections.TryRemove(Context.ConnectionId, out _);
 
+        //get car
+        var car = _applicationContext.Cars.Find(connInfo.CarId);
+
+        //calculactions
+        var chargingRate = station.MaxChargeRate > car.ChargingRate ? car.ChargingRate : station.MaxChargeRate;
+        var energyConsumed = chargingRate * timePassed.TotalSeconds / 1000;
+        var totalCost = energyConsumed * station.Cost;
+
         //register transaction
         Transaction transaction = new()
         {
             AccountId = user.Id,
-            CarId = 1,
+            CarId = connInfo.CarId,
             ChargingStationId = connInfo.StationId,
             StartDate = connInfo.StartDate,
             EndDate = endTime,
-            EnergyConsumed = 100,
-            Cost = 100
+            EnergyConsumed = energyConsumed,
+            Cost = totalCost
         };
 
         _applicationContext.Transactions.Add(transaction);
         await _applicationContext.SaveChangesAsync();
 
-        Console.WriteLine(timePassed);
+        Console.WriteLine(timePassed.ToString("hh\\:mm\\:ss"));
     }
 }
