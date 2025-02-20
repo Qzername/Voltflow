@@ -3,6 +3,7 @@ using Mapsui.Layers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Voltflow.Models;
+using Voltflow.ViewModels.Pages.Charging;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 
@@ -14,6 +15,8 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }
 
+	ChargingStation data;
+
 	public override void MapClicked(MapInfoEventArgs e)
 	{
 		var point = (PointFeature?)e.MapInfo?.Feature;
@@ -21,7 +24,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 		if (point is null || point["data"] is null)
 			return;
 
-		var data = (ChargingStation)point["data"]!;
+		data = (ChargingStation)point["data"]!;
 
 		Selected = true;
 		ViewTitle = $"Existing point (ID: {data.Id})";
@@ -32,6 +35,6 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 
 	public void Charge()
 	{
-
-	}
+        HostScreen.Router.Navigate.Execute(new ChargingViewModel(data, HostScreen));
+    }
 }

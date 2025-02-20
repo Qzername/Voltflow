@@ -1,6 +1,6 @@
 ﻿namespace Voltflow.Models;
 
-internal struct ChargingStation
+public struct ChargingStation
 {
 	public int Id { get; set; }
 	public double Longitude { get; set; }

@@ -41,13 +41,6 @@
 				</StackPanel>
 			</Button>
 			
-            <Button Command="{Binding NavigateToChargeView}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
-                    <TextBlock VerticalAlignment="Center" Text="Charge" />
-                </StackPanel>
-            </Button>
-
             <Button Command="{Binding NavigateToStatisticsView}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />

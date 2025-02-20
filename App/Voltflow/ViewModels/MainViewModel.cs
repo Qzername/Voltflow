@@ -71,14 +71,6 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new AccountViewModel(this));
 	}
 
-	public void NavigateToChargeView()
-	{
-		if (GetCurrentViewModel() == typeof(ChargingViewModel))
-			return;
-
-		Router.Navigate.Execute(new ChargingViewModel(this));
-	}
-
 	public void NavigateToStatisticsView()
 	{
 		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
