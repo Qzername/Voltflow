@@ -43,6 +43,12 @@ public class CarsController : ControllerBase
         if (user is null)
             return BadRequest();
 
+        //meet data criteria    
+        if (model.Name.Length > 100 || 
+            model.BatteryCapacity < 1 ||
+            model.ChargingRate < 1)
+            return BadRequest(new { InvalidData = true });
+
         Car car = new Car()
         {
             AccountId = user.Id,
@@ -69,18 +75,24 @@ public class CarsController : ControllerBase
         if (user is null)
             return BadRequest();
 
+        //meet data criteria    
+        if (model.Name?.Length > 100 ||
+            (model.BatteryCapacity is not null && model.BatteryCapacity < 1) ||
+            (model.ChargingRate is not null && model.ChargingRate < 1))
+            return BadRequest(new { InvalidData = true });
+
         var car = _applicationContext.Cars.Single(x => x.Id == model.Id);
 
         if (car is null)
             return BadRequest(new { CarExist = false});
 
-        if (model.Name is not null)
+        if (!string.IsNullOrEmpty(model.Name) && model.Name.Length < 100)
             car.Name = model.Name;
 
-        if (model.BatteryCapacity is not null)
+        if (model.BatteryCapacity is not null && model.BatteryCapacity > 0)
             car.BatteryCapacity = model.BatteryCapacity.Value;
 
-        if(model.ChargingRate is not null)
+        if(model.ChargingRate is not null && model.ChargingRate > 0)
             car.ChargingRate = model.ChargingRate.Value;
 
         _applicationContext.Update(car);

@@ -25,13 +25,19 @@ public class AccountsController : ControllerBase
         if (user is null)
             return BadRequest();
 
-        if (accountModel.Name is not null)
+        //meet data criteria
+        if (accountModel.Name?.Length > 100 || 
+            accountModel.Surname?.Length > 100 || 
+            accountModel.PhoneNumber?.Length != 9)
+            return BadRequest(new { InvalidData = true });
+
+        if (!string.IsNullOrEmpty(accountModel.Name))
             user.Name = accountModel.Name;
 
-        if (accountModel.Surname is not null)
+        if (!string.IsNullOrEmpty(accountModel.Surname))
             user.Surname = accountModel.Surname;
 
-        if (accountModel.PhoneNumber is not null)
+        if (!string.IsNullOrEmpty(accountModel.PhoneNumber))
             user.PhoneNumber = accountModel.PhoneNumber;
 
         var result = await _userManager.UpdateAsync(user);

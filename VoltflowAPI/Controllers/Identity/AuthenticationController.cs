@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using VoltflowAPI.Models.Endpoints;
 using VoltflowAPI.Services;
 
@@ -13,6 +14,18 @@ public class AuthenticationController : ControllerBase
     readonly IEmailSender _emailSender;
     readonly IAccountTokenGenerator _tokenGenerator;
 
+    /*
+     * Password requirements
+     * 
+     * Minimum eight characters, 
+     * Maximum 32 characters, 
+     * at least one uppercase letter, 
+     * one lowercase letter, 
+     * one number
+     * one special character
+     */
+    public const string PasswordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$";
+
     public AuthenticationController(UserManager<Account> userManager, IEmailSender emailSender, IAccountTokenGenerator generator)
     {
         _userManager = userManager;
@@ -24,6 +37,20 @@ public class AuthenticationController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
+        //email must contain @ and .
+        if (!model.Email.Contains("@") || !model.Email.Contains("."))
+            return BadRequest(new { InvalidEmail = true });
+
+        //meet password criteria
+        if (!Regex.IsMatch(model.Password, PasswordRegex))
+            return BadRequest(new { InvalidPassword = true });
+
+        //meet data criteria
+        if (model.Name.Length > 100 ||
+            model.Surname.Length > 100 ||
+            model.Phone.Length != 9)
+            return BadRequest(new { InvalidData = true });
+
         var user = await _userManager.FindByEmailAsync(model.Email);
 
         if (user is not null)
@@ -79,7 +106,7 @@ public class AuthenticationController : ControllerBase
         if (await _userManager.IsEmailConfirmedAsync(user) == false)
             return Unauthorized();
 
-        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+        if (await _userManager.CheckPasswordAsync(user, model.Password) == false)
             return Unauthorized();
 
         //Two factor enabled -> move to TwoFactorController

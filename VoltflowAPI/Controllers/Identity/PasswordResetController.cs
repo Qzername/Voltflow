@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using VoltflowAPI.Models.Endpoints;
 using VoltflowAPI.Services;
 
@@ -39,6 +40,10 @@ public class PasswordResetController : ControllerBase
     [HttpPost("reset")]
     public async Task<IActionResult> ResetPassword([FromBody] PasswordResetModel password)
     {
+        //meet password criteria
+        if (!Regex.IsMatch(password.Password, AuthenticationController.PasswordRegex))
+            return BadRequest(new { InvalidPassword = true });
+
         var user = await _userManager.FindByEmailAsync(password.Email);
 
         if (user == null)

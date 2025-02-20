@@ -31,6 +31,10 @@ public class ChargingStationsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateStation([FromBody] CreateStationModel model)
     {
+        //meet data criteria
+        if(model.Cost < 1 || model.MaxChargeRate < 1)
+            return BadRequest(new { InvalidData = true });
+
         ChargingStation chargingStation = new ChargingStation
         {
             Longitude = model.Longitude,
@@ -50,27 +54,32 @@ public class ChargingStationsController : ControllerBase
 
     [HttpPatch]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> PatchStation(PatchStationModel patchStationModel)
+    public async Task<IActionResult> PatchStation(PatchStationModel model)
     {
-        var station = _applicationContext.ChargingStations.Single(x=>x.Id == patchStationModel.Id);
+        //meet data criteria
+        if ((model.Cost is not null && model.Cost < 1)|| 
+            (model.MaxChargeRate is not null && model.MaxChargeRate < 1))
+            return BadRequest(new { InvalidData = true });
 
-        if(patchStationModel.Latitude is not null)
-            station.Latitude = patchStationModel.Latitude.Value;
+        var station = _applicationContext.ChargingStations.Single(x=>x.Id == model.Id);
 
-        if (patchStationModel.Longitude is not null)
-            station.Longitude = patchStationModel.Longitude.Value;
+        if(model.Latitude is not null)
+            station.Latitude = model.Latitude.Value;
 
-        if (patchStationModel.Cost is not null)
-            station.Cost = patchStationModel.Cost.Value;
+        if (model.Longitude is not null)
+            station.Longitude = model.Longitude.Value;
 
-        if (patchStationModel.MaxChargeRate is not null)
-            station.MaxChargeRate = patchStationModel.MaxChargeRate.Value;
+        if (model.Cost is not null)
+            station.Cost = model.Cost.Value;
 
-        if (patchStationModel.Status is not null)
-            station.Status = (int)patchStationModel.Status.Value;
+        if (model.MaxChargeRate is not null)
+            station.MaxChargeRate = model.MaxChargeRate.Value;
 
-        if (patchStationModel.ServiceMode is not null)
-            station.ServiceMode = patchStationModel.ServiceMode.Value;
+        if (model.Status is not null)
+            station.Status = (int)model.Status.Value;
+
+        if (model.ServiceMode is not null)
+            station.ServiceMode = model.ServiceMode.Value;
 
         _applicationContext.Update(station);
         await _applicationContext.SaveChangesAsync();
