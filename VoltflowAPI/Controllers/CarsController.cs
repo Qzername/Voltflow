@@ -25,7 +25,7 @@ public class CarsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetCars()
     {
-        var user = _userManager.GetUserAsync(User).Result;
+        var user = await _userManager.GetUserAsync(User);
 
         if (user is null)
             return BadRequest();
@@ -38,7 +38,7 @@ public class CarsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateCar([FromBody] CreateCarModel model)
     {
-        var user = _userManager.GetUserAsync(User).Result;
+        var user = await _userManager.GetUserAsync(User);
 
         if (user is null)
             return BadRequest();
@@ -70,7 +70,7 @@ public class CarsController : ControllerBase
     [HttpPatch]
     public async Task<IActionResult> PatchCar([FromBody] PatchCarModel model)
     {
-        var user = _userManager.GetUserAsync(User).Result;
+        var user = await _userManager.GetUserAsync(User);
 
         if (user is null)
             return BadRequest();
@@ -104,7 +104,7 @@ public class CarsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCar(int id)
     {
-        var user = _userManager.GetUserAsync(User).Result;
+        var user = await _userManager.GetUserAsync(User);
 
         if (user is null)
             return BadRequest();
