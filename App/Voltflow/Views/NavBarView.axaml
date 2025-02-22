@@ -13,10 +13,9 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <Panel>
+    <Panel Margin="16">
         <!--  Left side  -->
         <StackPanel
-            Margin="8"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
@@ -30,7 +29,6 @@
 
         <!--  Right side  -->
         <StackPanel
-            Margin="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">

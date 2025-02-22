@@ -38,10 +38,21 @@
 
         <Separator />
 
+        <StackPanel IsEnabled="{Binding !CreatingNewPoint}">
+            <CheckBox Content="Out of Service" IsChecked="{Binding IsOutOfService}" />
+            <CheckBox
+                Content="Service Mode"
+                IsChecked="{Binding IsInServiceMode}"
+                IsEnabled="{Binding IsOutOfService}" />
+        </StackPanel>
+
+        <Separator />
+
         <Button
             HorizontalAlignment="Stretch"
             Classes="Success"
-            Command="{Binding CreateStation}">
+            Command="{Binding CreateStation}"
+            IsEnabled="{Binding CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
                 <TextBlock VerticalAlignment="Center" Text="Add Station" />
@@ -51,7 +62,8 @@
         <Button
             HorizontalAlignment="Stretch"
             Classes="Warning"
-            Command="{Binding UpdateStation}">
+            Command="{Binding UpdateStation}"
+            IsEnabled="{Binding !CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CloudUploadFill" />
                 <TextBlock VerticalAlignment="Center" Text="Update Station" />
@@ -61,19 +73,12 @@
         <Button
             HorizontalAlignment="Stretch"
             Classes="Danger"
-            Command="{Binding DeleteStation}">
+            Command="{Binding DeleteStation}"
+            IsEnabled="{Binding !CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
                 <TextBlock VerticalAlignment="Center" Text="Delete Station" />
             </StackPanel>
         </Button>
-
-        <Separator />
-
-        <CheckBox Content="Out of Service" IsChecked="{Binding IsOutOfService}" />
-        <CheckBox
-            Content="Service Mode"
-            IsChecked="{Binding IsInServiceMode}"
-            IsEnabled="{Binding IsOutOfService}" />
     </StackPanel>
 </UserControl>

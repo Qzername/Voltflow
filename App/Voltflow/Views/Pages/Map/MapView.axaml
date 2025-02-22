@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Voltflow.Models"
@@ -29,7 +30,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Classes="with-bg"
-                CornerRadius="8"
+                CornerRadius="6"
                 IsVisible="{Binding !IsMobile}">
                 <reactiveUi:RoutedViewHost Router="{Binding Router}">
                     <reactiveUi:RoutedViewHost.ViewLocator>
@@ -39,15 +40,16 @@
             </Border>
 
             <Button
-                Width="48"
                 Height="48"
                 Margin="16"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding ChangeMode}"
-                CornerRadius="8"
                 IsVisible="{Binding !IsMobile}">
-                +
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowRepeat" />
+                    <TextBlock VerticalAlignment="Center" Text="Change Mode" />
+                </StackPanel>
             </Button>
         </Panel>
     </Panel>

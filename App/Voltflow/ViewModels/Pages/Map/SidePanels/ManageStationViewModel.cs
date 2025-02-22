@@ -22,8 +22,9 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		[Reactive] public double Latitude { get; set; }
 		[Reactive] public int Cost { get; set; }
 		[Reactive] public int MaxChargeRate { get; set; }
+		[Reactive] public bool CreatingNewPoint { get; set; }
 
-		bool _isOutOfService;
+		private bool _isOutOfService;
 		public bool IsOutOfService
 		{
 			get => _isOutOfService;
@@ -43,7 +44,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			}
 		}
 
-		bool _isInServiceMode;
+		private bool _isInServiceMode;
 		public bool IsInServiceMode
 		{
 			get => _isInServiceMode;
@@ -56,11 +57,11 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			}
 		}
 
-		PointFeature? selectedPoint;
-		ChargingStation CurrentStation
+		private PointFeature? _selectedPoint;
+		private ChargingStation CurrentStation
 		{
-			get => selectedPoint!["data"] is null ? new ChargingStation() : (ChargingStation)selectedPoint!["data"]!;
-			set => selectedPoint!["data"] = value;
+			get => _selectedPoint!["data"] is null ? new ChargingStation() : (ChargingStation)_selectedPoint!["data"]!;
+			set => _selectedPoint!["data"] = value;
 		}
 
 		public ManageStationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
@@ -81,8 +82,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			else
 			{
 				//switched mode from new to existing point
-				if (selectedPoint is not null && selectedPoint["data"] is null)
-					((List<IFeature>)_pointsLayer.Features).Remove(selectedPoint);
+				DeleteSelectedPoint();
 
 				var data = (ChargingStation)point["data"]!;
 
@@ -91,29 +91,31 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			}
 		}
 
-		void NewPointMode(MPoint worldPosition)
+		private void NewPointMode(MPoint worldPosition)
 		{
-			if (selectedPoint is null || selectedPoint["data"] is not null)
+			if (_selectedPoint is null || _selectedPoint["data"] is not null)
 			{
-				selectedPoint = new PointFeature(worldPosition);
-				((List<IFeature>)_pointsLayer.Features).Add(selectedPoint);
+				_selectedPoint = new PointFeature(worldPosition);
+				((List<IFeature>)_pointsLayer.Features).Add(_selectedPoint);
 			}
 
-			selectedPoint.Point.X = worldPosition.X;
-			selectedPoint.Point.Y = worldPosition.Y;
+			_selectedPoint.Point.X = worldPosition.X;
+			_selectedPoint.Point.Y = worldPosition.Y;
 
-			var lonLat = SphericalMercator.ToLonLat(selectedPoint.Point);
+			var lonLat = SphericalMercator.ToLonLat(_selectedPoint.Point);
 
 			SetOutOfServiceNoServer(false);
 			SetServiceModeNoServer(false);
 
 			Longitude = lonLat.X;
 			Latitude = lonLat.Y;
+
+			CreatingNewPoint = true;
 		}
 
 		private void ExistingPointMode(PointFeature feature)
 		{
-			selectedPoint = feature;
+			_selectedPoint = feature;
 
 			var data = (ChargingStation)feature["data"]!;
 
@@ -126,6 +128,14 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			//update values, dont send updates to server
 			SetOutOfServiceNoServer(data.Status == ChargingStationStatus.OutOfService);
 			SetServiceModeNoServer(data.ServiceMode);
+
+			CreatingNewPoint = false;
+		}
+
+		public void DeleteSelectedPoint()
+		{
+			if (_selectedPoint is not null && _selectedPoint["data"] is null)
+				((List<IFeature>)_pointsLayer.Features).Remove(_selectedPoint);
 		}
 		#endregion
 
@@ -191,7 +201,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		/// <summary>
 		/// sets the value of OutOfService property without server notification
 		/// </summary>
-		void SetOutOfServiceNoServer(bool isOutOfService)
+		private void SetOutOfServiceNoServer(bool isOutOfService)
 		{
 			_isOutOfService = isOutOfService;
 			this.RaisePropertyChanged(nameof(IsOutOfService));
@@ -200,11 +210,10 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		/// <summary>
 		/// sets the value of ServiceMode property without server notification
 		/// </summary>
-		void SetServiceModeNoServer(bool isInServiceMode)
+		private void SetServiceModeNoServer(bool isInServiceMode)
 		{
 			_isInServiceMode = isInServiceMode;
 			this.RaisePropertyChanged(nameof(IsInServiceMode));
 		}
-
 	}
 }
