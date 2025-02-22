@@ -1,5 +1,4 @@
-﻿using Avalonia.SimplePreferences;
-using Splat;
+﻿using Splat;
 using System;
 using System.Net.Http;
 
@@ -12,12 +11,9 @@ internal static class Bootstraper
 {
 	public async static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
 	{
-		var token = await Preferences.GetAsync<string>("token", null);
-
 		services.RegisterLazySingleton(() => new HttpClient()
 		{
-			BaseAddress = new Uri("https://voltflow-api.heapy.xyz"),
-			DefaultRequestHeaders = { Authorization = string.IsNullOrEmpty(token) ? new("Bearer", token) : null }
+			BaseAddress = new Uri("https://voltflow-api.heapy.xyz")
 		}, typeof(HttpClient));
 	}
 

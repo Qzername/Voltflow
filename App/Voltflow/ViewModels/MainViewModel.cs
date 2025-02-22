@@ -1,8 +1,8 @@
-﻿using ReactiveUI;
+﻿using Avalonia.SimplePreferences;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive;
-using Avalonia.SimplePreferences;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Map;
