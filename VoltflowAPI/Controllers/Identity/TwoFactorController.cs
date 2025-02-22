@@ -27,6 +27,19 @@ public class TwoFactorController : ControllerBase
     }
 
     #region 2FA setting control
+    [HttpGet("status")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> GetStatus()
+    {
+
+        var claims = User.Claims.ToList();
+        var email = claims.Single(x => x.Type == ClaimTypes.Email).Value;
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        return Ok(new { user.TwoFactorEnabled });
+    }
+
     [HttpPost("enable")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> Enable()
