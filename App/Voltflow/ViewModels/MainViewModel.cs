@@ -2,6 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive;
+using Avalonia.SimplePreferences;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Map;
@@ -22,13 +23,19 @@ public class MainViewModel : ReactiveObject, IScreen
 
 	/// <summary>
 	/// Constructor for MainViewModel.
-	/// When constructed, the router navigates to MapView (if on Desktop/Browser) or AccountView (if on Mobile).
+	/// When constructed, the router navigates to MapView (if on Desktop/Browser or Mobile - authenticated) or AccountView (if on Mobile - not authenticated).
 	/// </summary>
 	public MainViewModel()
 	{
 		//setup views
 		if (IsMobile)
-			Router.Navigate.Execute(new AccountViewModel(this));
+		{
+			var token = Preferences.Get<string>("token", null);
+			if (token is null)
+				Router.Navigate.Execute(new AccountViewModel(this));
+			else
+				Router.Navigate.Execute(new MapViewModel(this));
+		}
 		else
 			Router.Navigate.Execute(new MapViewModel(this));
 	}
