@@ -15,5 +15,5 @@ public enum ChargingStationStatus
 {
 	Available,
 	Occupied,
-	OutOfOrder,
+	OutOfService,
 }
