@@ -22,6 +22,7 @@ namespace Voltflow.ViewModels.Pages.Map;
 public class MapViewModel : ViewModelBase, IScreen
 {
 	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
+	[Reactive] public bool Authenticated { get; set; }
 
 	// Dependency injection
 	private readonly HttpClient _client;
@@ -46,6 +47,9 @@ public class MapViewModel : ViewModelBase, IScreen
 	public MapViewModel(IScreen screen) : base(screen)
 	{
 		_client = GetService<HttpClient>();
+
+		if (screen is MainViewModel hostScreen)
+			Authenticated = hostScreen.Authenticated;
 
 		Router = new RoutingState();
 		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
