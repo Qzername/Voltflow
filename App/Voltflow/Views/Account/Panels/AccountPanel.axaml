@@ -20,14 +20,20 @@
     </UserControl.Resources>
 
     <StackPanel IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignedIn}">
-        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding NavigateToSettings}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="GearFill" />
                 <TextBlock VerticalAlignment="Center" Text="Settings" />
             </StackPanel>
         </Button>
 
-        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding NavigateToDiscounts}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Cash" />
                 <TextBlock VerticalAlignment="Center" Text="Discounts" />

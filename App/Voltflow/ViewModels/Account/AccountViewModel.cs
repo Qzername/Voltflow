@@ -31,7 +31,8 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 	public EmailVerificationForm EmailVerificationForm { get; set; } = new();
 
 	// Commands
-	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
+	public void NavigateToSettings() => HostScreen.Router.Navigate.Execute(new SettingsViewModel(HostScreen));
+	public void NavigateToDiscounts() => HostScreen.Router.Navigate.Execute(new DiscountsViewModel(HostScreen));
 	public void NavigateBack() => CurrentAuthType = AuthType.SignIn;
 	public void SwitchSignForms() => CurrentAuthType = CurrentAuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
 	public void SwitchToPasswordReset() => CurrentAuthType = AuthType.PasswordReset;

@@ -20,7 +20,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <Button Command="{Binding NavigateToMapView}">
+            <Button Command="{Binding NavigateToMap}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
                     <TextBlock VerticalAlignment="Center" Text="Home" />
@@ -34,21 +34,21 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <Button Command="{Binding NavigateToCarsView}" IsEnabled="{Binding Authenticated}">
+            <Button Command="{Binding NavigateToCars}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CarFrontFill" />
                     <TextBlock VerticalAlignment="Center" Text="Cars" />
                 </StackPanel>
             </Button>
 
-            <Button Command="{Binding NavigateToStatisticsView}" IsEnabled="{Binding Authenticated}">
+            <Button Command="{Binding NavigateToStatistics}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ListUl" />
                     <TextBlock VerticalAlignment="Center" Text="Statistics" />
                 </StackPanel>
             </Button>
 
-            <Button Command="{Binding NavigateToAccountView}">
+            <Button Command="{Binding NavigateToAccount}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
                     <TextBlock VerticalAlignment="Center" Text="Account" />

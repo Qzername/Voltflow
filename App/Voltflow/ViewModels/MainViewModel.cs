@@ -32,12 +32,6 @@ public class MainViewModel : ReactiveObject, IScreen
 	/// </summary>
 	public MainViewModel()
     {
-		//setup httpClient
-		var token = Preferences.Get<string?>("token", null);
-
-		if(token is not null)
-            Locator.Current.GetService<HttpClient>()!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
         //setup views
         if (IsMobile)
 			Router.Navigate.Execute(new AccountViewModel(this));
@@ -47,7 +41,7 @@ public class MainViewModel : ReactiveObject, IScreen
 
 	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
 
-	public void NavigateToCarsView()
+	public void NavigateToCars()
 	{
         if (GetCurrentViewModel() == typeof(CarsViewModel))
             return;
@@ -55,7 +49,7 @@ public class MainViewModel : ReactiveObject, IScreen
         Router.Navigate.Execute(new CarsViewModel(this));
     }
 
-	public void NavigateToMapView()
+	public void NavigateToMap()
 	{
 		if (GetCurrentViewModel() == typeof(MapViewModel))
 			return;
@@ -63,7 +57,7 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new MapViewModel(this));
 	}
 
-	public void NavigateToAccountView()
+	public void NavigateToAccount()
 	{
 		if (GetCurrentViewModel() == typeof(AccountViewModel))
 			return;
@@ -71,7 +65,7 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new AccountViewModel(this));
 	}
 
-	public void NavigateToStatisticsView()
+	public void NavigateToStatistics()
 	{
 		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
 			return;
