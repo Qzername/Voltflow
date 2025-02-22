@@ -34,35 +34,15 @@
             </StackPanel>
         </Button>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Command="{Binding NavigateHome}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
-                    <TextBlock VerticalAlignment="Center" Text="Go Back" />
-                </StackPanel>
-            </Button>
-
-            <Button
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Classes="Danger"
-                Command="{Binding SignOut}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="DoorOpenFill" />
-                    <TextBlock VerticalAlignment="Center" Text="Sign Out" />
-                </StackPanel>
-            </Button>
-        </Grid>
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Classes="Danger"
+            Command="{Binding SignOut}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="DoorOpenFill" />
+                <TextBlock VerticalAlignment="Center" Text="Sign Out" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>
