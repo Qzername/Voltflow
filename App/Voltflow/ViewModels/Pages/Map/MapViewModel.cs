@@ -48,7 +48,8 @@ public class MapViewModel : ViewModelBase, IScreen
 		_client = GetService<HttpClient>();
 
 		Router = new RoutingState();
-		Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, HostScreen));
+		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
+		Router.NavigateAndReset.Execute(_currentModeViewModel);
 	}
 
 	public async Task ConfigureMap()
