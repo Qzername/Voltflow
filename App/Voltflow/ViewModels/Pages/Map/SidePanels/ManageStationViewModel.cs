@@ -123,7 +123,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			MaxChargeRate = data.MaxChargeRate;
 
 			//update values, dont send updates to server
-			SetOutOfServiceNoServer(data.Status == ChargingStationStatus.OutOfOrder);
+			SetOutOfServiceNoServer(data.Status == ChargingStationStatus.OutOfService);
 			SetServiceModeNoServer(data.ServiceMode);
 		}
         #endregion

@@ -28,7 +28,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 
 		Selected = true;
 		ViewTitle = $"Existing point (ID: {data.Id})";
-		Status = data.Status.ToString();
+		Status = data.Status == ChargingStationStatus.OutOfService ? "Out of Service" : data.Status.ToString();
 		Cost = data.Cost;
 		MaxChargeRate = data.MaxChargeRate;
 	}
