@@ -1,7 +1,7 @@
-﻿using Splat;
+﻿using Avalonia.SimplePreferences;
+using Splat;
 using System;
 using System.Net.Http;
-using Avalonia.SimplePreferences;
 
 namespace Voltflow;
 
@@ -17,7 +17,7 @@ internal static class Bootstraper
 		services.RegisterLazySingleton(() => new HttpClient()
 		{
 			BaseAddress = new Uri("https://voltflow-api.heapy.xyz"),
-			DefaultRequestHeaders = { Authorization = new("Bearer", token)}
+			DefaultRequestHeaders = { Authorization = new("Bearer", token) }
 		}, typeof(HttpClient));
 	}
 

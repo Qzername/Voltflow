@@ -35,6 +35,6 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 
 	public void Charge()
 	{
-        HostScreen.Router.Navigate.Execute(new ChargingViewModel(data, HostScreen));
-    }
+		HostScreen.Router.Navigate.Execute(new ChargingViewModel(data, HostScreen));
+	}
 }

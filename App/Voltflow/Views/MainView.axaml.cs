@@ -1,9 +1,6 @@
-using System.Net.Http;
-using System.Net.Http.Headers;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Avalonia.SimplePreferences;
-using Splat;
 using Voltflow.ViewModels;
 
 namespace Voltflow.Views;

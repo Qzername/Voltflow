@@ -5,40 +5,40 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Cars
 {
-    public class CarInfoViewModel : ViewModelBase
-    {
-        HttpClient _httpClient;
+	public class CarInfoViewModel : ViewModelBase
+	{
+		HttpClient _httpClient;
 
-        [Reactive] string Name { get; set; }
-        [Reactive] int BatteryCapacity { get; set; }
-        [Reactive] int ChargingRate { get; set; }
+		[Reactive] string Name { get; set; }
+		[Reactive] int BatteryCapacity { get; set; }
+		[Reactive] int ChargingRate { get; set; }
 
-        Car currentCar;
+		Car currentCar;
 
-        public CarInfoViewModel(Car car, IScreen screen) : base(screen)
-        {
-            _httpClient = GetService<HttpClient>();
+		public CarInfoViewModel(Car car, IScreen screen) : base(screen)
+		{
+			_httpClient = GetService<HttpClient>();
 
-            Name = car.Name;
-            BatteryCapacity = car.BatteryCapacity;
-            ChargingRate = car.ChargingRate;
+			Name = car.Name;
+			BatteryCapacity = car.BatteryCapacity;
+			ChargingRate = car.ChargingRate;
 
-            currentCar = car;
-        }
+			currentCar = car;
+		}
 
-        public async void Update()
-        {
-            currentCar.Name = Name;
-            currentCar.BatteryCapacity = BatteryCapacity;
-            currentCar.ChargingRate = ChargingRate;
+		public async void Update()
+		{
+			currentCar.Name = Name;
+			currentCar.BatteryCapacity = BatteryCapacity;
+			currentCar.ChargingRate = ChargingRate;
 
-            await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(currentCar));
-        }
+			await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(currentCar));
+		}
 
-        public async void Delete()
-        {
-            await _httpClient.DeleteAsync("/api/Cars?id="+currentCar.Id);
-            HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
-        }
-    }
+		public async void Delete()
+		{
+			await _httpClient.DeleteAsync("/api/Cars?id=" + currentCar.Id);
+			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
+		}
+	}
 }

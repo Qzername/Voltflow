@@ -1,15 +1,9 @@
-﻿using Avalonia.SimplePreferences;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using RTools_NTS.Util;
-using Splat;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
-using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
 using Voltflow.ViewModels.Pages.Statistics;
 
@@ -31,9 +25,9 @@ public class MainViewModel : ReactiveObject, IScreen
 	/// When constructed, the router navigates to MapView (if on Desktop/Browser) or AccountView (if on Mobile).
 	/// </summary>
 	public MainViewModel()
-    {
-        //setup views
-        if (IsMobile)
+	{
+		//setup views
+		if (IsMobile)
 			Router.Navigate.Execute(new AccountViewModel(this));
 		else
 			Router.Navigate.Execute(new MapViewModel(this));
@@ -43,11 +37,11 @@ public class MainViewModel : ReactiveObject, IScreen
 
 	public void NavigateToCars()
 	{
-        if (GetCurrentViewModel() == typeof(CarsViewModel))
-            return;
+		if (GetCurrentViewModel() == typeof(CarsViewModel))
+			return;
 
-        Router.Navigate.Execute(new CarsViewModel(this));
-    }
+		Router.Navigate.Execute(new CarsViewModel(this));
+	}
 
 	public void NavigateToMap()
 	{
