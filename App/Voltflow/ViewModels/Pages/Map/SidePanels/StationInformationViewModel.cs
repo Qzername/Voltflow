@@ -15,7 +15,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }
 
-	ChargingStation data;
+	private ChargingStation _data;
 
 	public override void MapClicked(MapInfoEventArgs e)
 	{
@@ -24,17 +24,17 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 		if (point is null || point["data"] is null)
 			return;
 
-		data = (ChargingStation)point["data"]!;
+		_data = (ChargingStation)point["data"]!;
 
-		Selected = true;
-		ViewTitle = $"Existing point (ID: {data.Id})";
-		Status = data.Status == ChargingStationStatus.OutOfService ? "Out of Service" : data.Status.ToString();
-		Cost = data.Cost;
-		MaxChargeRate = data.MaxChargeRate;
+		Selected = _data.Status != ChargingStationStatus.OutOfService;
+		ViewTitle = $"Existing point (ID: {_data.Id})";
+		Status = _data.Status == ChargingStationStatus.OutOfService ? "Out of Service" : _data.Status.ToString();
+		Cost = _data.Cost;
+		MaxChargeRate = _data.MaxChargeRate;
 	}
 
 	public void Charge()
 	{
-		HostScreen.Router.Navigate.Execute(new ChargingViewModel(data, HostScreen));
+		HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, HostScreen));
 	}
 }

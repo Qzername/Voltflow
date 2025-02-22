@@ -1,4 +1,5 @@
-﻿using Mapsui;
+﻿using Avalonia.SimplePreferences;
+using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
@@ -48,9 +49,6 @@ public class MapViewModel : ViewModelBase, IScreen
 	{
 		_client = GetService<HttpClient>();
 
-		if (screen is MainViewModel hostScreen)
-			Authenticated = hostScreen.Authenticated;
-
 		Router = new RoutingState();
 		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
 		Router.NavigateAndReset.Execute(_currentModeViewModel);
@@ -60,6 +58,9 @@ public class MapViewModel : ViewModelBase, IScreen
 	{
 		// Prevent from running multiple times, RUN ONLY ONCE!
 		if (Map is not null) return;
+
+		var token = await Preferences.GetAsync<string>("token", null);
+		Authenticated = token != null;
 
 		Map = new M.Map();
 		Map.Info += OnMapInteraction;
