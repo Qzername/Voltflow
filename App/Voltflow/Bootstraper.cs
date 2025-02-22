@@ -17,7 +17,7 @@ internal static class Bootstraper
 		services.RegisterLazySingleton(() => new HttpClient()
 		{
 			BaseAddress = new Uri("https://voltflow-api.heapy.xyz"),
-			DefaultRequestHeaders = { Authorization = new("Bearer", token) }
+			DefaultRequestHeaders = { Authorization = string.IsNullOrEmpty(token) ? new("Bearer", token) : null }
 		}, typeof(HttpClient));
 	}
 
