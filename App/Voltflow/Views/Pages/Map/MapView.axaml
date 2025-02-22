@@ -21,7 +21,7 @@
         <!--  Yes, no binding, see code behind for more info  -->
         <mapsui:MapControl x:Name="MapControl" />
 
-        <Panel>
+        <Panel IsVisible="{Binding Authenticated}">
             <Border
                 Width="256"
                 Margin="16"
@@ -37,19 +37,18 @@
                     </reactiveUi:RoutedViewHost.ViewLocator>
                 </reactiveUi:RoutedViewHost>
             </Border>
+
+            <Button
+                Width="48"
+                Height="48"
+                Margin="16"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding ChangeMode}"
+                CornerRadius="8"
+                IsVisible="{Binding !IsMobile}">
+                +
+            </Button>
         </Panel>
-
-
-        <Button
-            Width="48"
-            Height="48"
-            Margin="16"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding ChangeMode}"
-            CornerRadius="8"
-            IsVisible="{Binding !IsMobile}">
-            +
-        </Button>
     </Panel>
 </UserControl>

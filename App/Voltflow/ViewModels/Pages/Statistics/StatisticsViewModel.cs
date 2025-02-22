@@ -1,10 +1,8 @@
-﻿using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore;
-using ReactiveUI;
-using Voltflow.ViewModels.Pages.Map;
 using LiveChartsCore.SkiaSharpView.Extensions;
 using LiveChartsCore.SkiaSharpView.VisualElements;
+using ReactiveUI;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Diagnostics;
@@ -35,13 +33,13 @@ public class StatisticsViewModel : ViewModelBase
 
     [Reactive] public IEnumerable<ISeries> PieData { get; set; } 
 
-    public LabelVisual Title { get; set; } =
-        new LabelVisual
-        {
-            Text = "My chart title",
-            TextSize = 25,
-            Padding = new LiveChartsCore.Drawing.Padding(15)
-        };
+	public LabelVisual Title { get; set; } =
+		new LabelVisual
+		{
+			Text = "My chart title",
+			TextSize = 25,
+			Padding = new LiveChartsCore.Drawing.Padding(15)
+		};
 
     Transaction[] transactions;
     Car[] cars;

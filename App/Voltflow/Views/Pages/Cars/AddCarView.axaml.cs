@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Cars;
 
 public partial class AddCarView : ReactiveUserControl<AddCarViewModel>
 {
-    public AddCarView()
-    {
-        InitializeComponent();
-    }
+	public AddCarView()
+	{
+		InitializeComponent();
+	}
 }

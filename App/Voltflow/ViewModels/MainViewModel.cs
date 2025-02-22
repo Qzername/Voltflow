@@ -1,15 +1,10 @@
 ﻿using Avalonia.SimplePreferences;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using RTools_NTS.Util;
-using Splat;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
-using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
 using Voltflow.ViewModels.Pages.Statistics;
 
@@ -28,34 +23,34 @@ public class MainViewModel : ReactiveObject, IScreen
 
 	/// <summary>
 	/// Constructor for MainViewModel.
-	/// When constructed, the router navigates to MapView (if on Desktop/Browser) or AccountView (if on Mobile).
+	/// When constructed, the router navigates to MapView (if on Desktop/Browser or Mobile - authenticated) or AccountView (if on Mobile - not authenticated).
 	/// </summary>
 	public MainViewModel()
-    {
-		//setup httpClient
-		var token = Preferences.Get<string?>("token", null);
-
-		if(token is not null)
-            Locator.Current.GetService<HttpClient>()!.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-        //setup views
-        if (IsMobile)
-			Router.Navigate.Execute(new AccountViewModel(this));
+	{
+		//setup views
+		if (IsMobile)
+		{
+			var token = Preferences.Get<string>("token", null);
+			if (token is null)
+				Router.Navigate.Execute(new AccountViewModel(this));
+			else
+				Router.Navigate.Execute(new MapViewModel(this));
+		}
 		else
 			Router.Navigate.Execute(new MapViewModel(this));
 	}
 
 	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
 
-	public void NavigateToCarsView()
+	public void NavigateToCars()
 	{
-        if (GetCurrentViewModel() == typeof(CarsViewModel))
-            return;
+		if (GetCurrentViewModel() == typeof(CarsViewModel))
+			return;
 
-        Router.Navigate.Execute(new CarsViewModel(this));
-    }
+		Router.Navigate.Execute(new CarsViewModel(this));
+	}
 
-	public void NavigateToMapView()
+	public void NavigateToMap()
 	{
 		if (GetCurrentViewModel() == typeof(MapViewModel))
 			return;
@@ -63,7 +58,7 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new MapViewModel(this));
 	}
 
-	public void NavigateToAccountView()
+	public void NavigateToAccount()
 	{
 		if (GetCurrentViewModel() == typeof(AccountViewModel))
 			return;
@@ -71,7 +66,7 @@ public class MainViewModel : ReactiveObject, IScreen
 		Router.Navigate.Execute(new AccountViewModel(this));
 	}
 
-	public void NavigateToStatisticsView()
+	public void NavigateToStatistics()
 	{
 		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
 			return;

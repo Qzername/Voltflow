@@ -1,4 +1,5 @@
-﻿using Mapsui;
+﻿using Avalonia.SimplePreferences;
+using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
@@ -22,6 +23,7 @@ namespace Voltflow.ViewModels.Pages.Map;
 public class MapViewModel : ViewModelBase, IScreen
 {
 	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
+	[Reactive] public bool Authenticated { get; set; }
 
 	// Dependency injection
 	private readonly HttpClient _client;
@@ -48,13 +50,17 @@ public class MapViewModel : ViewModelBase, IScreen
 		_client = GetService<HttpClient>();
 
 		Router = new RoutingState();
-		Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, HostScreen));
+		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
+		Router.NavigateAndReset.Execute(_currentModeViewModel);
 	}
 
 	public async Task ConfigureMap()
 	{
 		// Prevent from running multiple times, RUN ONLY ONCE!
 		if (Map is not null) return;
+
+		var token = await Preferences.GetAsync<string>("token", null);
+		Authenticated = token != null;
 
 		Map = new M.Map();
 		Map.Info += OnMapInteraction;

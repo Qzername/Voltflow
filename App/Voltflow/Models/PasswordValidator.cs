@@ -9,34 +9,22 @@ namespace Voltflow.Models;
 /// </summary>
 public static class PasswordValidator
 {
+	/*
+	 * Password requirements
+	 *
+	 * Minimum eight characters,
+	 * Maximum 32 characters,
+	 * at least one uppercase letter,
+	 * one lowercase letter,
+	 * one number
+	 * one special character
+	 */
+	public const string PasswordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$";
+	// Copied from VoltflowAPI.
+
 	public static bool IsValid(string? password)
 	{
-		// Checks if the password is null or empty.
-		if (string.IsNullOrEmpty(password))
-			return false;
-
-		// Checks if the password is in range 8-32 (8 and 32 counts as well).
-		if (password.Length < 8 || password.Length > 32)
-			return false;
-
-		// Checks if the password has at least one uppercase letter.
-		if (!Regex.IsMatch(password, "[A-Z]"))
-			return false;
-
-		// Checks if the password has at least one lowercase letter.
-		if (!Regex.IsMatch(password, "[a-z]"))
-			return false;
-
-		// Checks if the password has at least one digit.
-		if (!Regex.IsMatch(password, "\\d"))
-			return false;
-
-		// Checks if the password has at least one special character.
-		if (!Regex.IsMatch(password, "[!@#$%^&*]"))
-			return false;
-
-		// Checks if the password has a space in it.
-		if (password.Contains(" "))
+		if (!Regex.IsMatch(password, PasswordRegex))
 			return false;
 
 		return true;

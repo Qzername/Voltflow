@@ -22,7 +22,7 @@
             <Button
                 Width="96"
                 Padding="8"
-                Command="{Binding NavigateToMapView}">
+                Command="{Binding NavigateToMap}">
                 <StackPanel Classes="sm-spacing">
                     <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="GeoAltFill" />
                     <TextBlock
@@ -35,7 +35,7 @@
             <Button
                 Width="96"
                 Padding="8"
-                Command="{Binding NavigateToStatisticsView}">
+                Command="{Binding NavigateToStatistics}">
                 <StackPanel Classes="sm-spacing">
                     <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="LightningChargeFill" />
                     <TextBlock
@@ -48,7 +48,7 @@
             <Button
                 Width="96"
                 Padding="8"
-                Command="{Binding NavigateToAccountView}">
+                Command="{Binding NavigateToAccount}">
                 <StackPanel Classes="sm-spacing">
                     <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="PeopleFill" />
                     <TextBlock

@@ -9,11 +9,11 @@ namespace Voltflow;
 /// </summary>
 internal static class Bootstraper
 {
-	public static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+	public async static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
 	{
 		services.RegisterLazySingleton(() => new HttpClient()
 		{
-			BaseAddress = new Uri("https://voltflow-api.heapy.xyz") //subject to change
+			BaseAddress = new Uri("https://voltflow-api.heapy.xyz")
 		}, typeof(HttpClient));
 	}
 
