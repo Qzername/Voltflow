@@ -15,14 +15,25 @@
 		<lvc:PieChart Series="{Binding PieData}" Title="{Binding Title}" Width="800" Height="450"/>
 
 		<Panel Background="Gray" Width="500" Height="50">
-			<Button Content="Generate CSV"/>
+			<Button Command="{Binding GenerateTransactionsCsv}" Content="Generate CSV"/>
 		</Panel>
 
 		<DataGrid Height="100"
-				  ItemsSource="{Binding Elements}"
+				  ItemsSource="{Binding TransactionsGridData}"
 				  AutoGenerateColumns="True" IsReadOnly="True"
 				  GridLinesVisibility="All"
 				  BorderThickness="1" BorderBrush="Gray">
+		</DataGrid>
+
+		<Panel Background="Gray" Width="500" Height="50">
+			<Button Command="{Binding GenerateStationsCsv}" Content="Generate CSV"/>
+		</Panel>
+
+		<DataGrid Height="100"
+				ItemsSource="{Binding StationGridData}"
+				AutoGenerateColumns="True" IsReadOnly="True"
+				GridLinesVisibility="All"
+				BorderThickness="1" BorderBrush="Gray">
 		</DataGrid>
 	</StackPanel>
 </UserControl>

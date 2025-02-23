@@ -1,21 +1,23 @@
-﻿using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView;
+﻿using LiveChartsCore.SkiaSharpView;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using Voltflow.Models;
 using System.Linq;
-using SkiaSharp;
 using ReactiveUI.Fody.Helpers;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView.VisualElements;
+using Voltflow.Services;
+using Avalonia.Platform.Storage;
+using System.IO;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class AdvancedStatisticsViewModel : ViewModelBase
 {
     HttpClient _httpClient;
+    DialogService _dialogService;
 
     public bool Mode
     {
@@ -41,11 +43,13 @@ public class AdvancedStatisticsViewModel : ViewModelBase
     ChargingStation[] stations;
 
     //grid
-    [Reactive] public List<GridElement> Elements { get; set; }
+    [Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; }
+    [Reactive] public List<StationGridElement> StationGridData { get; set; }
 
     public AdvancedStatisticsViewModel(IScreen screen) : base(screen)
     {
         _httpClient = GetService<HttpClient>();
+        _dialogService = GetService<DialogService>();
 
         GetData();
     }
@@ -123,11 +127,12 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 
     void GenerateGridData()
     {
-        List<GridElement> elementsTemp = new();
+        //transactions
+        List<TransactionGridElement> elementsTemp = new();
 
         foreach (var t in transactions)
         {
-            elementsTemp.Add(new GridElement
+            elementsTemp.Add(new TransactionGridElement
             {
                 StationID = stations.Single(station => station.Id == t.ChargingStationId).Id,
                 EnergyConsumed = t.EnergyConsumed,
@@ -135,13 +140,65 @@ public class AdvancedStatisticsViewModel : ViewModelBase
             });
         }
 
-        Elements = new List<GridElement>(elementsTemp);
+        TransactionsGridData = new List<TransactionGridElement>(elementsTemp);
+    
+        //stations
+        List<StationGridElement> stationGridElements = new List<StationGridElement>();
+
+        foreach(var s in stations)
+        {
+            stationGridElements.Add(new StationGridElement()
+            {
+                StationID = s.Id,
+                Longitutde = s.Longitude,
+                Latitude = s.Latitude,
+            });
+        }
+
+        StationGridData = new List<StationGridElement>(stationGridElements);
     }
 
-    public class GridElement
+    public void GenerateTransactionsCsv()
+    {
+        string csv = "StationID,EnergyConsumed,Cost\n";
+
+        foreach (var t in transactions)
+            csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+
+        SaveCsv(csv);
+    }
+
+    public void GenerateStationsCsv()
+    {
+        string csv = "StationID,Latitude,Longitutde\n";
+
+        foreach (var s in stations)
+            csv += $"{s.Id},{s.Latitude},{s.Longitude}\n";
+
+        SaveCsv(csv);
+    }
+
+    public async void SaveCsv(string csv)
+    {
+        var directory = await _dialogService.OpenDirectoryDialog(new FolderPickerOpenOptions()
+        {
+            AllowMultiple = false,
+        });
+
+        File.WriteAllText(directory + "output.csv", csv);
+    }
+
+    public class TransactionGridElement
     {
         public int StationID { get; set; }
         public double EnergyConsumed { get; set; }
         public double Cost { get; set; }
+    }
+
+    public class StationGridElement
+    {
+        public int StationID { get; set; }
+        public double Latitude { get; set; }
+        public double Longitutde { get; set; }
     }
 }

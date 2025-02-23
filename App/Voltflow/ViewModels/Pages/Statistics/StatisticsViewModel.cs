@@ -1,6 +1,5 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Extensions;
 using LiveChartsCore.SkiaSharpView.VisualElements;
 using ReactiveUI;
 using System.Collections.Generic;
@@ -11,14 +10,17 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.Linq;
 using ReactiveUI.Fody.Helpers;
-using System.Collections.ObjectModel;
-using Avalonia.Collections;
+using Voltflow.ViewModels.Pages.Map;
+using Voltflow.Services;
+using Avalonia.Platform.Storage;
+using System.IO;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class StatisticsViewModel : ViewModelBase
 {
     HttpClient _httpClient;
+    DialogService _dialogService;
 
     public bool Mode
     {
@@ -50,6 +52,7 @@ public class StatisticsViewModel : ViewModelBase
     public StatisticsViewModel(IScreen screen) : base(screen)
     {
         _httpClient = GetService<HttpClient>();
+        _dialogService = GetService<DialogService>();
 
         GetData();
     }
@@ -145,6 +148,21 @@ public class StatisticsViewModel : ViewModelBase
         }
 
         Elements = new List<GridElement>(elementsTemp);
+    }
+
+    public async void GenerateCsv()
+    {
+        string csv = "StationID,EnergyConsumed,Cost\n";
+
+        foreach (var t in transactions)
+            csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+
+        var directory = await _dialogService.OpenDirectoryDialog(new FolderPickerOpenOptions()
+        {
+            AllowMultiple = false,
+        });
+
+        File.WriteAllText(directory + "output.csv", csv);
     }
 
     public void NavigateAdvanced() => HostScreen.Router.NavigateAndReset.Execute(new AdvancedStatisticsViewModel(HostScreen));

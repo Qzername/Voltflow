@@ -1,6 +1,7 @@
 ﻿using Splat;
 using System;
 using System.Net.Http;
+using Voltflow.Services;
 
 namespace Voltflow;
 
@@ -15,6 +16,8 @@ internal static class Bootstraper
 		{
 			BaseAddress = new Uri("https://voltflow-api.heapy.xyz")
 		}, typeof(HttpClient));
+
+		services.RegisterLazySingleton(() => new DialogService());
 	}
 
 	/*

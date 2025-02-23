@@ -25,7 +25,7 @@
 		<lvc:PieChart Series="{Binding PieData}" Title="{Binding Title}" Width="800" Height="450"/>
 
 		<Panel Background="Gray" Width="500" Height="50">
-			<Button Content="Generate CSV"/>
+			<Button Command="{Binding GenerateCsv}" Content="Generate CSV"/>
 		</Panel>
 		
         <Button
