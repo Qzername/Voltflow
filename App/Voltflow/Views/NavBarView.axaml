@@ -13,16 +13,15 @@
         <viewModels:MainViewModel />
     </Design.DataContext>
 
-    <Panel>
+    <Panel Margin="16">
         <!--  Left side  -->
         <StackPanel
-            Margin="8"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Button Command="{Binding NavigateToMap}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Bolt" />
                     <TextBlock VerticalAlignment="Center" Text="Home" />
                 </StackPanel>
             </Button>
@@ -30,27 +29,26 @@
 
         <!--  Right side  -->
         <StackPanel
-            Margin="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Button Command="{Binding NavigateToCars}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CarFrontFill" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="DirectionsCar" />
                     <TextBlock VerticalAlignment="Center" Text="Cars" />
                 </StackPanel>
             </Button>
 
             <Button Command="{Binding NavigateToStatistics}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ListUl" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="List" />
                     <TextBlock VerticalAlignment="Center" Text="Statistics" />
                 </StackPanel>
             </Button>
 
             <Button Command="{Binding NavigateToAccount}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PeopleFill" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Person" />
                     <TextBlock VerticalAlignment="Center" Text="Account" />
                 </StackPanel>
             </Button>

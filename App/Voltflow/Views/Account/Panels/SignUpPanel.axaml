@@ -24,22 +24,22 @@
     <StackPanel IsEnabled="{Binding !SignUpForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignUp}">
         <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="EnvelopeFill" />
+                Kind="AlternateEmail" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
         <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@email.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="ShieldLockFill" />
+                Kind="Lock" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
         </StackPanel>
         <Grid>
@@ -59,15 +59,15 @@
 
             <Button Grid.Column="2" Command="{Binding SignUpForm.TogglePassword}">
                 <StackPanel>
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
                         IsVisible="{Binding !SignUpForm.ShowPassword}"
-                        Kind="EyeFill" />
+                        Kind="Visibility" />
 
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
                         IsVisible="{Binding SignUpForm.ShowPassword}"
-                        Kind="EyeSlashFill" />
+                        Kind="VisibilityOff" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -82,11 +82,11 @@
 
             <StackPanel Grid.Column="0">
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
                         Classes="size-sm color-gray"
                         IsVisible="True"
-                        Kind="PersonFill" />
+                        Kind="Person" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="First Name" />
                 </StackPanel>
                 <TextBox Text="{Binding SignUpForm.FirstName}" Watermark="Jan" />
@@ -94,11 +94,11 @@
 
             <StackPanel Grid.Column="2">
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
                         Classes="size-sm color-gray"
                         IsVisible="True"
-                        Kind="PersonFill" />
+                        Kind="Person" />
                     <TextBlock Classes="size-sm color-gray weight-bold" Text="Last Name" />
                 </StackPanel>
                 <TextBox Text="{Binding SignUpForm.LastName}" Watermark="Kowalski" />
@@ -107,11 +107,11 @@
 
         <!--  Phone number input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="TelephoneFill" />
+                Kind="Call" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Phone Number" />
         </StackPanel>
         <Grid>
@@ -141,7 +141,7 @@
             Classes="Success"
             Command="{Binding SignUp}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Check" />
                 <TextBlock VerticalAlignment="Center" Text="Sign Up" />
             </StackPanel>
         </Button>

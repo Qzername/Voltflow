@@ -124,6 +124,13 @@ public class MapViewModel : ViewModelBase, IScreen
 	public void ChangeMode()
 	{
 		_isCreatingMode = !_isCreatingMode;
+
+		if (_currentModeViewModel is ManageStationViewModel viewModel)
+		{
+			viewModel.DeleteSelectedPoint();
+			Map?.RefreshGraphics();
+		}
+
 		UpdateModeViewModel();
 	}
 }

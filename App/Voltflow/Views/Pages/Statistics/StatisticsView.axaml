@@ -4,13 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:statistics="clr-namespace:Voltflow.ViewModels.Pages.Statistics"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d"
-	xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia">
-	
+    mc:Ignorable="d">
+
     <StackPanel
         MaxWidth="256"
         HorizontalAlignment="Stretch"

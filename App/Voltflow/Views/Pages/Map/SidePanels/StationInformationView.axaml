@@ -20,13 +20,42 @@
         <Separator />
 
         <TextBlock Classes="size-sm color-gray weight-bold" Text="Status" />
-        <TextBox IsEnabled="False" Text="{Binding Status}" />
+        <TextBlock Classes="size-sm color-gray" Text="{Binding Status}" />
 
         <TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
-        <TextBox IsEnabled="False" Text="{Binding Cost}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                Classes="size-sm color-gray"
+                Text="{Binding Cost}" />
+            <TextBlock
+                Grid.Column="1"
+                Classes="size-sm color-gray"
+                Text="zł" />
+        </Grid>
+
 
         <TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
-        <TextBox IsEnabled="False" Text="{Binding MaxChargeRate}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                Classes="size-sm color-gray"
+                Text="{Binding MaxChargeRate}" />
+            <TextBlock
+                Grid.Column="1"
+                Classes="size-sm color-gray"
+                Text="kWh" />
+        </Grid>
 
         <Separator />
 
@@ -36,7 +65,7 @@
             Command="{Binding Charge}"
             IsEnabled="{Binding Selected}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="LightningChargeFill" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Bolt" />
                 <TextBlock VerticalAlignment="Center" Text="Charge" />
             </StackPanel>
         </Button>

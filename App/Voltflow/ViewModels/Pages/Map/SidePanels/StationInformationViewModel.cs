@@ -11,7 +11,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 {
 	[Reactive] public bool Selected { get; set; }
 	[Reactive] public string ViewTitle { get; set; } = "Click on a point to start.";
-	[Reactive] public string Status { get; set; } = string.Empty;
+	[Reactive] public string Status { get; set; } = "Unknown";
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }
 
