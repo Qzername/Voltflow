@@ -54,7 +54,7 @@
             Command="{Binding CreateStation}"
             IsEnabled="{Binding CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Add" />
                 <TextBlock VerticalAlignment="Center" Text="Add Station" />
             </StackPanel>
         </Button>
@@ -65,7 +65,7 @@
             Command="{Binding UpdateStation}"
             IsEnabled="{Binding !CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="CloudUploadFill" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Update" />
                 <TextBlock VerticalAlignment="Center" Text="Update Station" />
             </StackPanel>
         </Button>
@@ -76,7 +76,7 @@
             Command="{Binding DeleteStation}"
             IsEnabled="{Binding !CreatingNewPoint}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Trash3Fill" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Delete" />
                 <TextBlock VerticalAlignment="Center" Text="Delete Station" />
             </StackPanel>
         </Button>

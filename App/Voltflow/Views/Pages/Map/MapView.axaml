@@ -47,7 +47,7 @@
                 Command="{Binding ChangeMode}"
                 IsVisible="{Binding !IsMobile}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowRepeat" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Repeat" />
                     <TextBlock VerticalAlignment="Center" Text="Change Mode" />
                 </StackPanel>
             </Button>

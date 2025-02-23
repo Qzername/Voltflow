@@ -24,7 +24,7 @@
                 Padding="8"
                 Command="{Binding NavigateToMap}">
                 <StackPanel Classes="sm-spacing">
-                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="GeoAltFill" />
+                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="LocationOn" />
                     <TextBlock
                         HorizontalAlignment="Center"
                         Classes="weight-bold size-sm"
@@ -37,7 +37,7 @@
                 Padding="8"
                 Command="{Binding NavigateToStatistics}">
                 <StackPanel Classes="sm-spacing">
-                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="LightningChargeFill" />
+                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="Bolt" />
                     <TextBlock
                         HorizontalAlignment="Center"
                         Classes="weight-bold size-sm"
@@ -50,7 +50,7 @@
                 Padding="8"
                 Command="{Binding NavigateToAccount}">
                 <StackPanel Classes="sm-spacing">
-                    <iconPacks:PackIconBootstrapIcons HorizontalAlignment="Center" Kind="PeopleFill" />
+                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="Person" />
                     <TextBlock
                         HorizontalAlignment="Center"
                         Classes="weight-bold size-sm"

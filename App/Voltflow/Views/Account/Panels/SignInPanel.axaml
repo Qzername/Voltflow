@@ -23,22 +23,22 @@
     <StackPanel IsEnabled="{Binding !SignInForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=SignIn}">
         <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="EnvelopeFill" />
+                Kind="AlternateEmail" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
         </StackPanel>
         <TextBox Text="{Binding SignInForm.Email}" Watermark="example@email.com" />
 
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="ShieldLockFill" />
+                Kind="Lock" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
         </StackPanel>
         <Grid>
@@ -58,17 +58,15 @@
 
             <Button Grid.Column="2" Command="{Binding SignInForm.TogglePassword}">
                 <StackPanel>
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
-                        Classes="size-xl"
                         IsVisible="{Binding !SignInForm.ShowPassword}"
-                        Kind="EyeFill" />
+                        Kind="Visibility" />
 
-                    <iconPacks:PackIconBootstrapIcons
+                    <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
-                        Classes="size-xl"
                         IsVisible="{Binding SignInForm.ShowPassword}"
-                        Kind="EyeSlashFill" />
+                        Kind="VisibilityOff" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -81,7 +79,7 @@
             Classes="Success"
             Command="{Binding SignIn}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Check" />
                 <TextBlock VerticalAlignment="Center" Text="Sign In" />
             </StackPanel>
         </Button>

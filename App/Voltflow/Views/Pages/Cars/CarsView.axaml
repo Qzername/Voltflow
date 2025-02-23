@@ -30,7 +30,7 @@
             VerticalAlignment="Bottom"
             Command="{Binding NavigateToCreateCar}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="PlusCircleFill" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Add" />
                 <TextBlock VerticalAlignment="Center" Text="Add Car" />
             </StackPanel>
         </Button>

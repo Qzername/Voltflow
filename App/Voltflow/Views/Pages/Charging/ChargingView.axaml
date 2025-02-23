@@ -9,48 +9,51 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-	
+
     <StackPanel
         Width="256"
         HorizontalAlignment="Center"
         VerticalAlignment="Center">
-		<!--Station info-->
+        <!--  Station info  -->
 
-		<TextBlock Text="{Binding CurrentStation.Cost}"/>
-		<TextBlock Text="{Binding CurrentStation.MaxChargeRate}"/>
-		
-		<Separator/>
-		<!--Data-->
-		
-		<ComboBox SelectedIndex="{Binding PickedIndex}" ItemsSource="{Binding Cars}">
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Name}"/>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-		
-		<CheckBox IsChecked="{Binding DeclaredAmount}" Content="Declare amount"/>
-		<TextBox Text="{Binding Amount}" IsEnabled="{Binding DeclaredAmount}" Watermark="Amount of kWh"/>
-		
-		<Separator/>
-		<!--Chariging info-->
+        <TextBlock Text="{Binding CurrentStation.Cost}" />
+        <TextBlock Text="{Binding CurrentStation.MaxChargeRate}" />
 
-		<TextBlock Text="{Binding Time}"/>
-		<TextBlock Text="{Binding TotalCharge}"/>
-		<TextBlock Text="{Binding TotalCost}"/>
-		
-		<Separator/>
-		<!--Controls-->
+        <Separator />
+        <!--  Data  -->
 
-		<Button Command="{Binding Start}" Content="Start Charging"/>
-		<Button Command="{Binding Stop}" Content="Stop Charging"/>
+        <ComboBox ItemsSource="{Binding Cars}" SelectedIndex="{Binding PickedIndex}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <CheckBox Content="Declare amount" IsChecked="{Binding DeclaredAmount}" />
+        <TextBox
+            IsEnabled="{Binding DeclaredAmount}"
+            Text="{Binding Amount}"
+            Watermark="Amount of kWh" />
+
+        <Separator />
+        <!--  Chariging info  -->
+
+        <TextBlock Text="{Binding Time}" />
+        <TextBlock Text="{Binding TotalCharge}" />
+        <TextBlock Text="{Binding TotalCost}" />
+
+        <Separator />
+        <!--  Controls  -->
+
+        <Button Command="{Binding Start}" Content="Start Charging" />
+        <Button Command="{Binding Stop}" Content="Stop Charging" />
         <Button
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Command="{Binding NavigateHome}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowLeft" />
                 <TextBlock VerticalAlignment="Center" Text="Go Back" />
             </StackPanel>
         </Button>

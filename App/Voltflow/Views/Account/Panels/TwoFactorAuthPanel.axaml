@@ -24,11 +24,11 @@
     <StackPanel IsEnabled="{Binding !TwoFactorAuthForm.Working}" IsVisible="{Binding CurrentAuthType, Converter={StaticResource AuthTypeConverter}, ConverterParameter=TwoFactorAuth}">
         <!--  2FA code input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-            <iconPacks:PackIconBootstrapIcons
+            <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
                 Classes="size-sm color-gray"
                 IsVisible="True"
-                Kind="KeyFill" />
+                Kind="Key" />
             <TextBlock Classes="size-sm color-gray weight-bold" Text="2FA Code" />
         </StackPanel>
         <controls:NumberBox
@@ -52,7 +52,7 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowLeft" />
                     <TextBlock VerticalAlignment="Center" Text="Go Back" />
                 </StackPanel>
             </Button>
@@ -64,7 +64,7 @@
                 Classes="Success"
                 Command="{Binding VerifyTwoFactorAuth}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="Check2" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Check" />
                     <TextBlock VerticalAlignment="Center" Text="Verify" />
                 </StackPanel>
             </Button>
