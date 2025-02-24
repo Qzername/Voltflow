@@ -98,7 +98,7 @@ public class ChargingViewModel : ViewModelBase
 		Started = true;
 		Finished = false;
 
-		var token = Preferences.Get<string?>("token", null);
+		var token = await Preferences.GetAsync<string?>("token", null);
 		var carId = Cars[PickedIndex].Id;
 
 		_connection = new HubConnectionBuilder()
