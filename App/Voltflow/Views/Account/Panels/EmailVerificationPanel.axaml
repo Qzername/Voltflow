@@ -48,7 +48,7 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowLeft" />
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
                     <TextBlock VerticalAlignment="Center" Text="Go Back" />
                 </StackPanel>
             </Button>

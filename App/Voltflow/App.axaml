@@ -12,10 +12,10 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-		<FluentTheme />
-		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
-		<!--  Use SemiTheme with Ursa  -->
+        <!--  Use SemiTheme with Ursa  -->
         <semi:SemiTheme Locale="en-us" />
         <u-semi:SemiTheme Locale="en-us" />
 

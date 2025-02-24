@@ -16,33 +16,42 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center">
 
-		<!--this button should be only visible when someone is admin-->
-		<Button Command="{Binding NavigateAdvanced}" Content="Advanced statistics"/>
-		
-		<!--Switch this to whatever makes sense but no checkbox-->
-		<CheckBox IsChecked="{Binding Mode}" Content="Switch to energy used"/>
-		
-		<lvc:PieChart Series="{Binding PieData}" Title="{Binding Title}" Width="800" Height="450"/>
+        <!--  this button should be only visible when someone is admin  -->
+        <Button Command="{Binding NavigateAdvanced}" Content="Advanced statistics" />
 
-		<Panel Background="Gray" Width="500" Height="50">
-			<Button Command="{Binding GenerateCsv}" Content="Generate CSV"/>
-		</Panel>
-		
+        <!--  Switch this to whatever makes sense but no checkbox  -->
+        <CheckBox Content="Switch to energy used" IsChecked="{Binding Mode}" />
+
+        <lvc:PieChart
+            Title="{Binding Title}"
+            Width="800"
+            Height="450"
+            Series="{Binding PieData}" />
+
+        <Panel
+            Width="500"
+            Height="50"
+            Background="Gray">
+            <Button Command="{Binding GenerateCsv}" Content="Generate CSV" />
+        </Panel>
+
         <Button
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Command="{Binding NavigateHome}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconBootstrapIcons VerticalAlignment="Center" Kind="ArrowLeft" />
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
                 <TextBlock VerticalAlignment="Center" Text="Go Back" />
             </StackPanel>
         </Button>
-		
-		<DataGrid Height="100" 
-				  ItemsSource="{Binding Elements}"
-				  AutoGenerateColumns="True" IsReadOnly="True"
-				  GridLinesVisibility="All"
-				  BorderThickness="1" BorderBrush="Gray">
-		</DataGrid>
+
+        <DataGrid
+            Height="100"
+            AutoGenerateColumns="True"
+            BorderBrush="Gray"
+            BorderThickness="1"
+            GridLinesVisibility="All"
+            IsReadOnly="True"
+            ItemsSource="{Binding Elements}" />
     </StackPanel>
 </UserControl>
