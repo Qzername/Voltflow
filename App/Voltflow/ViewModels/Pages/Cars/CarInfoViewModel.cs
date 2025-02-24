@@ -1,49 +1,94 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls.Notifications;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
+using System.Reactive;
+using System.Threading.Tasks;
+using Ursa.Controls;
 using Voltflow.Models;
 
-namespace Voltflow.ViewModels.Pages.Cars
+namespace Voltflow.ViewModels.Pages.Cars;
+
+public class CarInfoViewModel : ViewModelBase
 {
-	public class CarInfoViewModel : ViewModelBase
+	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
+	public WindowToastManager? ToastManager;
+	private readonly HttpClient _httpClient;
+
+	[Reactive] public string Name { get; set; }
+	[Reactive] public int BatteryCapacity { get; set; }
+	[Reactive] public int ChargingRate { get; set; }
+
+	private Car _currentCar;
+
+	public CarInfoViewModel(Car car, IScreen screen) : base(screen)
 	{
-		HttpClient _httpClient;
+		_httpClient = GetService<HttpClient>();
 
-		[Reactive] string Name { get; set; }
-		[Reactive] int BatteryCapacity { get; set; }
-		[Reactive] int ChargingRate { get; set; }
+		Name = car.Name;
+		BatteryCapacity = car.BatteryCapacity;
+		ChargingRate = car.ChargingRate;
 
-		Car currentCar;
+		_currentCar = car;
+	}
 
-		public CarInfoViewModel(Car car, IScreen screen) : base(screen)
+	public async Task Update()
+	{
+		if (string.IsNullOrEmpty(Name))
 		{
-			_httpClient = GetService<HttpClient>();
-
-			Name = car.Name;
-			BatteryCapacity = car.BatteryCapacity;
-			ChargingRate = car.ChargingRate;
-
-			currentCar = car;
+			ToastManager?.Show(
+				new Toast("Name cannot be empty!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
 		}
 
-		public async void Update()
+		if (BatteryCapacity <= 0)
 		{
-			currentCar.Name = Name;
-			currentCar.BatteryCapacity = BatteryCapacity;
-			currentCar.ChargingRate = ChargingRate;
+			_currentCar.Name = Name;
+			_currentCar.BatteryCapacity = BatteryCapacity;
+			_currentCar.ChargingRate = ChargingRate;
 
-			var response = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(currentCar));
+			var response = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(_currentCar));
 			Debug.WriteLine(response.StatusCode);
+			ToastManager?.Show(
+				new Toast("Battery capacity cannot be below or equal 0!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
 		}
 
-		public async void Delete()
+		if (ChargingRate <= 0)
 		{
-			Debug.WriteLine("test");
-			var response = await _httpClient.DeleteAsync("/api/Cars/" + currentCar.Id);
-			Debug.WriteLine(response.StatusCode);
-			Debug.WriteLine(await response.Content.ReadAsStringAsync());
+			ToastManager?.Show(
+				new Toast("Charging rate cannot be below or equal 0!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
+		}
+
+		_currentCar.Name = Name;
+		_currentCar.BatteryCapacity = BatteryCapacity;
+		_currentCar.ChargingRate = ChargingRate;
+
+		var request = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(_currentCar));
+		if (request.StatusCode == HttpStatusCode.OK)
 			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
-		}
+	}
+
+	public async Task Delete()
+	{
+		var response = await _httpClient.DeleteAsync("/api/Cars/" + _currentCar.Id);
+		Debug.WriteLine(response.StatusCode);
+		if (request.StatusCode == HttpStatusCode.OK)
+			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
 	}
 }

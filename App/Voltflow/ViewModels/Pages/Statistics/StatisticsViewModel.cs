@@ -35,7 +35,6 @@ public class StatisticsViewModel : ViewModelBase
 	}
 
 	[Reactive] public IEnumerable<ISeries>? PieData { get; set; }
-
 	public LabelVisual Title { get; set; } =
 		new LabelVisual
 		{
@@ -74,6 +73,10 @@ public class StatisticsViewModel : ViewModelBase
 		//cars
 		response = await _httpClient.GetAsync("/api/Cars");
 		Debug.WriteLine(response.StatusCode);
+
+		if (response.StatusCode != HttpStatusCode.OK)
+			return;
+
 		json = await response.Content.ReadAsStringAsync();
 
 		_cars = JsonConverter.Deserialize<Car[]>(json);

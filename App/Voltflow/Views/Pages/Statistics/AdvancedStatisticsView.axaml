@@ -15,7 +15,7 @@
 
     <ScrollViewer>
         <StackPanel
-            MaxWidth="256"
+            Width="256"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
             <!--  Switch this to whatever makes sense but no checkbox  -->

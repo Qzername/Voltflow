@@ -27,16 +27,6 @@
         <Setter Property="Foreground" Value="{DynamicResource IconForegroundDisabled}" />
     </Style>
 
-    <!--  Gray icon  -->
-    <Style Selector="iconPacks|PackIconMaterialDesign.color-gray">
-        <Setter Property="Foreground" Value="{DynamicResource IconForegroundGray}" />
-    </Style>
-
-    <!--  Gray disabled icon  -->
-    <Style Selector="iconPacks|PackIconMaterialDesign.color-gray:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource IconForegroundGrayDisabled}" />
-    </Style>
-
     <!--  Small icon  -->
     <Style Selector="iconPacks|PackIconMaterialDesign.size-sm">
         <Setter Property="Width" Value="12" />

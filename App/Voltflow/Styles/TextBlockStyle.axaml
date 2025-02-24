@@ -26,19 +26,14 @@
         <Setter Property="FontSize" Value="12" />
     </Style>
 
+    <!--  Large TextBlock  -->
+    <Style Selector="TextBlock.size-lg">
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
     <!--  Bold TextBlock  -->
     <Style Selector="TextBlock.weight-bold">
         <Setter Property="FontWeight" Value="Bold" />
-    </Style>
-
-    <!--  Gray TextBlock  -->
-    <Style Selector="TextBlock.color-gray">
-        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundGray}" />
-    </Style>
-
-    <!--  Gray disabled TextBlock  -->
-    <Style Selector="TextBlock.color-gray:disabled">
-        <Setter Property="Foreground" Value="{DynamicResource TextBlockForegroundGrayDisabled}" />
     </Style>
 
     <!--  Hyperlink TextBlock  -->

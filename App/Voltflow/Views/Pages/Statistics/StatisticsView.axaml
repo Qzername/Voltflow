@@ -16,7 +16,7 @@
 
     <ScrollViewer>
         <StackPanel
-            MaxWidth="256"
+            Width="256"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
 

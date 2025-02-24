@@ -26,10 +26,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="Key" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="2FA Code" />
+            <TextBlock Classes="size-sm weight-bold" Text="2FA Code" />
         </StackPanel>
         <controls:NumberBox
             MaxLength="6"

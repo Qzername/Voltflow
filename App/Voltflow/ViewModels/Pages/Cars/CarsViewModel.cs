@@ -1,6 +1,8 @@
 ﻿using Avalonia.Collections;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using Voltflow.Models;
 
@@ -8,24 +10,28 @@ namespace Voltflow.ViewModels.Pages.Cars;
 
 public class CarsViewModel : ViewModelBase
 {
-	AvaloniaList<Car> cars { get; set; } = new();
+	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
 
 	public CarsViewModel(IScreen screen) : base(screen)
 	{
 		GetCars();
 	}
 
-	async void GetCars()
+	private async void GetCars()
 	{
-		cars.Clear();
+		Cars.Clear();
 
 		var httpClient = GetService<HttpClient>();
 		var response = await httpClient.GetAsync("/api/Cars");
-		var jsonString = await response.Content.ReadAsStringAsync();
 		Debug.WriteLine(response.StatusCode);
 
+		if (response.StatusCode != HttpStatusCode.OK)
+			return;
+
+		var jsonString = await response.Content.ReadAsStringAsync();
+
 		var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
-		cars.AddRange(carsObjs);
+		Cars.AddRange(carsObjs);
 	}
 
 	public void NavigateToCarDetails(object carObj)
