@@ -42,7 +42,7 @@ public partial class NumberBox : TextBox
 	protected override void OnKeyDown(KeyEventArgs e)
 	{
 		// If "BACK" or "DELETE" key is pressed and there's only a single digit in the input or whole input is selected - set input to "0".
-		if ((e.Key == Key.Back || e.Key == Key.Delete) && (Text.Length <= 1 || (SelectionStart == 0 && SelectionEnd == Text.Length)))
+		if (Text != null && (e.Key == Key.Back || e.Key == Key.Delete) && (Text.Length <= 1 || (SelectionStart == 0 && SelectionEnd == Text.Length)))
 		{
 			Text = "0";
 			return;
@@ -53,18 +53,18 @@ public partial class NumberBox : TextBox
 
 	private async void HandlePasting(object? sender, RoutedEventArgs e)
 	{
-		TextBox? textBox = (TextBox?)sender;
+		var textBox = (TextBox?)sender;
 		if (textBox == null) return;
 
 		var clipboard = TopLevel.GetTopLevel(textBox)?.Clipboard;
 		if (clipboard == null) return;
 
-		string? clipboardText = await clipboard.GetTextAsync();
+		var clipboardText = await clipboard.GetTextAsync();
 		if (string.IsNullOrEmpty(clipboardText)) return;
 
 		// Allow pasting numbers and floats (obviously only when AllowFloats is set to true).
 		// 3.14, 123.456, 2005 and the list goes on.
-		Regex numberRegex = new Regex($"^[0-9]+{(AllowFloats ? "(\\.[0-9]+)?" : "")}$");
+		var numberRegex = new Regex($"^[0-9]+{(AllowFloats ? "(\\.[0-9]+)?" : "")}$");
 		if (!numberRegex.IsMatch(clipboardText)) e.Handled = true;
 	}
 }
