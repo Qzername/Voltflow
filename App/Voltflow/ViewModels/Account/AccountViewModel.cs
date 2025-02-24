@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using System.Diagnostics;
+using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
 using Newtonsoft.Json.Linq;
 using ReactiveUI;
@@ -56,6 +57,13 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 		{
 			EmailVerificationForm.Reset();
 			CurrentAuthType = AuthType.SignIn;
+
+			ToastManager?.Show(
+				new Toast("Email verified successfully! You can now sign in."),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 		else
 			ToastManager?.Show(
@@ -93,10 +101,19 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 		HttpResponseMessage request = await client.PostAsync("/api/Identity/PasswordReset/send", content);
 
 		if (request.StatusCode == HttpStatusCode.OK)
+		{
 			PasswordResetForm.SentToken = true;
+
+			ToastManager?.Show(
+				new Toast("Password reset token has been sent to your email. Please, paste it below."),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Information,
+				classes: ["Light"]);
+		}
 		else
 			ToastManager?.Show(
-				new Toast($"Something went wrong..."),
+				new Toast("Something went wrong..."),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,
@@ -193,7 +210,16 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 				HttpResponseMessage twoFactorRequest = await client.PostAsync("/api/Identity/TwoFactor/send", null);
 
 				if (twoFactorRequest.StatusCode == HttpStatusCode.OK)
+				{
 					CurrentAuthType = AuthType.TwoFactorAuth;
+
+					ToastManager?.Show(
+						new Toast("A Two-Factor Authentication (2FA) code has been sent to your email. Please, provide it below."),
+						showIcon: true,
+						showClose: false,
+						type: NotificationType.Information,
+						classes: ["Light"]);
+				}
 			}
 			// Request will return 'token' when 2FA is disabled on the account.
 			// Set 'Authorization' header to 'token' and return to home.
@@ -259,6 +285,13 @@ public class AccountViewModel(IScreen screen) : ViewModelBase(screen)
 			EmailVerificationForm.Email = SignUpForm.Email;
 			CurrentAuthType = AuthType.EmailVerification;
 			SignUpForm.Reset();
+
+			ToastManager?.Show(
+				new Toast("Provided email must be verified. A verification token has been sent. Please, paste it below."),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Information,
+				classes: ["Light"]);
 		}
 		else if (request.StatusCode == HttpStatusCode.BadRequest)
 			ToastManager?.Show(
