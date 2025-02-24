@@ -4,12 +4,12 @@
             <ResourceDictionary.ThemeDictionaries>
                 <!--  Light Theme  -->
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="BorderBackground" Color="#fffefe" />
+                    <SolidColorBrush x:Key="BorderBackground" Color="#fafbfa" />
                 </ResourceDictionary>
 
                 <!--  Dark Theme  -->
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="BorderBackground" Color="#16161a" />
+                    <SolidColorBrush x:Key="BorderBackground" Color="#1f1e23" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

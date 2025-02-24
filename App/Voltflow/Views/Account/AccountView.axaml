@@ -14,7 +14,7 @@
     </Design.DataContext>
 
     <StackPanel
-        MaxWidth="256"
+        Width="256"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         Classes="no-spacing">

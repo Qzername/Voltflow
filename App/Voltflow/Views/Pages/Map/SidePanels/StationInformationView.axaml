@@ -14,15 +14,15 @@
     <StackPanel>
         <TextBlock
             HorizontalAlignment="Center"
-            Classes="size-sm color-gray weight-bold"
+            Classes="size-sm weight-bold"
             Text="{Binding ViewTitle}" />
 
         <Separator />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Status" />
-        <TextBlock Classes="size-sm color-gray" Text="{Binding Status}" />
+        <TextBlock Classes="size-sm weight-bold" Text="Status" />
+        <TextBlock Classes="size-sm" Text="{Binding Status}" />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
+        <TextBlock Classes="size-sm weight-bold" Text="Cost" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -31,16 +31,16 @@
 
             <TextBlock
                 Grid.Column="0"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 Text="{Binding Cost}" />
             <TextBlock
                 Grid.Column="1"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 Text="zł" />
         </Grid>
 
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
+        <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -49,21 +49,22 @@
 
             <TextBlock
                 Grid.Column="0"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 Text="{Binding MaxChargeRate}" />
             <TextBlock
                 Grid.Column="1"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 Text="kWh" />
         </Grid>
 
-        <Separator />
+        <Separator IsVisible="{Binding Selected}" />
 
         <Button
             HorizontalAlignment="Stretch"
             Classes="Success"
             Command="{Binding Charge}"
-            IsEnabled="{Binding Selected}">
+            IsEnabled="{Binding Selected}"
+            IsVisible="{Binding Selected}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Bolt" />
                 <TextBlock VerticalAlignment="Center" Text="Charge" />

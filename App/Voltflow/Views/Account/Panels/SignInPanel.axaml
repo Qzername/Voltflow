@@ -25,10 +25,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="AlternateEmail" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
+            <TextBlock Classes="size-sm weight-bold" Text="Email" />
         </StackPanel>
         <TextBox Text="{Binding SignInForm.Email}" Watermark="example@email.com" />
 
@@ -36,10 +36,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="Lock" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
+            <TextBlock Classes="size-sm weight-bold" Text="Password" />
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>

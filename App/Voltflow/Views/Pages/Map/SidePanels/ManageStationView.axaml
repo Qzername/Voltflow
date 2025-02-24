@@ -17,23 +17,23 @@
     <StackPanel VerticalAlignment="Top">
         <TextBlock
             HorizontalAlignment="Center"
-            Classes="size-sm color-gray weight-bold"
+            Classes="size-sm weight-bold"
             Text="{Binding ViewTitle}" />
 
         <Separator />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Longitude" />
+        <TextBlock Classes="size-sm weight-bold" Text="Longitude" />
         <controls:NumberBox AllowFloats="True" Text="{Binding Longitude}" />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Latitude" />
+        <TextBlock Classes="size-sm weight-bold" Text="Latitude" />
         <controls:NumberBox AllowFloats="True" Text="{Binding Latitude}" />
 
         <Separator />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Cost" />
+        <TextBlock Classes="size-sm weight-bold" Text="Cost" />
         <controls:NumberBox Text="{Binding Cost}" />
 
-        <TextBlock Classes="size-sm color-gray weight-bold" Text="Maximum Charging Rate" />
+        <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
         <controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
 
         <Separator />

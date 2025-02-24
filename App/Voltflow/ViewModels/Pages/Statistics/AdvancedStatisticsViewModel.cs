@@ -34,12 +34,12 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 
 	[Reactive] public IEnumerable<ISeries>? PieData { get; set; }
 	public LabelVisual Title { get; set; } =
-	new LabelVisual
-	{
-		Text = "My chart title",
-		TextSize = 25,
-		Padding = new LiveChartsCore.Drawing.Padding(15)
-	};
+		new LabelVisual
+		{
+			Text = "My chart title",
+			TextSize = 25,
+			Padding = new LiveChartsCore.Drawing.Padding(15)
+		};
 
 	private Transaction[] _transactions = [];
 	private ChargingStation[] _stations = [];
@@ -72,6 +72,10 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		//stations
 		response = await _httpClient.GetAsync("/api/ChargingStations");
 		Debug.WriteLine(response.StatusCode);
+
+		if (response.StatusCode != HttpStatusCode.OK)
+			return;
+
 		json = await response.Content.ReadAsStringAsync();
 
 		_stations = JsonConverter.Deserialize<ChargingStation[]>(json);

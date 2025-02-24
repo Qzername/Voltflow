@@ -2,26 +2,66 @@
     x:Class="Voltflow.Views.Pages.Cars.CarsView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cars="clr-namespace:Voltflow.ViewModels.Pages.Cars"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <cars:CarsViewModel />
+    </Design.DataContext>
+
     <Panel>
-        <ItemsControl ItemsSource="{Binding cars}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="10" Background="Black">
-                        <TextBlock Text="{Binding Name}" />
-                        <Button
-                            Command="{Binding $parent[ItemsControl].DataContext.NavigateToCarDetails}"
-                            CommandParameter="{Binding}"
-                            Content="settings" />
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer>
+            <ItemsControl
+                MaxWidth="384"
+                Margin="16"
+                Padding="0,0,0,64"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Cars}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="0,2"
+                            Padding="16"
+                            Classes="with-bg"
+                            CornerRadius="6">
+                            <Panel>
+                                <StackPanel
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="DirectionsCar" />
+                                    <TextBlock
+                                        MaxWidth="224"
+                                        VerticalAlignment="Center"
+                                        Classes="weight-bold"
+                                        Text="{Binding Name}"
+                                        TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                                </StackPanel>
+
+                                <StackPanel
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        VerticalAlignment="Center"
+                                        Command="{Binding $parent[ItemsControl].DataContext.NavigateToCarDetails}"
+                                        CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Edit" />
+                                            <TextBlock VerticalAlignment="Center" Text="Edit" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Panel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
         <Button
             Height="48"

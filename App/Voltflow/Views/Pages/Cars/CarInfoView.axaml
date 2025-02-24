@@ -2,17 +2,98 @@
     x:Class="Voltflow.Views.Pages.Cars.CarInfoView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cars="clr-namespace:Voltflow.ViewModels.Pages.Cars"
+    xmlns:controls="clr-namespace:Voltflow.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock Text="{Binding Name}" />
-        <TextBox Text="{Binding BatteryCapacity}" Watermark="battery capacity" />
-        <TextBox Text="{Binding ChargingRate}" Watermark="max charge rate" />
-        <Button Content="Update" />
-        <Button Content="Delete" />
-        <Button Content="Go back" />
+    <Design.DataContext>
+        <cars:CarInfoViewModel />
+    </Design.DataContext>
+
+    <StackPanel
+        Width="256"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Classes="weight-bold size-lg"
+            Text="{Binding Name, Mode=OneTime}"
+            TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+
+        <Separator />
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                VerticalAlignment="Center"
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="DirectionsCar" />
+            <TextBlock Classes="size-sm weight-bold" Text="Name" />
+        </StackPanel>
+        <TextBox Text="{Binding Name}" Watermark="My Car" />
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                VerticalAlignment="Center"
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="Battery3Bar" />
+            <TextBlock Classes="size-sm weight-bold" Text="Battery Capacity" />
+        </StackPanel>
+        <controls:NumberBox Text="{Binding BatteryCapacity}" />
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                VerticalAlignment="Center"
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="Bolt" />
+            <TextBlock Classes="size-sm weight-bold" Text="Charging Rate" />
+        </StackPanel>
+        <controls:NumberBox Text="{Binding ChargingRate}" />
+
+        <Separator />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                Classes="Success"
+                Command="{Binding Update}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Update" />
+                    <TextBlock VerticalAlignment="Center" Text="Update" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                Classes="Danger"
+                Command="{Binding Delete}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Delete" />
+                    <TextBlock VerticalAlignment="Center" Text="Delete" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+
+        <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
+                <TextBlock VerticalAlignment="Center" Text="Go Back" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>

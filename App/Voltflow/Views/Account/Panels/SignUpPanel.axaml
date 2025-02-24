@@ -26,10 +26,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="AlternateEmail" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Email" />
+            <TextBlock Classes="size-sm weight-bold" Text="Email" />
         </StackPanel>
         <TextBox Text="{Binding SignUpForm.Email}" Watermark="example@email.com" />
 
@@ -37,10 +37,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="Lock" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Password" />
+            <TextBlock Classes="size-sm weight-bold" Text="Password" />
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -84,10 +84,10 @@
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
-                        Classes="size-sm color-gray"
+                        Classes="size-sm"
                         IsVisible="True"
                         Kind="Person" />
-                    <TextBlock Classes="size-sm color-gray weight-bold" Text="First Name" />
+                    <TextBlock Classes="size-sm weight-bold" Text="First Name" />
                 </StackPanel>
                 <TextBox Text="{Binding SignUpForm.FirstName}" Watermark="Jan" />
             </StackPanel>
@@ -96,10 +96,10 @@
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign
                         VerticalAlignment="Center"
-                        Classes="size-sm color-gray"
+                        Classes="size-sm"
                         IsVisible="True"
                         Kind="Person" />
-                    <TextBlock Classes="size-sm color-gray weight-bold" Text="Last Name" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Last Name" />
                 </StackPanel>
                 <TextBox Text="{Binding SignUpForm.LastName}" Watermark="Kowalski" />
             </StackPanel>
@@ -109,10 +109,10 @@
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 VerticalAlignment="Center"
-                Classes="size-sm color-gray"
+                Classes="size-sm"
                 IsVisible="True"
                 Kind="Call" />
-            <TextBlock Classes="size-sm color-gray weight-bold" Text="Phone Number" />
+            <TextBlock Classes="size-sm weight-bold" Text="Phone Number" />
         </StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -124,7 +124,6 @@
             <TextBlock
                 Grid.Column="0"
                 VerticalAlignment="Center"
-                Classes="color-gray"
                 Text="+48" />
             <controls:NumberBox
                 Grid.Column="2"
