@@ -80,7 +80,7 @@ public class ChargingViewModel : ViewModelBase
 			return;
 		}
 
-		if (Amount <= 0)
+		if (DeclaredAmount && Amount <= 0)
 		{
 			ToastManager?.Show(
 				new Toast("Declared amount must be above 0!"),
@@ -101,10 +101,9 @@ public class ChargingViewModel : ViewModelBase
 		var token = Preferences.Get<string?>("token", null);
 		var carId = Cars[PickedIndex].Id;
 
-		_connection = new HubConnectionBuilder().WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&stationId={CurrentStation.Id}", (options) =>
-		{
-			options.AccessTokenProvider = () => Task.FromResult(token);
-		}).Build();
+		_connection = new HubConnectionBuilder()
+			.WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&stationId={CurrentStation.Id}",
+				(options) => { options.AccessTokenProvider = () => Task.FromResult(token); }).Build();
 
 		Debug.WriteLine("Connecting...");
 		await _connection.StartAsync();
