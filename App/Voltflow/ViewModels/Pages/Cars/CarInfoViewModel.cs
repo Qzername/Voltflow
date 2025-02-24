@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System.Diagnostics;
 using System.Net.Http;
 using Voltflow.Models;
 
@@ -32,12 +33,16 @@ namespace Voltflow.ViewModels.Pages.Cars
 			currentCar.BatteryCapacity = BatteryCapacity;
 			currentCar.ChargingRate = ChargingRate;
 
-			await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(currentCar));
+			var response = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(currentCar));
+			Debug.WriteLine(response.StatusCode);
 		}
 
 		public async void Delete()
 		{
-			await _httpClient.DeleteAsync("/api/Cars?id=" + currentCar.Id);
+			Debug.WriteLine("test");
+			var response = await _httpClient.DeleteAsync("/api/Cars/" + currentCar.Id);
+			Debug.WriteLine(response.StatusCode);
+			Debug.WriteLine(await response.Content.ReadAsStringAsync());
 			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
 		}
 	}
