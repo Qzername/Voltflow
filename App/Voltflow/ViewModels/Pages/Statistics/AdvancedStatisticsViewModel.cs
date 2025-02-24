@@ -1,7 +1,6 @@
 ﻿using Avalonia.Platform.Storage;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.VisualElements;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
@@ -32,14 +31,7 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		}
 	}
 
-	[Reactive] public IEnumerable<ISeries>? PieData { get; set; }
-	public LabelVisual Title { get; set; } =
-		new LabelVisual
-		{
-			Text = "My chart title",
-			TextSize = 25,
-			Padding = new LiveChartsCore.Drawing.Padding(15)
-		};
+	[Reactive] public IEnumerable<ISeries> PieData { get; set; } = [];
 
 	private Transaction[] _transactions = [];
 	private ChargingStation[] _stations = [];

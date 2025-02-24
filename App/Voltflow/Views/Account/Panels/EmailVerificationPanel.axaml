@@ -24,7 +24,6 @@
         <!--  Token input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Key" />
@@ -48,8 +47,8 @@
                 HorizontalContentAlignment="Center"
                 Command="{Binding NavigateBack}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
-                    <TextBlock VerticalAlignment="Center" Text="Go Back" />
+                    <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                    <TextBlock Text="Go Back" />
                 </StackPanel>
             </Button>
 
@@ -60,8 +59,8 @@
                 Classes="Success"
                 Command="{Binding VerifyEmail}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Check" />
-                    <TextBlock VerticalAlignment="Center" Text="Confirm" />
+                    <iconPacks:PackIconMaterialDesign Kind="Check" />
+                    <TextBlock Text="Confirm" />
                 </StackPanel>
             </Button>
         </Grid>

@@ -30,8 +30,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Classes="with-bg"
-                CornerRadius="6"
-                IsVisible="{Binding !IsMobile}">
+                CornerRadius="6">
                 <reactiveUi:RoutedViewHost Router="{Binding Router}">
                     <reactiveUi:RoutedViewHost.ViewLocator>
                         <viewLocators:ReactiveViewLocator />
@@ -47,8 +46,8 @@
                 Command="{Binding ChangeMode}"
                 IsVisible="{Binding !IsMobile}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Repeat" />
-                    <TextBlock VerticalAlignment="Center" Text="Change Mode" />
+                    <iconPacks:PackIconMaterialDesign Kind="Repeat" />
+                    <TextBlock Text="Change Mode" />
                 </StackPanel>
             </Button>
         </Panel>

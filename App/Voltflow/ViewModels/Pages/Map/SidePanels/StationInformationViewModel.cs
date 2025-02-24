@@ -9,8 +9,9 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 
 public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : MapSidePanelBase(layer, screen)
 {
+
 	[Reactive] public bool Selected { get; set; }
-	[Reactive] public string ViewTitle { get; set; } = "Click on a point to start.";
+	[Reactive] public string ViewTitle { get; set; } = "Click on a point.";
 	[Reactive] public string Status { get; set; } = "Unknown";
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }

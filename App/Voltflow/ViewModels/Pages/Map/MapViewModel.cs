@@ -98,7 +98,7 @@ public class MapViewModel : ViewModelBase, IScreen
 		UpdateModeViewModel();
 
 		// Disable interaction on mobile
-		if (e.MapInfo == null || IsMobile) return;
+		if (e.MapInfo == null) return;
 
 		_currentModeViewModel?.MapClicked(e);
 	}
@@ -123,6 +123,9 @@ public class MapViewModel : ViewModelBase, IScreen
 
 	public void ChangeMode()
 	{
+		if (IsMobile)
+			return;
+
 		_isCreatingMode = !_isCreatingMode;
 
 		if (_currentModeViewModel is ManageStationViewModel viewModel)

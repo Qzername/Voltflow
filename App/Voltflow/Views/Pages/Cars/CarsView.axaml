@@ -33,10 +33,9 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="DirectionsCar" />
+                                    <iconPacks:PackIconMaterialDesign Kind="DirectionsCar" />
                                     <TextBlock
                                         MaxWidth="224"
-                                        VerticalAlignment="Center"
                                         Classes="weight-bold"
                                         Text="{Binding Name}"
                                         TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
@@ -46,13 +45,10 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Orientation="Horizontal">
-                                    <Button
-                                        VerticalAlignment="Center"
-                                        Command="{Binding $parent[ItemsControl].DataContext.NavigateToCarDetails}"
-                                        CommandParameter="{Binding}">
+                                    <Button Command="{Binding $parent[ItemsControl].DataContext.NavigateToCarDetails}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal">
-                                            <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Edit" />
-                                            <TextBlock VerticalAlignment="Center" Text="Edit" />
+                                            <iconPacks:PackIconMaterialDesign Kind="Edit" />
+                                            <TextBlock Text="Edit" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
@@ -70,8 +66,8 @@
             VerticalAlignment="Bottom"
             Command="{Binding NavigateToCreateCar}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Add" />
-                <TextBlock VerticalAlignment="Center" Text="Add Car" />
+                <iconPacks:PackIconMaterialDesign Kind="Add" />
+                <TextBlock Text="Add Car" />
             </StackPanel>
         </Button>
     </Panel>

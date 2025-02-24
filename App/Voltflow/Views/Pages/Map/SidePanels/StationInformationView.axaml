@@ -19,43 +19,38 @@
 
         <Separator />
 
-        <TextBlock Classes="size-sm weight-bold" Text="Status" />
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="List" />
+            <TextBlock Classes="size-sm weight-bold" Text="Status" />
+        </StackPanel>
         <TextBlock Classes="size-sm" Text="{Binding Status}" />
 
-        <TextBlock Classes="size-sm weight-bold" Text="Cost" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
-                Text="{Binding Cost}" />
-            <TextBlock
-                Grid.Column="1"
-                Classes="size-sm"
-                Text="zł" />
-        </Grid>
+                IsVisible="True"
+                Kind="Payment" />
+            <TextBlock Classes="size-sm weight-bold" Text="Cost" />
+        </StackPanel>
+        <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+            <TextBlock Classes="size-sm" Text="{Binding Cost}" />
+            <TextBlock Classes="size-sm" Text="zł" />
+        </StackPanel>
 
-
-        <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
-                Text="{Binding MaxChargeRate}" />
-            <TextBlock
-                Grid.Column="1"
-                Classes="size-sm"
-                Text="kWh" />
-        </Grid>
+                IsVisible="True"
+                Kind="Bolt" />
+            <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
+        </StackPanel>
+        <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+            <TextBlock Classes="size-sm" Text="{Binding MaxChargeRate}" />
+            <TextBlock Classes="size-sm" Text="kWh" />
+        </StackPanel>
 
         <Separator IsVisible="{Binding Selected}" />
 
@@ -66,8 +61,8 @@
             IsEnabled="{Binding Selected}"
             IsVisible="{Binding Selected}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Bolt" />
-                <TextBlock VerticalAlignment="Center" Text="Charge" />
+                <iconPacks:PackIconMaterialDesign Kind="Bolt" />
+                <TextBlock Text="Charge" />
             </StackPanel>
         </Button>
     </StackPanel>

@@ -56,7 +56,7 @@ public class CarInfoViewModel : ViewModelBase
 			var response = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(_currentCar));
 			Debug.WriteLine(response.StatusCode);
 			ToastManager?.Show(
-				new Toast("Battery capacity cannot be below or equal 0!"),
+				new Toast("Battery capacity cannot must be above 0!"),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,
@@ -67,7 +67,7 @@ public class CarInfoViewModel : ViewModelBase
 		if (ChargingRate <= 0)
 		{
 			ToastManager?.Show(
-				new Toast("Charging rate cannot be below or equal 0!"),
+				new Toast("Charging rate cannot must be above 0!"),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,
@@ -86,8 +86,8 @@ public class CarInfoViewModel : ViewModelBase
 
 	public async Task Delete()
 	{
-		var response = await _httpClient.DeleteAsync("/api/Cars/" + _currentCar.Id);
-		Debug.WriteLine(response.StatusCode);
+		var request = await _httpClient.DeleteAsync("/api/Cars/" + _currentCar.Id);
+		Debug.WriteLine(request.StatusCode);
 		if (request.StatusCode == HttpStatusCode.OK)
 			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
 	}

@@ -25,8 +25,8 @@
             HorizontalContentAlignment="Center"
             Command="{Binding NavigateToSettings}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Settings" />
-                <TextBlock VerticalAlignment="Center" Text="Settings" />
+                <iconPacks:PackIconMaterialDesign Kind="Settings" />
+                <TextBlock Text="Settings" />
             </StackPanel>
         </Button>
 
@@ -35,8 +35,8 @@
             HorizontalContentAlignment="Center"
             Command="{Binding NavigateToDiscounts}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Payment" />
-                <TextBlock VerticalAlignment="Center" Text="Discounts" />
+                <iconPacks:PackIconMaterialDesign Kind="Payment" />
+                <TextBlock Text="Discounts" />
             </StackPanel>
         </Button>
 
@@ -46,8 +46,8 @@
             Classes="Danger"
             Command="{Binding SignOut}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Logout" />
-                <TextBlock VerticalAlignment="Center" Text="Sign Out" />
+                <iconPacks:PackIconMaterialDesign Kind="Logout" />
+                <TextBlock Text="Sign Out" />
             </StackPanel>
         </Button>
     </StackPanel>

@@ -17,7 +17,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		private readonly HttpClient _client;
 
 		// Data for view
-		[Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space to start.";
+		[Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space.";
 		[Reactive] public double Longitude { get; set; }
 		[Reactive] public double Latitude { get; set; }
 		[Reactive] public int Cost { get; set; }

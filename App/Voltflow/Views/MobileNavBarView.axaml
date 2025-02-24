@@ -20,8 +20,9 @@
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Button
-                Width="96"
+                Width="64"
                 Padding="8"
+                Background="Transparent"
                 Command="{Binding NavigateToMap}">
                 <StackPanel Classes="sm-spacing">
                     <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="LocationOn" />
@@ -33,21 +34,37 @@
             </Button>
 
             <Button
-                Width="96"
+                Width="64"
                 Padding="8"
-                Command="{Binding NavigateToStatistics}">
+                Background="Transparent"
+                Command="{Binding NavigateToCars}">
                 <StackPanel Classes="sm-spacing">
-                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="Bolt" />
+                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="DirectionsCar" />
                     <TextBlock
                         HorizontalAlignment="Center"
                         Classes="weight-bold size-sm"
-                        Text="Statistics" />
+                        Text="Cars" />
                 </StackPanel>
             </Button>
 
             <Button
-                Width="96"
+                Width="64"
                 Padding="8"
+                Background="Transparent"
+                Command="{Binding NavigateToStatistics}">
+                <StackPanel Classes="sm-spacing">
+                    <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="List" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Classes="weight-bold size-sm"
+                        Text="Stats" />
+                </StackPanel>
+            </Button>
+
+            <Button
+                Width="64"
+                Padding="8"
+                Background="Transparent"
                 Command="{Binding NavigateToAccount}">
                 <StackPanel Classes="sm-spacing">
                     <iconPacks:PackIconMaterialDesign HorizontalAlignment="Center" Kind="Person" />

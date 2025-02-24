@@ -4,6 +4,11 @@
         <Setter Property="Spacing" Value="8" />
     </Style>
 
+    <!--  StackPanel with tiny spacing  -->
+    <Style Selector="StackPanel.xs-spacing">
+        <Setter Property="Spacing" Value="1" />
+    </Style>
+
     <!--  StackPanel with smaller spacing  -->
     <Style Selector="StackPanel.sm-spacing">
         <Setter Property="Spacing" Value="4" />

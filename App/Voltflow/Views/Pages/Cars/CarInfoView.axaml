@@ -28,7 +28,6 @@
 
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="DirectionsCar" />
@@ -38,7 +37,6 @@
 
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Battery3Bar" />
@@ -48,7 +46,6 @@
 
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Bolt" />
@@ -71,8 +68,8 @@
                 Classes="Success"
                 Command="{Binding Update}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Update" />
-                    <TextBlock VerticalAlignment="Center" Text="Update" />
+                    <iconPacks:PackIconMaterialDesign Kind="Update" />
+                    <TextBlock Text="Update" />
                 </StackPanel>
             </Button>
 
@@ -82,8 +79,8 @@
                 Classes="Danger"
                 Command="{Binding Delete}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Delete" />
-                    <TextBlock VerticalAlignment="Center" Text="Delete" />
+                    <iconPacks:PackIconMaterialDesign Kind="Delete" />
+                    <TextBlock Text="Delete" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -91,8 +88,8 @@
 
         <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
-                <TextBlock VerticalAlignment="Center" Text="Go Back" />
+                <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                <TextBlock Text="Go Back" />
             </StackPanel>
         </Button>
     </StackPanel>

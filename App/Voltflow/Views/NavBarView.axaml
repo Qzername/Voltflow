@@ -15,41 +15,35 @@
 
     <Panel Margin="16">
         <!--  Left side  -->
-        <StackPanel
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+        <StackPanel HorizontalAlignment="Left">
             <Button Command="{Binding NavigateToMap}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Bolt" />
-                    <TextBlock VerticalAlignment="Center" Text="Home" />
+                    <iconPacks:PackIconMaterialDesign Kind="Home" />
+                    <TextBlock Text="Home" />
                 </StackPanel>
             </Button>
         </StackPanel>
 
         <!--  Right side  -->
-        <StackPanel
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <Button Command="{Binding NavigateToCars}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="DirectionsCar" />
-                    <TextBlock VerticalAlignment="Center" Text="Cars" />
+                    <iconPacks:PackIconMaterialDesign Kind="DirectionsCar" />
+                    <TextBlock Text="Cars" />
                 </StackPanel>
             </Button>
 
             <Button Command="{Binding NavigateToStatistics}" IsEnabled="{Binding Authenticated}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="List" />
-                    <TextBlock VerticalAlignment="Center" Text="Statistics" />
+                    <iconPacks:PackIconMaterialDesign Kind="List" />
+                    <TextBlock Text="Statistics" />
                 </StackPanel>
             </Button>
 
             <Button Command="{Binding NavigateToAccount}">
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Person" />
-                    <TextBlock VerticalAlignment="Center" Text="Account" />
+                    <iconPacks:PackIconMaterialDesign Kind="Person" />
+                    <TextBlock Text="Account" />
                 </StackPanel>
             </Button>
         </StackPanel>

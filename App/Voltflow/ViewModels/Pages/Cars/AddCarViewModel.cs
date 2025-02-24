@@ -37,7 +37,7 @@ public class AddCarViewModel(IScreen screen) : ViewModelBase(screen)
 		if (BatteryCapacity <= 0)
 		{
 			ToastManager?.Show(
-				new Toast("Battery capacity cannot be below or equal 0!"),
+				new Toast("Battery capacity must be above 0!"),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,
@@ -48,7 +48,7 @@ public class AddCarViewModel(IScreen screen) : ViewModelBase(screen)
 		if (ChargingRate <= 0)
 		{
 			ToastManager?.Show(
-				new Toast("Charging rate cannot be below or equal 0!"),
+				new Toast("Charging rate must be above 0!"),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,

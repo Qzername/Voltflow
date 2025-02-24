@@ -3,59 +3,179 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:charging="clr-namespace:Voltflow.ViewModels.Pages.Charging"
+    xmlns:controls="clr-namespace:Voltflow.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <charging:ChargingViewModel />
+    </Design.DataContext>
 
-    <StackPanel
-        Width="256"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center">
-        <!--  Station info  -->
-
-        <TextBlock Text="{Binding CurrentStation.Cost}" />
-        <TextBlock Text="{Binding CurrentStation.MaxChargeRate}" />
-
-        <Separator />
-        <!--  Data  -->
-
-        <ComboBox ItemsSource="{Binding Cars}" SelectedIndex="{Binding PickedIndex}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-
-        <CheckBox Content="Declare amount" IsChecked="{Binding DeclaredAmount}" />
-        <TextBox
-            IsEnabled="{Binding DeclaredAmount}"
-            Text="{Binding Amount}"
-            Watermark="Amount of kWh" />
-
-        <Separator />
-        <!--  Chariging info  -->
-
-        <TextBlock Text="{Binding Time}" />
-        <TextBlock Text="{Binding TotalCharge}" />
-        <TextBlock Text="{Binding TotalCost}" />
-
-        <Separator />
-        <!--  Controls  -->
-
-        <Button Command="{Binding Start}" Content="Start Charging" />
-        <Button Command="{Binding Stop}" Content="Stop Charging" />
-        <Button
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Center"
-            Command="{Binding NavigateHome}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="ArrowBack" />
-                <TextBlock VerticalAlignment="Center" Text="Go Back" />
+    <ScrollViewer>
+        <StackPanel
+            Width="256"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <!--  Station info  -->
+            <!--
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="Payment" />
+                <TextBlock Classes="size-sm weight-bold" Text="Cost" />
             </StackPanel>
-        </Button>
-    </StackPanel>
+            <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+                <TextBlock Classes="size-sm" Text="{Binding CurrentStation.Cost}" />
+                <TextBlock Classes="size-sm" Text="zł" />
+            </StackPanel>
+
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="Bolt" />
+                <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
+            </StackPanel>
+            <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+                <TextBlock Classes="size-sm" Text="{Binding CurrentStation.MaxChargeRate}" />
+                <TextBlock Classes="size-sm" Text="kWh" />
+            </StackPanel>
+
+            <Separator />-->
+
+            <!--  Data  -->
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="DirectionsCar" />
+                <TextBlock Classes="size-sm weight-bold" Text="Selected Car" />
+            </StackPanel>
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Cars}"
+                SelectedIndex="{Binding PickedIndex}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel
+                    Grid.Column="0"
+                    Classes="sm-spacing"
+                    Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Battery3Bar" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Declare Amount? (kW)" />
+                </StackPanel>
+
+                <CheckBox Grid.Column="1" IsChecked="{Binding DeclaredAmount}" />
+            </Grid>
+
+            <controls:NumberBox
+                AllowFloats="True"
+                IsEnabled="{Binding DeclaredAmount}"
+                Text="{Binding Amount}" />
+
+            <Separator />
+
+            <!--  Charging info  -->
+            <StackPanel IsVisible="{Binding Started}">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Time" />
+                </StackPanel>
+                <TextBlock Text="{Binding Time}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="BatteryFull" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Charged" />
+                </StackPanel>
+                <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+                    <TextBlock Classes="size-sm" Text="{Binding TotalCharge}" />
+                    <TextBlock
+                        HorizontalAlignment="Right"
+                        Classes="size-sm"
+                        Text="kW" />
+                </StackPanel>
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Payment" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Cost" />
+                </StackPanel>
+                <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+                    <TextBlock Classes="size-sm" Text="{Binding TotalCost}" />
+                    <TextBlock Classes="size-sm" Text="zł" />
+                </StackPanel>
+
+                <Separator />
+            </StackPanel>
+
+            <!--  Controls  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    Classes="Success"
+                    Command="{Binding Start}"
+                    IsEnabled="{Binding Finished}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Check" />
+                        <TextBlock Text="Start" />
+                    </StackPanel>
+                </Button>
+
+                <Button
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    Classes="Danger"
+                    Command="{Binding Stop}"
+                    IsEnabled="{Binding !Finished}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Close" />
+                        <TextBlock Text="Stop" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <Button
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Command="{Binding NavigateHome}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                    <TextBlock Text="Go Back" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

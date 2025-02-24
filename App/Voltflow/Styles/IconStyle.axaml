@@ -35,6 +35,7 @@
 
     <!--  Default icon  -->
     <Style Selector="iconPacks|PackIconMaterialDesign">
+        <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="0,0,0,1" />
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />

@@ -22,7 +22,6 @@
             <CheckBox Content="Switch to energy used" IsChecked="{Binding Mode}" />
 
             <lvc:PieChart
-                Title="{Binding Title}"
                 Width="800"
                 Height="450"
                 Series="{Binding PieData}" />

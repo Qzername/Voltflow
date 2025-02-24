@@ -24,7 +24,6 @@
         <!--  Email input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="AlternateEmail" />
@@ -35,7 +34,6 @@
         <!--  Password input  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
-                VerticalAlignment="Center"
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Lock" />
@@ -58,15 +56,8 @@
 
             <Button Grid.Column="2" Command="{Binding SignInForm.TogglePassword}">
                 <StackPanel>
-                    <iconPacks:PackIconMaterialDesign
-                        VerticalAlignment="Center"
-                        IsVisible="{Binding !SignInForm.ShowPassword}"
-                        Kind="Visibility" />
-
-                    <iconPacks:PackIconMaterialDesign
-                        VerticalAlignment="Center"
-                        IsVisible="{Binding SignInForm.ShowPassword}"
-                        Kind="VisibilityOff" />
+                    <iconPacks:PackIconMaterialDesign IsVisible="{Binding !SignInForm.ShowPassword}" Kind="Visibility" />
+                    <iconPacks:PackIconMaterialDesign IsVisible="{Binding SignInForm.ShowPassword}" Kind="VisibilityOff" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -79,8 +70,8 @@
             Classes="Success"
             Command="{Binding SignIn}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign VerticalAlignment="Center" Kind="Check" />
-                <TextBlock VerticalAlignment="Center" Text="Sign In" />
+                <iconPacks:PackIconMaterialDesign Kind="Check" />
+                <TextBlock Text="Sign In" />
             </StackPanel>
         </Button>
 
