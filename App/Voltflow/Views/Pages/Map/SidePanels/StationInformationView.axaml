@@ -65,5 +65,7 @@
                 <TextBlock Text="Charge" />
             </StackPanel>
         </Button>
+		
+		<Button Command="{Binding NavigateStatistics}" Content="Statistics"/>
     </StackPanel>
 </UserControl>

@@ -25,6 +25,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddTransient<IEmailSender, DefaultEmailSender>();
 builder.Services.AddTransient<IAccountTokenGenerator, DefaultAccountTokenGenerator>();
 
+builder.Services.AddHostedService<StatisticsUpdateService>();
+
 // --- Configuration ---
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));

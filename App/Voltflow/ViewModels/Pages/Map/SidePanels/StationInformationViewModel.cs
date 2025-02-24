@@ -34,6 +34,11 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 		MaxChargeRate = _data.MaxChargeRate;
 	}
 
+	public void NavigateStatistics()
+	{
+        HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, _pointsLayer, HostScreen));
+    }
+
 	public void Charge()
 	{
 		HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, HostScreen));
