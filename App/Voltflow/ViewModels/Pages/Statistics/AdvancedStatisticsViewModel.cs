@@ -1,204 +1,210 @@
-﻿using LiveChartsCore.SkiaSharpView;
+﻿using Avalonia.Platform.Storage;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.VisualElements;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Http;
-using Voltflow.Models;
-using System.Linq;
-using ReactiveUI.Fody.Helpers;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView.VisualElements;
-using Voltflow.Services;
-using Avalonia.Platform.Storage;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Voltflow.Models;
+using Voltflow.Services;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class AdvancedStatisticsViewModel : ViewModelBase
 {
-    HttpClient _httpClient;
-    DialogService _dialogService;
+	private readonly HttpClient _httpClient;
+	private readonly DialogService _dialogService;
 
-    public bool Mode
-    {
-        set
-        {
-            if (value)
-                EnergyUsedPieMode();
-            else
-                CostPieMode();
-        }
-    }
+	public bool Mode
+	{
+		set
+		{
+			if (value)
+				EnergyUsedPieMode();
+			else
+				CostPieMode();
+		}
+	}
 
-    [Reactive] public IEnumerable<ISeries> PieData { get; set; }
-    public LabelVisual Title { get; set; } =
-    new LabelVisual
-    {
-        Text = "My chart title",
-        TextSize = 25,
-        Padding = new LiveChartsCore.Drawing.Padding(15)
-    };
+	[Reactive] public IEnumerable<ISeries>? PieData { get; set; }
+	public LabelVisual Title { get; set; } =
+	new LabelVisual
+	{
+		Text = "My chart title",
+		TextSize = 25,
+		Padding = new LiveChartsCore.Drawing.Padding(15)
+	};
 
-    Transaction[] transactions;
-    ChargingStation[] stations;
+	private Transaction[] _transactions = [];
+	private ChargingStation[] _stations = [];
 
-    //grid
-    [Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; }
-    [Reactive] public List<StationGridElement> StationGridData { get; set; }
+	//grid
+	[Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
+	[Reactive] public List<StationGridElement> StationGridData { get; set; } = [];
 
-    public AdvancedStatisticsViewModel(IScreen screen) : base(screen)
-    {
-        _httpClient = GetService<HttpClient>();
-        _dialogService = GetService<DialogService>();
+	public AdvancedStatisticsViewModel(IScreen screen) : base(screen)
+	{
+		_httpClient = GetService<HttpClient>();
+		_dialogService = GetService<DialogService>();
 
-        GetData();
-    }
+		GetData();
+	}
 
-    async void GetData()
-    {
-        //transactions
-        var response = await _httpClient.GetAsync("/api/Transactions/all");
-        Debug.WriteLine(response.StatusCode);
-        var json = await response.Content.ReadAsStringAsync();
+	private async void GetData()
+	{
+		//transactions
+		var response = await _httpClient.GetAsync("/api/Transactions/all");
+		Debug.WriteLine(response.StatusCode);
 
-        transactions = JsonConverter.Deserialize<Transaction[]>(json);
+		if (response.StatusCode != HttpStatusCode.OK)
+			return;
 
-        //stations
-        response = await _httpClient.GetAsync("/api/ChargingStations");
-        Debug.WriteLine(response.StatusCode);
-        json = await response.Content.ReadAsStringAsync();
+		var json = await response.Content.ReadAsStringAsync();
 
-        stations = JsonConverter.Deserialize<ChargingStation[]>(json);
+		_transactions = JsonConverter.Deserialize<Transaction[]>(json);
 
-        CostPieMode();
-        GenerateGridData();
-    }
+		//stations
+		response = await _httpClient.GetAsync("/api/ChargingStations");
+		Debug.WriteLine(response.StatusCode);
+		json = await response.Content.ReadAsStringAsync();
 
-    void EnergyUsedPieMode()
-    {
-        Dictionary<ChargingStation, float> total = new();
+		_stations = JsonConverter.Deserialize<ChargingStation[]>(json);
 
-        foreach (var t in transactions)
-        {
-            //TODO: optimize this
-            var station = stations.Single(station => station.Id == t.ChargingStationId);
+		CostPieMode();
+		GenerateGridData();
+	}
 
-            if (total.ContainsKey(station))
-                total[station] += (float)t.EnergyConsumed;
-            else
-                total[station] = (float)t.EnergyConsumed;
-        }
+	private void EnergyUsedPieMode()
+	{
+		Dictionary<ChargingStation, float> total = new();
 
-        ConstructPieChartSeries(total);
-    }
+		foreach (var t in _transactions)
+		{
+			//TODO: optimize this
+			var station = _stations.Single(station => station.Id == t.ChargingStationId);
 
-    void CostPieMode()
-    {
-        Dictionary<ChargingStation, float> total = new();
+			if (total.ContainsKey(station))
+				total[station] += (float)t.EnergyConsumed;
+			else
+				total[station] = (float)t.EnergyConsumed;
+		}
 
-        foreach (var t in transactions)
-        {
-            //TODO: optimize this
-            var station = stations.Single(station => station.Id == t.ChargingStationId);
+		ConstructPieChartSeries(total);
+	}
 
-            if (total.ContainsKey(station))
-                total[station] += (float)t.Cost;
-            else
-                total[station] = (float)t.Cost;
-        }
+	private void CostPieMode()
+	{
+		Dictionary<ChargingStation, float> total = new();
 
-        ConstructPieChartSeries(total);
-    }
+		foreach (var t in _transactions)
+		{
+			//TODO: optimize this
+			var station = _stations.Single(station => station.Id == t.ChargingStationId);
 
-    void ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
-    {
-        List<PieSeries<float>> dataTemp = new();
+			if (total.ContainsKey(station))
+				total[station] += (float)t.Cost;
+			else
+				total[station] = (float)t.Cost;
+		}
 
-        foreach (var t in total)
-        {
-            dataTemp.Add(new PieSeries<float>
-            {
-                Values = [t.Value],
-            });
-        }
+		ConstructPieChartSeries(total);
+	}
 
-        PieData = dataTemp;
-    }
+	private void ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
+	{
+		List<PieSeries<float>> dataTemp = new();
 
-    void GenerateGridData()
-    {
-        //transactions
-        List<TransactionGridElement> elementsTemp = new();
+		foreach (var t in total)
+		{
+			dataTemp.Add(new PieSeries<float>
+			{
+				Values = [t.Value],
+			});
+		}
 
-        foreach (var t in transactions)
-        {
-            elementsTemp.Add(new TransactionGridElement
-            {
-                StationID = stations.Single(station => station.Id == t.ChargingStationId).Id,
-                EnergyConsumed = t.EnergyConsumed,
-                Cost = t.Cost
-            });
-        }
+		PieData = dataTemp;
+	}
 
-        TransactionsGridData = new List<TransactionGridElement>(elementsTemp);
-    
-        //stations
-        List<StationGridElement> stationGridElements = new List<StationGridElement>();
+	private void GenerateGridData()
+	{
+		//transactions
+		List<TransactionGridElement> elementsTemp = new();
 
-        foreach(var s in stations)
-        {
-            stationGridElements.Add(new StationGridElement()
-            {
-                StationID = s.Id,
-                Longitutde = s.Longitude,
-                Latitude = s.Latitude,
-            });
-        }
+		foreach (var t in _transactions)
+		{
+			elementsTemp.Add(new TransactionGridElement
+			{
+				StationId = _stations.Single(station => station.Id == t.ChargingStationId).Id,
+				EnergyConsumed = t.EnergyConsumed,
+				Cost = t.Cost
+			});
+		}
 
-        StationGridData = new List<StationGridElement>(stationGridElements);
-    }
+		TransactionsGridData = new List<TransactionGridElement>(elementsTemp);
 
-    public void GenerateTransactionsCsv()
-    {
-        string csv = "StationID,EnergyConsumed,Cost\n";
+		//stations
+		List<StationGridElement> stationGridElements = new List<StationGridElement>();
 
-        foreach (var t in transactions)
-            csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+		foreach (var s in _stations)
+		{
+			stationGridElements.Add(new StationGridElement()
+			{
+				StationId = s.Id,
+				Longitude = s.Longitude,
+				Latitude = s.Latitude,
+			});
+		}
 
-        SaveCsv(csv);
-    }
+		StationGridData = new List<StationGridElement>(stationGridElements);
+	}
 
-    public void GenerateStationsCsv()
-    {
-        string csv = "StationID,Latitude,Longitutde\n";
+	public async Task GenerateTransactionsCsv()
+	{
+		string csv = "Station Id,Energy Consumed,Cost\n";
 
-        foreach (var s in stations)
-            csv += $"{s.Id},{s.Latitude},{s.Longitude}\n";
+		foreach (var t in _transactions)
+			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
-        SaveCsv(csv);
-    }
+		await SaveCsv(csv);
+	}
 
-    public async void SaveCsv(string csv)
-    {
-        var directory = await _dialogService.OpenDirectoryDialog(new FolderPickerOpenOptions()
-        {
-            AllowMultiple = false,
-        });
+	public async Task GenerateStationsCsv()
+	{
+		string csv = "Station Id,Latitude,Longitude\n";
 
-        File.WriteAllText(directory + "output.csv", csv);
-    }
+		foreach (var s in _stations)
+			csv += $"{s.Id},{s.Latitude},{s.Longitude}\n";
 
-    public class TransactionGridElement
-    {
-        public int StationID { get; set; }
-        public double EnergyConsumed { get; set; }
-        public double Cost { get; set; }
-    }
+		await SaveCsv(csv);
+	}
 
-    public class StationGridElement
-    {
-        public int StationID { get; set; }
-        public double Latitude { get; set; }
-        public double Longitutde { get; set; }
-    }
+	public async Task SaveCsv(string csv)
+	{
+		var directory = await _dialogService.OpenDirectoryDialog(new FolderPickerOpenOptions()
+		{
+			AllowMultiple = false,
+		});
+
+		await File.WriteAllTextAsync(directory + "output.csv", csv);
+	}
+
+	public class TransactionGridElement
+	{
+		public int StationId { get; set; }
+		public double EnergyConsumed { get; set; }
+		public double Cost { get; set; }
+	}
+
+	public class StationGridElement
+	{
+		public int StationId { get; set; }
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
+	}
 }

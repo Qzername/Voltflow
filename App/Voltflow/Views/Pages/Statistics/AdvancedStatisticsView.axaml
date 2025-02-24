@@ -1,39 +1,63 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.Views.Pages.Statistics.AdvancedStatisticsView"
-			 xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia">
-		<StackPanel
-			MaxWidth="256"
-			HorizontalAlignment="Stretch"
-			VerticalAlignment="Center">
-		<!--Switch this to whatever makes sense but no checkbox-->
-		<CheckBox IsChecked="{Binding Mode}" Content="Switch to energy used"/>
+<UserControl
+    x:Class="Voltflow.Views.Pages.Statistics.AdvancedStatisticsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statistics="clr-namespace:Voltflow.ViewModels.Pages.Statistics"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <statistics:AdvancedStatisticsViewModel />
+    </Design.DataContext>
 
-		<lvc:PieChart Series="{Binding PieData}" Title="{Binding Title}" Width="800" Height="450"/>
+    <ScrollViewer>
+        <StackPanel
+            MaxWidth="256"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center">
+            <!--  Switch this to whatever makes sense but no checkbox  -->
+            <CheckBox Content="Switch to energy used" IsChecked="{Binding Mode}" />
 
-		<Panel Background="Gray" Width="500" Height="50">
-			<Button Command="{Binding GenerateTransactionsCsv}" Content="Generate CSV"/>
-		</Panel>
+            <lvc:PieChart
+                Title="{Binding Title}"
+                Width="800"
+                Height="450"
+                Series="{Binding PieData}" />
 
-		<DataGrid Height="100"
-				  ItemsSource="{Binding TransactionsGridData}"
-				  AutoGenerateColumns="True" IsReadOnly="True"
-				  GridLinesVisibility="All"
-				  BorderThickness="1" BorderBrush="Gray">
-		</DataGrid>
+            <Panel
+                Width="500"
+                Height="50"
+                Background="Gray">
+                <Button Command="{Binding GenerateTransactionsCsv}" Content="Generate CSV" />
+            </Panel>
 
-		<Panel Background="Gray" Width="500" Height="50">
-			<Button Command="{Binding GenerateStationsCsv}" Content="Generate CSV"/>
-		</Panel>
+            <DataGrid
+                Height="100"
+                AutoGenerateColumns="True"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                GridLinesVisibility="All"
+                IsReadOnly="True"
+                ItemsSource="{Binding TransactionsGridData}" />
 
-		<DataGrid Height="100"
-				ItemsSource="{Binding StationGridData}"
-				AutoGenerateColumns="True" IsReadOnly="True"
-				GridLinesVisibility="All"
-				BorderThickness="1" BorderBrush="Gray">
-		</DataGrid>
-	</StackPanel>
+            <Panel
+                Width="500"
+                Height="50"
+                Background="Gray">
+                <Button Command="{Binding GenerateStationsCsv}" Content="Generate CSV" />
+            </Panel>
+
+            <DataGrid
+                Height="100"
+                AutoGenerateColumns="True"
+                BorderBrush="Gray"
+                BorderThickness="1"
+                GridLinesVisibility="All"
+                IsReadOnly="True"
+                ItemsSource="{Binding StationGridData}" />
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
