@@ -2,10 +2,123 @@
     x:Class="Voltflow.Views.Account.SettingsView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:account="clr-namespace:Voltflow.ViewModels.Account"
+    xmlns:controls="clr-namespace:Voltflow.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    Welcome to Avalonia!
+    <Design.DataContext>
+        <account:SettingsViewModel />
+    </Design.DataContext>
+
+    <StackPanel
+        Width="256"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center"
+        IsEnabled="{Binding !SettingsForm.Working}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Person" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Name" />
+                </StackPanel>
+                <TextBox
+                    MaxLength="100"
+                    Text="{Binding SettingsForm.Name}"
+                    Watermark="Jan" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Person" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Surname" />
+                </StackPanel>
+                <TextBox
+                    MaxLength="100"
+                    Text="{Binding SettingsForm.Surname}"
+                    Watermark="Kowalski" />
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="Call" />
+            <TextBlock Classes="size-sm weight-bold" Text="Phone Number" />
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="+48" />
+            <controls:NumberBox
+                Grid.Column="2"
+                MaxLength="9"
+                Text="{Binding SettingsForm.PhoneNumber}"
+                Watermark="123456789" />
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Column="0"
+                Classes="sm-spacing"
+                Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="Fingerprint" />
+                <TextBlock Classes="size-sm weight-bold" Text="Enable 2FA?" />
+            </StackPanel>
+
+            <CheckBox Grid.Column="1" IsChecked="{Binding SettingsForm.TwoFactor}" />
+        </Grid>
+
+        <Separator />
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Classes="Success"
+            Command="{Binding SaveChanges}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="Check" />
+                <TextBlock Text="Save Changes" />
+            </StackPanel>
+        </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Classes="Danger"
+            Command="{Binding DeleteAccount}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="Close" />
+                <TextBlock Text="Delete Account" />
+            </StackPanel>
+        </Button>
+    </StackPanel>
 </UserControl>
