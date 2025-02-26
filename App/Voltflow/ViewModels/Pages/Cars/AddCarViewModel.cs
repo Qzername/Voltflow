@@ -10,8 +10,15 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Cars;
 
-public class AddCarViewModel(IScreen screen) : ViewModelBase(screen)
+public class AddCarViewModel : ViewModelBase
 {
+	public AddCarViewModel(IScreen screen) : base(screen)
+	{
+		_httpClient = GetService<HttpClient>();
+	}
+
+	private readonly HttpClient _httpClient;
+
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 	public WindowToastManager? ToastManager;
 
@@ -21,8 +28,6 @@ public class AddCarViewModel(IScreen screen) : ViewModelBase(screen)
 
 	public async Task AddCar()
 	{
-		var httpClient = GetService<HttpClient>();
-
 		if (string.IsNullOrEmpty(Name))
 		{
 			ToastManager?.Show(
@@ -63,7 +68,7 @@ public class AddCarViewModel(IScreen screen) : ViewModelBase(screen)
 			ChargingRate = ChargingRate
 		};
 
-		var request = await httpClient.PostAsync("/api/Cars", JsonConverter.ToStringContent(car));
+		var request = await _httpClient.PostAsync("/api/Cars", JsonConverter.ToStringContent(car));
 		if (request.StatusCode == HttpStatusCode.OK)
 			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
 	}

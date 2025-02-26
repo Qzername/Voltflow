@@ -6,7 +6,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SkiaSharp;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -52,24 +51,22 @@ public class StatisticsViewModel : ViewModelBase
 	private async void GetData()
 	{
 		//transactions
-		var response = await _httpClient.GetAsync("/api/Transactions");
-		Debug.WriteLine(response.StatusCode);
+		var request = await _httpClient.GetAsync("/api/Transactions");
 
-		if (response.StatusCode != HttpStatusCode.OK)
+		if (request.StatusCode != HttpStatusCode.OK)
 			return;
 
-		var json = await response.Content.ReadAsStringAsync();
+		var json = await request.Content.ReadAsStringAsync();
 
 		_transactions = JsonConverter.Deserialize<Transaction[]>(json);
 
 		//cars
-		response = await _httpClient.GetAsync("/api/Cars");
-		Debug.WriteLine(response.StatusCode);
+		request = await _httpClient.GetAsync("/api/Cars");
 
-		if (response.StatusCode != HttpStatusCode.OK)
+		if (request.StatusCode != HttpStatusCode.OK)
 			return;
 
-		json = await response.Content.ReadAsStringAsync();
+		json = await request.Content.ReadAsStringAsync();
 
 		_cars = JsonConverter.Deserialize<Car[]>(json);
 

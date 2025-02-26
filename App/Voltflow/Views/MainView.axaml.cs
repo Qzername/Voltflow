@@ -1,3 +1,4 @@
+using System.Net;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Avalonia.SimplePreferences;
@@ -24,8 +25,20 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 		var token = await Preferences.GetAsync<string>("token", null);
 		viewModel.Authenticated = token != null;
 
-		var client = Locator.Current.GetService<HttpClient>();
-		if (client is not null && token is not null)
-			client.DefaultRequestHeaders.Authorization = new("Bearer", token);
+		var httpClient = Locator.Current.GetService<HttpClient>();
+		if (httpClient is not null && token is not null)
+		{
+			httpClient.DefaultRequestHeaders.Authorization = new("Bearer", token);
+
+			// Check if token is valid, account deleted, etc.
+			var request = await httpClient.GetAsync("/api/Accounts");
+
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				await Preferences.RemoveAsync("token");
+				httpClient.DefaultRequestHeaders.Authorization = null;
+				viewModel.Authenticated = false;
+			}
+		}
 	}
 }

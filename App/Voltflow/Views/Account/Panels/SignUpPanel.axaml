@@ -63,7 +63,7 @@
             </Button>
         </Grid>
 
-        <!--  First and last name input  -->
+        <!--  Name and surname input  -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -77,9 +77,12 @@
                         Classes="size-sm"
                         IsVisible="True"
                         Kind="Person" />
-                    <TextBlock Classes="size-sm weight-bold" Text="First Name" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Name" />
                 </StackPanel>
-                <TextBox Text="{Binding SignUpForm.FirstName}" Watermark="Jan" />
+                <TextBox
+                    MaxLength="100"
+                    Text="{Binding SignUpForm.Name}"
+                    Watermark="Jan" />
             </StackPanel>
 
             <StackPanel Grid.Column="2">
@@ -88,9 +91,12 @@
                         Classes="size-sm"
                         IsVisible="True"
                         Kind="Person" />
-                    <TextBlock Classes="size-sm weight-bold" Text="Last Name" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Surname" />
                 </StackPanel>
-                <TextBox Text="{Binding SignUpForm.LastName}" Watermark="Kowalski" />
+                <TextBox
+                    MaxLength="100"
+                    Text="{Binding SignUpForm.Surname}"
+                    Watermark="Kowalski" />
             </StackPanel>
         </Grid>
 

@@ -24,10 +24,10 @@ public static class PasswordValidator
 
 	public static bool IsValid(string? password)
 	{
-		if (!Regex.IsMatch(password, PasswordRegex))
+		if (password == null)
 			return false;
 
-		return true;
+		return Regex.IsMatch(password, PasswordRegex);
 	}
 }
 

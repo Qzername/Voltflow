@@ -5,16 +5,21 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
+using Ursa.Controls;
 using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels
 {
 	public class ManageStationViewModel : MapSidePanelBase
 	{
+		public WindowToastManager? ToastManager;
+
 		// Dependency injection
-		private readonly HttpClient _client;
+		private readonly HttpClient _httpClient;
 
 		// Data for view
 		[Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space.";
@@ -67,7 +72,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
 		public ManageStationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
 		{
-			_client = GetService<HttpClient>();
+			_httpClient = GetService<HttpClient>();
 		}
 
 		#region Handling map clicks
@@ -152,8 +157,70 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				MaxChargeRate
 			});
 
-			var result = await _client.PostAsync("/api/ChargingStations", content);
-			Debug.WriteLine(result.StatusCode);
+			var request = await _httpClient.PostAsync("/api/ChargingStations", content);
+
+			if (request.StatusCode == HttpStatusCode.Forbidden)
+			{
+				ToastManager?.Show(
+					new Toast("Not an administrator - missing permissions!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.BadRequest)
+			{
+				ToastManager?.Show(
+					new Toast("Provided values are invalid!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				ToastManager?.Show(
+					new Toast("Unknown error!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode == HttpStatusCode.OK && _selectedPoint is not null)
+			{
+				request = await _httpClient.GetAsync("/api/ChargingStations");
+
+				if (request.StatusCode != HttpStatusCode.OK)
+					return;
+
+				_selectedPoint = null;
+				((List<IFeature>)_pointsLayer.Features).Clear();
+				ResetInfo();
+
+				var stationsJson = await request.Content.ReadAsStringAsync();
+				var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
+
+				var list = (List<IFeature>)_pointsLayer.Features;
+
+				foreach (var chargingStation in chargingStations)
+				{
+					var point = SphericalMercator.FromLonLat(chargingStation.Longitude, chargingStation.Latitude);
+
+					var feature = new PointFeature(point.x, point.y);
+					feature["data"] = chargingStation;
+
+					list.Add(feature);
+				}
+			}
 		}
 
 		public async Task UpdateStation()
@@ -165,11 +232,48 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			station.Cost = Cost;
 			station.MaxChargeRate = MaxChargeRate;
 
-			StringContent content = JsonConverter.ToStringContent(station);
-			var result = await _client.PatchAsync("/api/ChargingStations", content);
-			Debug.WriteLine(result.StatusCode);
+			var content = JsonConverter.ToStringContent(station);
+			var request = await _httpClient.PatchAsync("/api/ChargingStations", content);
+
+			if (request.StatusCode == HttpStatusCode.Forbidden)
+			{
+				ToastManager?.Show(
+					new Toast("Not an administrator - missing permissions!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.BadRequest)
+			{
+				ToastManager?.Show(
+					new Toast("Provided values are invalid!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				ToastManager?.Show(
+					new Toast("Unknown error!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
 
 			CurrentStation = station;
+			_selectedPoint = null;
+			ResetInfo();
 		}
 
 		public async Task UpdateStationStatus()
@@ -179,14 +283,50 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			station.Status = IsOutOfService ? ChargingStationStatus.OutOfService : ChargingStationStatus.Available;
 			station.ServiceMode = IsInServiceMode;
 
-			StringContent content = JsonConverter.ToStringContent(new
+			var content = JsonConverter.ToStringContent(new
 			{
 				station.Id,
 				station.Status,
 				station.ServiceMode
 			});
-			var result = await _client.PatchAsync("/api/ChargingStations/", content);
-			Debug.WriteLine(result.StatusCode);
+
+			var request = await _httpClient.PatchAsync("/api/ChargingStations/", content);
+
+			if (request.StatusCode == HttpStatusCode.Forbidden)
+			{
+				ToastManager?.Show(
+					new Toast("Not an administrator - missing permissions!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.BadRequest)
+			{
+				ToastManager?.Show(
+					new Toast("Provided values are invalid!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				ToastManager?.Show(
+					new Toast("Unknown error!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
 
 			CurrentStation = station;
 		}
@@ -195,10 +335,51 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		{
 			var station = CurrentStation;
 
-			var result = await _client.DeleteAsync("/api/ChargingStations/" + station.Id);
-			Debug.WriteLine(result.StatusCode);
+			var request = await _httpClient.DeleteAsync("/api/ChargingStations/" + station.Id);
+
+			if (request.StatusCode == HttpStatusCode.Forbidden)
+			{
+				ToastManager?.Show(
+					new Toast("Not an administrator - missing permissions!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				ToastManager?.Show(
+					new Toast("Unknown error!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+
+				return;
+			}
+
+			Clicked = false;
+			if (_selectedPoint is not null)
+				((List<IFeature>)_pointsLayer.Features).Remove(_selectedPoint);
+
+			_selectedPoint = null;
+			ResetInfo();
 		}
 		#endregion
+
+		private void ResetInfo()
+		{
+			ViewTitle = "Click on a point/blank space.";
+			Longitude = 0;
+			Latitude = 0;
+			Cost = 0;
+			MaxChargeRate = 0;
+			CreatingNewPoint = false;
+			Clicked = false;
+		}
 
 		/// <summary>
 		/// sets the value of OutOfService property without server notification

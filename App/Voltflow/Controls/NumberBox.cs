@@ -9,6 +9,9 @@ namespace Voltflow.Controls;
 
 public partial class NumberBox : TextBox
 {
+	public const string NumberRegex = "^[0-9]$";
+	public const string NumberFloatRegex = "^[0-9.]$";
+
 	public NumberBox() { PastingFromClipboard += HandlePasting; }
 
 	public static readonly StyledProperty<bool> AllowFloatsProperty =
@@ -25,8 +28,7 @@ public partial class NumberBox : TextBox
 	protected override void OnTextInput(TextInputEventArgs e)
 	{
 		// Only allow 0 to 9 and a dot.
-		Regex numberRegex = new Regex($"^[0-9{(AllowFloats ? "." : null)}]$");
-		if (string.IsNullOrEmpty(e.Text) || !numberRegex.IsMatch(e.Text)) return;
+		if (string.IsNullOrEmpty(e.Text) || !Regex.IsMatch(e.Text, AllowFloats ? NumberFloatRegex : NumberRegex)) return;
 
 		if (e.Text == ".")
 		{

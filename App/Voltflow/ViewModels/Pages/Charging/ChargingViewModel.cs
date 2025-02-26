@@ -40,9 +40,11 @@ public class ChargingViewModel : ViewModelBase
 	private HubConnection? _connection;
 	private readonly Timer _dataUpdate = new();
 	private DateTime _startTime;
+	private readonly HttpClient _httpClient;
 
 	public ChargingViewModel(ChargingStation chargingStation, IScreen screen) : base(screen)
 	{
+		_httpClient = GetService<HttpClient>();
 		CurrentStation = chargingStation;
 
 		_dataUpdate.Interval = 100;
@@ -54,12 +56,10 @@ public class ChargingViewModel : ViewModelBase
 	private async void GetCarsForCombobox()
 	{
 		//get cars for combobox
-		var httpClient = GetService<HttpClient>();
-		var response = await httpClient.GetAsync("/api/Cars");
-		var jsonString = await response.Content.ReadAsStringAsync();
-		Debug.WriteLine(response.StatusCode);
+		var request = await _httpClient.GetAsync("/api/Cars");
+		var jsonString = await request.Content.ReadAsStringAsync();
 
-		if (response.StatusCode != HttpStatusCode.OK)
+		if (request.StatusCode != HttpStatusCode.OK)
 			return;
 
 		var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);

@@ -7,7 +7,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Voltflow.Models;
@@ -26,7 +25,7 @@ public class MapViewModel : ViewModelBase, IScreen
 	[Reactive] public bool Authenticated { get; set; }
 
 	// Dependency injection
-	private readonly HttpClient _client;
+	private readonly HttpClient _httpClient;
 
 	public RoutingState Router { get; }
 	private MapSidePanelBase? _currentModeViewModel;
@@ -47,7 +46,7 @@ public class MapViewModel : ViewModelBase, IScreen
 
 	public MapViewModel(IScreen screen) : base(screen)
 	{
-		_client = GetService<HttpClient>();
+		_httpClient = GetService<HttpClient>();
 
 		Router = new RoutingState();
 		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
@@ -71,11 +70,9 @@ public class MapViewModel : ViewModelBase, IScreen
 		Map.Home = n => n.CenterOnAndZoomTo(new MPoint(center.x, center.y), n.Resolutions[6]);
 
 		// Add points to map
-		var response = await _client.GetAsync("/api/ChargingStations");
-		var stationsJson = await response.Content.ReadAsStringAsync();
+		var request = await _httpClient.GetAsync("/api/ChargingStations");
+		var stationsJson = await request.Content.ReadAsStringAsync();
 		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
-
-		Debug.WriteLine(response.StatusCode);
 
 		var list = (List<IFeature>)_pointsLayer.Features;
 

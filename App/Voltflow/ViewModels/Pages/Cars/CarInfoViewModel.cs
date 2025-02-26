@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls.Notifications;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Reactive;
@@ -49,12 +48,6 @@ public class CarInfoViewModel : ViewModelBase
 
 		if (BatteryCapacity <= 0)
 		{
-			_currentCar.Name = Name;
-			_currentCar.BatteryCapacity = BatteryCapacity;
-			_currentCar.ChargingRate = ChargingRate;
-
-			var response = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(_currentCar));
-			Debug.WriteLine(response.StatusCode);
 			ToastManager?.Show(
 				new Toast("Battery capacity cannot must be above 0!"),
 				showIcon: true,
@@ -87,7 +80,6 @@ public class CarInfoViewModel : ViewModelBase
 	public async Task Delete()
 	{
 		var request = await _httpClient.DeleteAsync("/api/Cars/" + _currentCar.Id);
-		Debug.WriteLine(request.StatusCode);
 		if (request.StatusCode == HttpStatusCode.OK)
 			HostScreen.Router.Navigate.Execute(new CarsViewModel(HostScreen));
 	}
