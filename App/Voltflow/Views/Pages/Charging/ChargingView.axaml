@@ -107,7 +107,7 @@
             </StackPanel>
 
             <!--  Controls  -->
-            <Grid>
+            <Grid IsEnabled="{Binding !Working}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="8" />

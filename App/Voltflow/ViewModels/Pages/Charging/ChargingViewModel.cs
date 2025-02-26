@@ -32,10 +32,13 @@ public class ChargingViewModel : ViewModelBase
 	[Reactive] public double TotalCharge { get; set; }
 	[Reactive] public double TotalCost { get; set; }
 
-	// Started is false at first, after first start it will always be true.
+	// Started will be always true after first start.
 	// It's used for displaying charging info.
+	// Finished determines whether car is done charging.
+	// Working determines whether functions Start() or Stop() are running.
 	[Reactive] public bool Started { get; set; }
 	[Reactive] public bool Finished { get; set; } = true;
+	[Reactive] public bool Working { get; set; }
 
 	private HubConnection? _connection;
 	private readonly DispatcherTimer _dataUpdate = new();
@@ -90,11 +93,14 @@ public class ChargingViewModel : ViewModelBase
 			return;
 		}
 
+		if (Working)
+			return;
+
+		Working = true;
+
 		Time = "00:00:00";
 		TotalCharge = 0;
 		TotalCost = 0;
-
-		Finished = false;
 
 		var token = await Preferences.GetAsync<string?>("token", null);
 		var carId = Cars[PickedIndex].Id;
@@ -110,6 +116,7 @@ public class ChargingViewModel : ViewModelBase
 		_startTime = DateTime.UtcNow;
 		_dataUpdate.IsEnabled = true;
 		Started = true;
+		Finished = false;
 
 		ToastManager?.Show(
 			new Toast("Started charging."),
@@ -117,6 +124,8 @@ public class ChargingViewModel : ViewModelBase
 			showClose: false,
 			type: NotificationType.Success,
 			classes: ["Light"]);
+
+		Working = false;
 	}
 
 	private async Task UpdateData()
@@ -153,9 +162,10 @@ public class ChargingViewModel : ViewModelBase
 
 	public async Task Stop()
 	{
-		if (!_dataUpdate.IsEnabled || _connection == null)
+		if (!_dataUpdate.IsEnabled || _connection == null || Working)
 			return;
 
+		Working = true;
 		_dataUpdate.IsEnabled = false;
 
 		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
@@ -167,6 +177,7 @@ public class ChargingViewModel : ViewModelBase
 		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
 
 		Finished = true;
+		Working = false;
 	}
 
 	//navigation
