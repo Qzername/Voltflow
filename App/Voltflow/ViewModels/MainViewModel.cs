@@ -7,6 +7,7 @@ using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Map;
 using Voltflow.ViewModels.Pages.Statistics;
+using Voltflow.ViewModels.Pages.Test;
 
 namespace Voltflow.ViewModels;
 
@@ -72,6 +73,14 @@ public class MainViewModel : ReactiveObject, IScreen
 			return;
 
 		Router.Navigate.Execute(new StatisticsViewModel(this));
+	}
+
+	public void NavigateToTest()
+	{
+		if (GetCurrentViewModel() is TestViewModel)
+			return;
+
+		Router.Navigate.Execute(new TestViewModel(this));
 	}
 }
 

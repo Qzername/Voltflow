@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.TestView">
-  Welcome to Avalonia!
+             x:Class="Voltflow.Views.Pages.Test.TestView"
+			 xmlns:controls="clr-namespace:Voltflow.Controls;assembly=Voltflow">
+  <controls:ScratchCard IsWon="{Binding IsWon, Mode=TwoWay}" IsDone="{Binding IsDone}"/>
 </UserControl>

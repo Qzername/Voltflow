@@ -1,10 +1,9 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using Voltflow.ViewModels.Pages.Test;
 
-namespace Voltflow;
+namespace Voltflow.Views.Pages.Test;
 
-public partial class TestView : UserControl
+public partial class TestView : ReactiveUserControl<TestViewModel>
 {
     public TestView()
     {
