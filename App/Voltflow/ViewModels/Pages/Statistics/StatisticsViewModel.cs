@@ -141,11 +141,11 @@ public class StatisticsViewModel : ViewModelBase
 		List<GridElement> elementsTemp = new();
 
 		foreach (var t in _transactions)
-        {
-            if (t.CarId is null)
-                continue;
+		{
+			if (t.CarId is null)
+				continue;
 
-            elementsTemp.Add(new GridElement
+			elementsTemp.Add(new GridElement
 			{
 				CarName = _cars.Single(cars => cars.Id == t.CarId).Name,
 				EnergyConsumed = t.EnergyConsumed,

@@ -70,39 +70,41 @@
                 IsEnabled="{Binding IsOutOfService}" />
         </StackPanel>
 
-        <Separator />
+        <StackPanel IsVisible="{Binding Clicked}">
+            <Separator />
 
-        <Button
-            HorizontalAlignment="Stretch"
-            Classes="Success"
-            Command="{Binding CreateStation}"
-            IsEnabled="{Binding CreatingNewPoint}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign Kind="Add" />
-                <TextBlock Text="Add Station" />
-            </StackPanel>
-        </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Success"
+                Command="{Binding CreateStation}"
+                IsEnabled="{Binding CreatingNewPoint}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Add" />
+                    <TextBlock Text="Add Station" />
+                </StackPanel>
+            </Button>
 
-        <Button
-            HorizontalAlignment="Stretch"
-            Classes="Warning"
-            Command="{Binding UpdateStation}"
-            IsEnabled="{Binding !CreatingNewPoint}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign Kind="Update" />
-                <TextBlock Text="Update Station" />
-            </StackPanel>
-        </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Warning"
+                Command="{Binding UpdateStation}"
+                IsEnabled="{Binding !CreatingNewPoint}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Update" />
+                    <TextBlock Text="Update Station" />
+                </StackPanel>
+            </Button>
 
-        <Button
-            HorizontalAlignment="Stretch"
-            Classes="Danger"
-            Command="{Binding DeleteStation}"
-            IsEnabled="{Binding !CreatingNewPoint}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign Kind="Delete" />
-                <TextBlock Text="Delete Station" />
-            </StackPanel>
-        </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Danger"
+                Command="{Binding DeleteStation}"
+                IsEnabled="{Binding !CreatingNewPoint}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Delete" />
+                    <TextBlock Text="Delete Station" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </StackPanel>
 </UserControl>

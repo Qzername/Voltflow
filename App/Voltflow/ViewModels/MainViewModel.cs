@@ -5,7 +5,6 @@ using System;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
-using Voltflow.ViewModels.Pages.Charging;
 using Voltflow.ViewModels.Pages.Map;
 using Voltflow.ViewModels.Pages.Statistics;
 

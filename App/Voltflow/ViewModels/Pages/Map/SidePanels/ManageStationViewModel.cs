@@ -23,6 +23,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		[Reactive] public int Cost { get; set; }
 		[Reactive] public int MaxChargeRate { get; set; }
 		[Reactive] public bool CreatingNewPoint { get; set; }
+		[Reactive] public bool Clicked { get; set; }
 
 		private bool _isOutOfService;
 		public bool IsOutOfService
@@ -73,6 +74,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		public override void MapClicked(MapInfoEventArgs e)
 		{
 			var point = (PointFeature?)e.MapInfo.Feature;
+			Clicked = true;
 
 			if (point?["data"] is null)
 			{

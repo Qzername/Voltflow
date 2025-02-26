@@ -1,7 +1,6 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
-using ExCSS;
 using Microsoft.AspNetCore.SignalR.Client;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -147,29 +146,29 @@ public class ChargingViewModel : ViewModelBase
 	}
 
 	public async Task Stop()
-    {
-        if (_connection == null)
-            return;
+	{
+		if (_connection == null)
+			return;
 
-        bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
+		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
 
-        Debug.WriteLine(isDiscount);
+		Debug.WriteLine(isDiscount);
 
-        Finished = true;
-        _dataUpdate.Enabled = false;
+		Finished = true;
+		_dataUpdate.Enabled = false;
 
-        Debug.WriteLine(_connection.State.ToString());
+		Debug.WriteLine(_connection.State.ToString());
 
-        ToastManager?.Show(
-            new Toast("Stopped charging."),
-            showIcon: true,
-            showClose: false,
-            type: NotificationType.Success,
-            classes: ["Light"]);
-       
+		ToastManager?.Show(
+			new Toast("Stopped charging."),
+			showIcon: true,
+			showClose: false,
+			type: NotificationType.Success,
+			classes: ["Light"]);
+
 		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
-    }
+	}
 
 	//navigation
 	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));

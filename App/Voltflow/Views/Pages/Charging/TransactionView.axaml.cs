@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Charging;
 
 public partial class TransactionView : ReactiveUserControl<TransactionViewModel>
 {
-    public TransactionView()
-    {
-        InitializeComponent();
-    }
+	public TransactionView()
+	{
+		InitializeComponent();
+	}
 }

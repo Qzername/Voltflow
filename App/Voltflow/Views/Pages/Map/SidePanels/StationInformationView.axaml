@@ -57,7 +57,7 @@
         <Button
             HorizontalAlignment="Stretch"
             Classes="Success"
-            Command="{Binding Charge}"
+            Command="{Binding NavigateToCharging}"
             IsEnabled="{Binding Selected}"
             IsVisible="{Binding Selected}">
             <StackPanel Orientation="Horizontal">
@@ -65,7 +65,16 @@
                 <TextBlock Text="Charge" />
             </StackPanel>
         </Button>
-		
-		<Button Command="{Binding NavigateStatistics}" Content="Statistics"/>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            Classes="Primary"
+            Command="{Binding NavigateToStatistics}"
+            IsVisible="{Binding Selected}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="List" />
+                <TextBlock Text="Statistics" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>
