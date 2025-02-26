@@ -15,10 +15,17 @@
     </Design.DataContext>
 
     <StackPanel VerticalAlignment="Top">
-        <TextBlock
-            HorizontalAlignment="Center"
-            Classes="size-sm weight-bold"
-            Text="{Binding ViewTitle}" />
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="EvStation" />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-sm weight-bold"
+                Text="{Binding ViewTitle}" />
+        </StackPanel>
 
         <Separator />
 
