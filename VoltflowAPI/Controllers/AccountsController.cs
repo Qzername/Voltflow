@@ -17,6 +17,17 @@ public class AccountsController : ControllerBase
         _userManager = userManager;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAccount()
+    {
+	    var user = await _userManager.GetUserAsync(User);
+
+	    if (user is null)
+		    return BadRequest();
+
+	    return Ok(new { Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber});
+    }
+
     [HttpPatch]
     public async Task<IActionResult> UpdateAccount([FromBody] PatchAccountModel accountModel)
     {

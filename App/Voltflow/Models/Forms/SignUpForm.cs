@@ -7,8 +7,8 @@ namespace Voltflow.Models.Forms;
 /// </summary>
 public class SignUpForm : SignInForm
 {
-	[Reactive] public string? FirstName { get; set; }
-	[Reactive] public string? LastName { get; set; }
+	[Reactive] public string? Name { get; set; }
+	[Reactive] public string? Surname { get; set; }
 	[Reactive] public string? PhoneNumber { get; set; }
 
 	/// <summary>
@@ -19,8 +19,8 @@ public class SignUpForm : SignInForm
 		Email = null;
 		Password = null;
 		ShowPassword = false;
-		FirstName = null;
-		LastName = null;
+		Name = null;
+		Surname = null;
 		PhoneNumber = null;
 		Working = false;
 	}

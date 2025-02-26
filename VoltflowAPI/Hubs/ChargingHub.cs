@@ -124,14 +124,14 @@ public class ChargingHub : Hub
         //register transaction
         Transaction transaction = new()
         {
-            AccountId = user.Id,
-            CarId = connInfo.CarId,
-            ChargingStationId = connInfo.StationId,
-            StartDate = connInfo.StartDate,
-            EndDate = endTime,
-            EnergyConsumed = energyConsumed,
-            Cost = connInfo.IsDiscount ? totalCost * 0.9 : totalCost
-        }
+	        AccountId = user.Id,
+	        CarId = connInfo.CarId,
+	        ChargingStationId = connInfo.StationId,
+	        StartDate = connInfo.StartDate,
+	        EndDate = endTime,
+	        EnergyConsumed = energyConsumed,
+	        Cost = connInfo.IsDiscount ? totalCost * 0.9 : totalCost
+        };
 
         _applicationContext.Transactions.Add(transaction);
         await _applicationContext.SaveChangesAsync();
