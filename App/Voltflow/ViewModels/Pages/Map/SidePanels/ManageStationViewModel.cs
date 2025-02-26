@@ -1,17 +1,15 @@
-﻿using Mapsui;
+﻿using Avalonia.Controls.Notifications;
+using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
 using Ursa.Controls;
 using Voltflow.Models;
-using BruTile.Wms;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels
 {

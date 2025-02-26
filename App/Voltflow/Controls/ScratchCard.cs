@@ -30,13 +30,13 @@ namespace Voltflow.Controls
 			set => SetValue(IsDoneProperty, value);
 		}
 
-		bool[,] showGrid;
-		bool[,] xGrid;
+		private readonly bool[,] _showGrid;
+		private bool[,] _xGrid;
 
 		public ScratchCard()
 		{
-			showGrid = new bool[3, 3];
-			xGrid = new bool[3, 3];
+			_showGrid = new bool[3, 3];
+			_xGrid = new bool[3, 3];
 
 			PropertyChanged += ScratchCard_PropertyChanged;
 			GenerateGrid();
@@ -60,10 +60,10 @@ namespace Voltflow.Controls
 				var gridY = i / 3;
 				var pos = new Point(gridX * 50, gridY * 50);
 
-				if (xGrid[gridX, gridY])
+				if (_xGrid[gridX, gridY])
 					context.DrawText(X, pos);
 
-				if (!showGrid[gridX, gridY])
+				if (!_showGrid[gridX, gridY])
 				{
 					cardCompleted = false;
 					context.DrawRectangle(Brushes.Red, null, new Rect(pos, new Size(50, 50)));
@@ -81,14 +81,14 @@ namespace Voltflow.Controls
 			var gridX = Convert.ToInt32(Math.Floor(pos.X / 50));
 			var gridY = Convert.ToInt32(Math.Floor(pos.Y / 50));
 
-			showGrid[gridX, gridY] = true;
+			_showGrid[gridX, gridY] = true;
 
 			InvalidateVisual();
 		}
 
 		void GenerateGrid()
 		{
-			xGrid = new bool[3, 3];
+			_xGrid = new bool[3, 3];
 
 			if (IsWon)
 				GenerateWon();
@@ -112,32 +112,34 @@ namespace Voltflow.Controls
 
 					if (direction == 0)
 					{
-						xGrid[0, 0] = true;
-						xGrid[1, 1] = true;
-						xGrid[2, 2] = true;
+						_xGrid[0, 0] = true;
+						_xGrid[1, 1] = true;
+						_xGrid[2, 2] = true;
 					}
 					else
 					{
-						xGrid[2, 0] = true;
-						xGrid[1, 1] = true;
-						xGrid[0, 2] = true;
+						_xGrid[2, 0] = true;
+						_xGrid[1, 1] = true;
+						_xGrid[0, 2] = true;
 					}
 					break;
 				//column
 				case 1:
 					var column = rng.Next(0, 3);
 
-					xGrid[column, 0] = true;
-					xGrid[column, 1] = true;
-					xGrid[column, 2] = true;
+					_xGrid[column, 0] = true;
+					_xGrid[column, 1] = true;
+					_xGrid[column, 2] = true;
+
 					break;
 				//row
 				case 2:
 					var row = rng.Next(0, 3);
 
-					xGrid[0, row] = true;
-					xGrid[1, row] = true;
-					xGrid[2, row] = true;
+					_xGrid[0, row] = true;
+					_xGrid[1, row] = true;
+					_xGrid[2, row] = true;
+
 					break;
 			}
 		}
@@ -162,9 +164,9 @@ namespace Voltflow.Controls
 			var thirdRowId = rng.Next(0, thirdRowPossibilities.Count);
 			var thirdRow = thirdRowPossibilities[0];
 
-			xGrid[firstRow, 0] = true;
-			xGrid[secondRow, 1] = true;
-			xGrid[thirdRow, 2] = true;
+			_xGrid[firstRow, 0] = true;
+			_xGrid[secondRow, 1] = true;
+			_xGrid[thirdRow, 2] = true;
 		}
 	}
 }

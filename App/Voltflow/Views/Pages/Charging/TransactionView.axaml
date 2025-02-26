@@ -1,13 +1,31 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.Views.Pages.Charging.TransactionView"
-			 xmlns:controls="clr-namespace:Voltflow.Controls;assembly=Voltflow">
-	<StackPanel>
-		<controls:ScratchCard Height="150" IsWon="{Binding IsWon, Mode=TwoWay}" IsDone="{Binding IsDone}"/>
-        <TextBlock IsVisible="{Binding ShowText}" Text="{Binding Text}"/>
-		<!--TODO: stats of transaction + fix issues with text showing-->
-	</StackPanel>
+<UserControl
+    x:Class="Voltflow.Views.Pages.Charging.TransactionView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:charging="clr-namespace:Voltflow.ViewModels.Pages.Charging"
+    xmlns:controls="clr-namespace:Voltflow.Controls;assembly=Voltflow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <charging:TransactionViewModel />
+    </Design.DataContext>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Classes="size-lg weight-bold"
+            IsVisible="{Binding ShowText}"
+            Text="{Binding Text}" />
+        <!--  TODO: stats of transaction + fix issues with text showing  -->
+
+        <controls:ScratchCard
+            Width="150"
+            Height="150"
+            HorizontalAlignment="Center"
+            IsDone="{Binding IsDone}"
+            IsWon="{Binding IsWon, Mode=TwoWay}" />
+    </StackPanel>
 </UserControl>

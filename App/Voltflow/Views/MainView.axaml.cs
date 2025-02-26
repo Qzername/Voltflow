@@ -1,8 +1,8 @@
-using System.Net;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Avalonia.SimplePreferences;
 using Splat;
+using System.Net;
 using System.Net.Http;
 using Voltflow.ViewModels;
 

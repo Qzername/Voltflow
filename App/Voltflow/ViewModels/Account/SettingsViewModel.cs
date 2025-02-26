@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia.Controls.Notifications;
+﻿using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
 using ReactiveUI;
 using System.Net;

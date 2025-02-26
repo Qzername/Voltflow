@@ -1,5 +1,5 @@
-using Avalonia.Controls;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Ursa.Controls;
 using Voltflow.ViewModels.Pages.Map.SidePanels;

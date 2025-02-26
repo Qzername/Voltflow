@@ -40,7 +40,7 @@
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Battery3Bar" />
-            <TextBlock Classes="size-sm weight-bold" Text="Battery Capacity" />
+            <TextBlock Classes="size-sm weight-bold" Text="Battery Capacity (kWh)" />
         </StackPanel>
         <controls:NumberBox Text="{Binding BatteryCapacity}" />
 
@@ -49,7 +49,7 @@
                 Classes="size-sm"
                 IsVisible="True"
                 Kind="Bolt" />
-            <TextBlock Classes="size-sm weight-bold" Text="Charging Rate" />
+            <TextBlock Classes="size-sm weight-bold" Text="Charging Rate (kW)" />
         </StackPanel>
         <controls:NumberBox Text="{Binding ChargingRate}" />
 

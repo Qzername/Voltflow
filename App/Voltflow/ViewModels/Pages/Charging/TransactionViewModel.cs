@@ -3,27 +3,19 @@ using ReactiveUI.Fody.Helpers;
 
 namespace Voltflow.ViewModels.Pages.Charging;
 
-public class TransactionViewModel : ViewModelBase
+public class TransactionViewModel(bool isWon, IScreen screen) : ViewModelBase(screen)
 {
-	[Reactive] public bool IsWon { get; set; }
+	[Reactive] public bool IsWon { get; set; } = isWon;
+
 	public bool IsDone
 	{
 		set
 		{
-			if (IsWon)
-				Text = "You won! -10%";
-			else
-				Text = "Better luck next time";
-
+			Text = IsWon ? "You won! -10%" : "Better luck next time...";
 			ShowText = true;
 		}
 	}
 
-	[Reactive] public string Text { get; set; }
+	[Reactive] public string? Text { get; set; }
 	[Reactive] public bool ShowText { get; set; }
-
-	public TransactionViewModel(bool isWon, IScreen screen) : base(screen)
-	{
-		IsWon = isWon;
-	}
 }

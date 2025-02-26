@@ -1,6 +1,7 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
+using Avalonia.Threading;
 using Microsoft.AspNetCore.SignalR.Client;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -9,7 +10,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Timers;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.ViewModels.Pages.Map;
@@ -38,7 +38,7 @@ public class ChargingViewModel : ViewModelBase
 	[Reactive] public bool Finished { get; set; } = true;
 
 	private HubConnection? _connection;
-	private readonly Timer _dataUpdate = new();
+	private readonly DispatcherTimer _dataUpdate = new();
 	private DateTime _startTime;
 	private readonly HttpClient _httpClient;
 
@@ -47,8 +47,8 @@ public class ChargingViewModel : ViewModelBase
 		_httpClient = GetService<HttpClient>();
 		CurrentStation = chargingStation;
 
-		_dataUpdate.Interval = 100;
-		_dataUpdate.Elapsed += async (sender, e) => await UpdateData();
+		_dataUpdate.Interval = TimeSpan.FromMilliseconds(100);
+		_dataUpdate.Tick += async (sender, e) => await UpdateData();
 
 		GetCarsForCombobox();
 	}
@@ -94,7 +94,6 @@ public class ChargingViewModel : ViewModelBase
 		TotalCharge = 0;
 		TotalCost = 0;
 
-		Started = true;
 		Finished = false;
 
 		var token = await Preferences.GetAsync<string?>("token", null);
@@ -109,7 +108,8 @@ public class ChargingViewModel : ViewModelBase
 		Debug.WriteLine(_connection.State.ToString());
 
 		_startTime = DateTime.UtcNow;
-		_dataUpdate.Enabled = true;
+		_dataUpdate.IsEnabled = true;
+		Started = true;
 
 		ToastManager?.Show(
 			new Toast("Started charging."),
@@ -121,7 +121,7 @@ public class ChargingViewModel : ViewModelBase
 
 	private async Task UpdateData()
 	{
-		if (Finished)
+		if (!_dataUpdate.IsEnabled)
 			return;
 
 		var car = Cars[PickedIndex];
@@ -134,40 +134,39 @@ public class ChargingViewModel : ViewModelBase
 
 		if (DeclaredAmount && TotalCharge >= Amount)
 		{
-			Finished = true;
-			_dataUpdate.Enabled = false;
-
-			if (_connection == null)
+			if (!_dataUpdate.IsEnabled || _connection == null)
 				return;
 
+			_dataUpdate.IsEnabled = false;
+
+			bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 			await _connection.StopAsync();
+
+			Debug.WriteLine(isDiscount);
 			Debug.WriteLine(_connection.State.ToString());
+
+			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
+
+			Finished = true;
 		}
 	}
 
 	public async Task Stop()
 	{
-		if (_connection == null)
+		if (!_dataUpdate.IsEnabled || _connection == null)
 			return;
+
+		_dataUpdate.IsEnabled = false;
 
 		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
 
 		Debug.WriteLine(isDiscount);
-
-		Finished = true;
-		_dataUpdate.Enabled = false;
-
 		Debug.WriteLine(_connection.State.ToString());
 
-		ToastManager?.Show(
-			new Toast("Stopped charging."),
-			showIcon: true,
-			showClose: false,
-			type: NotificationType.Success,
-			classes: ["Light"]);
-
 		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
+
+		Finished = true;
 	}
 
 	//navigation
