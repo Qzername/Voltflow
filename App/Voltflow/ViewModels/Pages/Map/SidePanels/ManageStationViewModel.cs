@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Ursa.Controls;
 using Voltflow.Models;
+using BruTile.Wms;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels
 {
@@ -171,7 +172,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			if (request.StatusCode != HttpStatusCode.BadRequest)
+			if (request.StatusCode == HttpStatusCode.BadRequest)
 			{
 				ToastManager?.Show(
 					new Toast("Provided values are invalid!"),
@@ -195,32 +196,26 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			if (request.StatusCode == HttpStatusCode.OK && _selectedPoint is not null)
+			if (_selectedPoint == null)
 			{
-				request = await _httpClient.GetAsync("/api/ChargingStations");
+				ToastManager?.Show(
+					new Toast("Click somewhere on a map first!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
 
-				if (request.StatusCode != HttpStatusCode.OK)
-					return;
-
-				_selectedPoint = null;
-				((List<IFeature>)_pointsLayer.Features).Clear();
-				ResetInfo();
-
-				var stationsJson = await request.Content.ReadAsStringAsync();
-				var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
-
-				var list = (List<IFeature>)_pointsLayer.Features;
-
-				foreach (var chargingStation in chargingStations)
-				{
-					var point = SphericalMercator.FromLonLat(chargingStation.Longitude, chargingStation.Latitude);
-
-					var feature = new PointFeature(point.x, point.y);
-					feature["data"] = chargingStation;
-
-					list.Add(feature);
-				}
+				return;
 			}
+
+			await GetStations();
+
+			ToastManager?.Show(
+				new Toast("Created station successfully!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 
 		public async Task UpdateStation()
@@ -247,7 +242,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			if (request.StatusCode != HttpStatusCode.BadRequest)
+			if (request.StatusCode == HttpStatusCode.BadRequest)
 			{
 				ToastManager?.Show(
 					new Toast("Provided values are invalid!"),
@@ -271,9 +266,14 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			CurrentStation = station;
-			_selectedPoint = null;
-			ResetInfo();
+			await GetStations();
+
+			ToastManager?.Show(
+				new Toast("Updated station successfully!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 
 		public async Task UpdateStationStatus()
@@ -304,7 +304,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			if (request.StatusCode != HttpStatusCode.BadRequest)
+			if (request.StatusCode == HttpStatusCode.BadRequest)
 			{
 				ToastManager?.Show(
 					new Toast("Provided values are invalid!"),
@@ -329,6 +329,13 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			}
 
 			CurrentStation = station;
+
+			ToastManager?.Show(
+				new Toast("Updated station successfully!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 
 		public async Task DeleteStation()
@@ -367,8 +374,42 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
 			_selectedPoint = null;
 			ResetInfo();
+
+			ToastManager?.Show(
+				new Toast("Deleted station successfully!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 		#endregion
+
+		private async Task GetStations()
+		{
+			var request = await _httpClient.GetAsync("/api/ChargingStations");
+
+			if (request.StatusCode != HttpStatusCode.OK)
+				return;
+
+			_selectedPoint = null;
+			((List<IFeature>)_pointsLayer.Features).Clear();
+			ResetInfo();
+
+			var stationsJson = await request.Content.ReadAsStringAsync();
+			var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
+
+			var list = (List<IFeature>)_pointsLayer.Features;
+
+			foreach (var chargingStation in chargingStations)
+			{
+				var point = SphericalMercator.FromLonLat(chargingStation.Longitude, chargingStation.Latitude);
+
+				var feature = new PointFeature(point.x, point.y);
+				feature["data"] = chargingStation;
+
+				list.Add(feature);
+			}
+		}
 
 		private void ResetInfo()
 		{
