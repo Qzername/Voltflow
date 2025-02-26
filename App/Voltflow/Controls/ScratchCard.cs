@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia;
 using System.Globalization;
-using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using Avalonia.Data;
@@ -39,7 +38,8 @@ namespace Voltflow.Controls
             showGrid = new bool[3, 3];
             xGrid = new bool[3, 3];
 
-            PropertyChanged += ScratchCard_PropertyChanged; ;
+            PropertyChanged += ScratchCard_PropertyChanged; 
+            GenerateGrid();
         }
 
         private void ScratchCard_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -88,6 +88,8 @@ namespace Voltflow.Controls
 
         void GenerateGrid()
         {
+            xGrid = new bool[3, 3];
+
             if (IsWon)
                 GenerateWon();
             else

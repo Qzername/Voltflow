@@ -24,6 +24,18 @@ public class ChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
+    public async Task<bool> RequestClose()
+    {
+        var rng = new Random();
+        bool isDiscount = rng.Next(0, 5) == 0;
+
+        var conn = _connections[Context.ConnectionId];
+        conn.IsDiscount = isDiscount;
+        _connections[Context.ConnectionId] = conn;
+        
+        return isDiscount;
+    }
+
     public override async Task OnConnectedAsync()
     {
         Console.WriteLine("Connection started");
@@ -118,8 +130,8 @@ public class ChargingHub : Hub
             StartDate = connInfo.StartDate,
             EndDate = endTime,
             EnergyConsumed = energyConsumed,
-            Cost = totalCost
-        };
+            Cost = connInfo.IsDiscount ? totalCost * 0.9 : totalCost
+        }
 
         _applicationContext.Transactions.Add(transaction);
         await _applicationContext.SaveChangesAsync();

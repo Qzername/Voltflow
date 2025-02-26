@@ -147,23 +147,29 @@ public class ChargingViewModel : ViewModelBase
 	}
 
 	public async Task Stop()
-	{
-		Finished = true;
-		_dataUpdate.Enabled = false;
+    {
+        if (_connection == null)
+            return;
 
-		if (_connection == null)
-			return;
-
+        bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
-		Debug.WriteLine(_connection.State.ToString());
 
-		ToastManager?.Show(
-			new Toast("Stopped charging."),
-			showIcon: true,
-			showClose: false,
-			type: NotificationType.Success,
-			classes: ["Light"]);
-	}
+        Debug.WriteLine(isDiscount);
+
+        Finished = true;
+        _dataUpdate.Enabled = false;
+
+        Debug.WriteLine(_connection.State.ToString());
+
+        ToastManager?.Show(
+            new Toast("Stopped charging."),
+            showIcon: true,
+            showClose: false,
+            type: NotificationType.Success,
+            classes: ["Light"]);
+       
+		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
+    }
 
 	//navigation
 	public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));

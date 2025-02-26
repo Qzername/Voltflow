@@ -95,5 +95,12 @@
     <Compile Update="Views\Accounmt\TwoFactorAuthForm.axaml.cs">
       <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\Charging\TransactionView.axaml.cs">
+      <DependentUpon>TransactionView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Pages\Test\" />
   </ItemGroup>
 </Project>

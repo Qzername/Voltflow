@@ -46,10 +46,6 @@
                     <TextBlock Text="Account" />
                 </StackPanel>
             </Button>
-
-			<!--you dont have to modify style of this button 
-			because i will delete it after i make scratch card fully-->
-			<Button Command="{Binding NavigateToTest}" Content="Test"/>
         </StackPanel>
     </Panel>
 </UserControl>

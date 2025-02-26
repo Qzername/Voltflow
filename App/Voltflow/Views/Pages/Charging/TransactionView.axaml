@@ -3,7 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.Views.Pages.Test.TestView"
+             x:Class="Voltflow.Views.Pages.Charging.TransactionView"
 			 xmlns:controls="clr-namespace:Voltflow.Controls;assembly=Voltflow">
-  <controls:ScratchCard IsWon="{Binding IsWon, Mode=TwoWay}" IsDone="{Binding IsDone}"/>
+	<StackPanel>
+		<controls:ScratchCard Height="150" IsWon="{Binding IsWon, Mode=TwoWay}" IsDone="{Binding IsDone}"/>
+        <TextBlock IsVisible="{Binding ShowText}" Text="{Binding Text}"/>
+		<!--TODO: stats of transaction + fix issues with text showing-->
+	</StackPanel>
 </UserControl>
