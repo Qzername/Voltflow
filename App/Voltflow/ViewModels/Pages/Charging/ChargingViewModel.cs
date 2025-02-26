@@ -109,9 +109,7 @@ public class ChargingViewModel : ViewModelBase
 			.WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&stationId={CurrentStation.Id}",
 				(options) => { options.AccessTokenProvider = () => Task.FromResult(token); }).Build();
 
-		Debug.WriteLine("Connecting...");
 		await _connection.StartAsync();
-		Debug.WriteLine(_connection.State.ToString());
 
 		_startTime = DateTime.UtcNow;
 		_dataUpdate.IsEnabled = true;
@@ -151,9 +149,6 @@ public class ChargingViewModel : ViewModelBase
 			bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 			await _connection.StopAsync();
 
-			Debug.WriteLine(isDiscount);
-			Debug.WriteLine(_connection.State.ToString());
-
 			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
 
 			Finished = true;
@@ -170,9 +165,6 @@ public class ChargingViewModel : ViewModelBase
 
 		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
-
-		Debug.WriteLine(isDiscount);
-		Debug.WriteLine(_connection.State.ToString());
 
 		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
 
