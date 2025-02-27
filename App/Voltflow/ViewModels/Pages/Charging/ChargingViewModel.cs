@@ -21,7 +21,7 @@ public class ChargingViewModel : ViewModelBase
 
 	[Reactive] public ChargingStation CurrentStation { get; set; }
 
-	AvaloniaList<Car> Cars { get; set; } = new();
+	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
 	[Reactive] public int SelectedIndex { get; set; } = 0;
 	[Reactive] public Car SelectedCar { get; set; }
 
