@@ -56,7 +56,7 @@
         </StackPanel>
         <StackPanel Classes="xs-spacing" Orientation="Horizontal">
             <TextBlock Classes="size-sm" Text="{Binding MaxChargeRate}" />
-            <TextBlock Classes="size-sm" Text="kWh" />
+            <TextBlock Classes="size-sm" Text="kW" />
         </StackPanel>
 
         <Separator IsVisible="{Binding Selected}" />
