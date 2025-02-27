@@ -4,6 +4,7 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using HotAvalonia;
 using Splat;
+using Voltflow.Services;
 using Voltflow.ViewModels;
 using Voltflow.Views;
 
@@ -11,7 +12,9 @@ namespace Voltflow;
 
 public partial class App : Application
 {
-	public override void Initialize()
+    public static INotificationService? NotificationService { get; set; }
+
+    public override void Initialize()
 	{
 		if (ApplicationLifetime is not ISingleViewApplicationLifetime)
 			this.EnableHotReload();
