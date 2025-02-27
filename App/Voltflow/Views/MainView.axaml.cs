@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Avalonia.SimplePreferences;
+using Avalonia.Styling;
 using Splat;
 using System.Net;
 using System.Net.Http;
@@ -39,6 +40,23 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 				httpClient.DefaultRequestHeaders.Authorization = null;
 				viewModel.Authenticated = false;
 			}
+		}
+
+		if (Application.Current == null)
+			return;
+
+		var theme = await Preferences.GetAsync<string?>("theme", null);
+		switch (theme)
+		{
+			case "dark":
+				Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
+				break;
+			case "light":
+				Application.Current.RequestedThemeVariant = ThemeVariant.Light;
+				break;
+			default: // This is used when theme is null or "default".
+				Application.Current.RequestedThemeVariant = ThemeVariant.Default;
+				break;
 		}
 	}
 }

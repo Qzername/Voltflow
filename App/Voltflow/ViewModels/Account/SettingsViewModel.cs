@@ -1,8 +1,13 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using Avalonia;
+using Avalonia.Collections;
+using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
+using Avalonia.Styling;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using System.Net;
 using System.Net.Http;
+using System.Reactive;
 using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
@@ -13,16 +18,22 @@ namespace Voltflow.ViewModels.Account;
 
 public class SettingsViewModel : ViewModelBase
 {
+	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
+
 	public WindowToastManager? ToastManager;
 	public SettingsForm SettingsForm { get; set; }
 
 	private readonly HttpClient _httpClient;
 	private bool _clickedDelete;
 
-	public SettingsViewModel(IScreen screen, SettingsForm settingsForm) : base(screen)
+	[Reactive] public AvaloniaList<ThemeVariant> Themes { get; set; } = [ThemeVariant.Default, ThemeVariant.Dark, ThemeVariant.Light];
+	[Reactive] public ThemeVariant SelectedTheme { get; set; }
+
+	public SettingsViewModel(IScreen screen, SettingsForm settingsForm, ThemeVariant? selectedTheme) : base(screen)
 	{
 		_httpClient = GetService<HttpClient>();
 		SettingsForm = settingsForm;
+		SelectedTheme = selectedTheme ?? ThemeVariant.Default;
 	}
 
 	public async Task SaveChanges()
@@ -56,7 +67,15 @@ public class SettingsViewModel : ViewModelBase
 		var twoFactorRequest = await _httpClient.PostAsync($"/api/Identity/TwoFactor/{(SettingsForm.TwoFactor ? "enable" : "disable")}", null);
 
 		if (request.StatusCode == HttpStatusCode.OK && twoFactorRequest.StatusCode == HttpStatusCode.OK)
+		{
+			if (Application.Current != null)
+			{
+				Application.Current.RequestedThemeVariant = SelectedTheme;
+				await Preferences.SetAsync("theme", ((string)SelectedTheme.Key).ToLower());
+			}
+
 			HostScreen.Router.NavigateAndReset.Execute(new AccountViewModel(HostScreen));
+		}
 		else
 			ToastManager?.Show(
 				new Toast("Couldn't save changes."),

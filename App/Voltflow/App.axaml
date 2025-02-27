@@ -4,9 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:semi="https://irihi.tech/semi"
     xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
-    xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators"
-    RequestedThemeVariant="Default">
-
+    xmlns:viewLocators="clr-namespace:Voltflow.ViewLocators">
     <Application.DataTemplates>
         <viewLocators:AvaloniaViewLocator />
     </Application.DataTemplates>

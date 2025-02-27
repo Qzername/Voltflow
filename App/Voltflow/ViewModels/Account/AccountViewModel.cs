@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using Avalonia;
+using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -75,7 +76,7 @@ public class AccountViewModel : ViewModelBase
 		if (twoFactorResponse.ContainsKey("twoFactorEnabled"))
 			settingsForm.TwoFactor = (bool)twoFactorResponse["twoFactorEnabled"]!;
 
-		HostScreen.Router.Navigate.Execute(new SettingsViewModel(HostScreen, settingsForm));
+		HostScreen.Router.Navigate.Execute(new SettingsViewModel(HostScreen, settingsForm, Application.Current?.RequestedThemeVariant));
 	}
 	#endregion
 
