@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Models.Forms;
+using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.ViewModels.Account;
 
@@ -151,10 +152,13 @@ public class AccountViewModel : ViewModelBase
 			{
 				await Preferences.SetAsync("token", (string?)response["token"]);
 				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
-				CurrentAuthType = AuthType.SignedIn;
+
 				if (HostScreen is MainViewModel screen)
 					screen.Authenticated = true;
+
 				SignInForm.Reset();
+
+				HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
 			}
 		}
 		else if (request.StatusCode == HttpStatusCode.Unauthorized)
@@ -203,11 +207,13 @@ public class AccountViewModel : ViewModelBase
 			if (response.ContainsKey("token"))
 			{
 				await Preferences.SetAsync("token", (string?)response["token"]);
-				_httpClient.DefaultRequestHeaders.Authorization =
-					new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
+				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
+
 				CurrentAuthType = AuthType.SignedIn;
+
 				if (HostScreen is MainViewModel screen)
 					screen.Authenticated = true;
+
 				TwoFactorAuthForm.Reset();
 			}
 		}
