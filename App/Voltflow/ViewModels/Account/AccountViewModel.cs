@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using Avalonia;
+using Avalonia.Controls.Notifications;
 using Avalonia.SimplePreferences;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Models.Forms;
+using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.ViewModels.Account;
 
@@ -36,7 +38,6 @@ public class AccountViewModel : ViewModelBase
 	#endregion
 
 	#region Commands
-	public void NavigateToDiscounts() => HostScreen.Router.Navigate.Execute(new DiscountsViewModel(HostScreen));
 	public void NavigateBack() => CurrentAuthType = AuthType.SignIn;
 	public void SwitchSignForms() => CurrentAuthType = CurrentAuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
 	public void SwitchToPasswordReset() => CurrentAuthType = AuthType.PasswordReset;
@@ -75,7 +76,7 @@ public class AccountViewModel : ViewModelBase
 		if (twoFactorResponse.ContainsKey("twoFactorEnabled"))
 			settingsForm.TwoFactor = (bool)twoFactorResponse["twoFactorEnabled"]!;
 
-		HostScreen.Router.Navigate.Execute(new SettingsViewModel(HostScreen, settingsForm));
+		HostScreen.Router.Navigate.Execute(new SettingsViewModel(HostScreen, settingsForm, Application.Current?.RequestedThemeVariant));
 	}
 	#endregion
 
@@ -152,10 +153,13 @@ public class AccountViewModel : ViewModelBase
 			{
 				await Preferences.SetAsync("token", (string?)response["token"]);
 				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
-				CurrentAuthType = AuthType.SignedIn;
+
 				if (HostScreen is MainViewModel screen)
 					screen.Authenticated = true;
+
 				SignInForm.Reset();
+
+				HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
 			}
 		}
 		else if (request.StatusCode == HttpStatusCode.Unauthorized)
@@ -204,11 +208,13 @@ public class AccountViewModel : ViewModelBase
 			if (response.ContainsKey("token"))
 			{
 				await Preferences.SetAsync("token", (string?)response["token"]);
-				_httpClient.DefaultRequestHeaders.Authorization =
-					new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
+				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
+
 				CurrentAuthType = AuthType.SignedIn;
+
 				if (HostScreen is MainViewModel screen)
 					screen.Authenticated = true;
+
 				TwoFactorAuthForm.Reset();
 			}
 		}

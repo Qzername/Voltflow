@@ -57,7 +57,17 @@
                     Kind="Payment" />
                 <TextBlock Classes="size-sm weight-bold" Text="Cost" />
             </StackPanel>
-            <controls:NumberBox Text="{Binding Cost}" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="24" />
+                </Grid.ColumnDefinitions>
+
+                <controls:NumberBox Grid.Column="0" Text="{Binding Cost}" />
+                <TextBlock Grid.Column="2" Text="zł" />
+            </Grid>
 
             <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign
@@ -66,7 +76,18 @@
                     Kind="Bolt" />
                 <TextBlock Classes="size-sm weight-bold" Text="Maximum Charging Rate" />
             </StackPanel>
-            <controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="24" />
+                </Grid.ColumnDefinitions>
+
+                <controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+                <TextBlock Grid.Column="2" Text="kW" />
+            </Grid>
+
             <Separator />
 
             <StackPanel IsEnabled="{Binding !CreatingNewPoint}">

@@ -34,13 +34,6 @@ public class CarsViewModel : ViewModelBase
 		Cars.AddRange(carsObjs);
 	}
 
-	public void NavigateToCarDetails(object carObj)
-	{
-		HostScreen.Router.Navigate.Execute(new CarInfoViewModel((Car)carObj, HostScreen));
-	}
-
-	public void NavigateToCreateCar()
-	{
-		HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen));
-	}
+	public void NavigateToCarDetails(object carObj) => HostScreen.Router.Navigate.Execute(new CarInfoViewModel((Car)carObj, HostScreen));
+	public void NavigateToCreateCar() => HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen));
 }

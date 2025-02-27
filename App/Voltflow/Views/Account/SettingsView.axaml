@@ -19,6 +19,26 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center"
         IsEnabled="{Binding !SettingsForm.Working}">
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="Contrast" />
+            <TextBlock Classes="size-sm weight-bold" Text="Theme" />
+        </StackPanel>
+        <ComboBox
+            HorizontalAlignment="Stretch"
+            ItemsSource="{Binding Themes}"
+            SelectedItem="{Binding SelectedTheme}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Key}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Separator />
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -118,6 +138,16 @@
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign Kind="Close" />
                 <TextBlock Text="Delete Account" />
+            </StackPanel>
+        </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Command="{Binding GoBack}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                <TextBlock Text="Go Back" />
             </StackPanel>
         </Button>
     </StackPanel>

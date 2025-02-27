@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,8 +21,9 @@ public class ChargingViewModel : ViewModelBase
 
 	[Reactive] public ChargingStation CurrentStation { get; set; }
 
-	AvaloniaList<Car> Cars { get; set; } = new();
-	[Reactive] public int PickedIndex { get; set; } = 0;
+	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
+	[Reactive] public int SelectedIndex { get; set; } = 0;
+	[Reactive] public Car SelectedCar { get; set; }
 
 	[Reactive] public bool DeclaredAmount { get; set; }
 	[Reactive] public float Amount { get; set; }
@@ -67,11 +67,21 @@ public class ChargingViewModel : ViewModelBase
 
 		var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
 		Cars.AddRange(carsObjs);
+
+		if (Cars.Count > 0)
+			SelectedCar = Cars[SelectedIndex]; // SelectedIndex is 0 by default.
+		else
+			ToastManager?.Show(
+				new Toast("You don't have any cars added! You can do that in \"Cars\" page."),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 	}
 
 	public async Task Start()
 	{
-		if (Cars.Count == 0 || PickedIndex > Cars.Count)
+		if (Cars.Count == 0 || SelectedIndex > Cars.Count)
 		{
 			ToastManager?.Show(
 				new Toast("You must select a car!"),
@@ -103,7 +113,7 @@ public class ChargingViewModel : ViewModelBase
 		TotalCost = 0;
 
 		var token = await Preferences.GetAsync<string?>("token", null);
-		var carId = Cars[PickedIndex].Id;
+		var carId = Cars[SelectedIndex].Id;
 
 		_connection = new HubConnectionBuilder()
 			.WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&stationId={CurrentStation.Id}",
@@ -131,7 +141,7 @@ public class ChargingViewModel : ViewModelBase
 		if (!_dataUpdate.IsEnabled)
 			return;
 
-		var car = Cars[PickedIndex];
+		var car = Cars[SelectedIndex];
 		var chargingRate = CurrentStation.MaxChargeRate > car.ChargingRate ? car.ChargingRate : CurrentStation.MaxChargeRate;
 
 		var time = DateTime.UtcNow - _startTime;

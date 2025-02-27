@@ -25,12 +25,13 @@
                     Classes="size-sm"
                     IsVisible="True"
                     Kind="DirectionsCar" />
-                <TextBlock Classes="size-sm weight-bold" Text="Selected Car" />
+                <TextBlock Classes="size-sm weight-bold" Text="Car" />
             </StackPanel>
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Cars}"
-                SelectedIndex="{Binding PickedIndex}">
+                SelectedIndex="{Binding SelectedIndex}"
+                SelectedItem="{Binding SelectedCar}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" />
@@ -52,7 +53,7 @@
                         Classes="size-sm"
                         IsVisible="True"
                         Kind="Battery3Bar" />
-                    <TextBlock Classes="size-sm weight-bold" Text="Declare Charge Limit? (kWh)" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Set Charge Limit? (kWh)" />
                 </StackPanel>
 
                 <CheckBox Grid.Column="1" IsChecked="{Binding DeclaredAmount}" />
@@ -142,7 +143,8 @@
             <Button
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Command="{Binding NavigateHome}">
+                Command="{Binding NavigateHome}"
+                IsEnabled="{Binding !Working}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
                     <TextBlock Text="Go Back" />

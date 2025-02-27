@@ -22,22 +22,22 @@
         <!--  Yes, no binding, see code behind for more info  -->
         <mapsui:MapControl x:Name="MapControl" />
 
-        <Panel IsVisible="{Binding Authenticated}">
-            <Border
-                Width="256"
-                Margin="16"
-                Padding="16"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Classes="with-bg"
-                CornerRadius="6">
-                <reactiveUi:RoutedViewHost Router="{Binding Router}">
-                    <reactiveUi:RoutedViewHost.ViewLocator>
-                        <viewLocators:ReactiveViewLocator />
-                    </reactiveUi:RoutedViewHost.ViewLocator>
-                </reactiveUi:RoutedViewHost>
-            </Border>
+        <Border
+            Width="256"
+            Margin="16"
+            Padding="16"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Classes="with-bg"
+            CornerRadius="6">
+            <reactiveUi:RoutedViewHost Router="{Binding Router}">
+                <reactiveUi:RoutedViewHost.ViewLocator>
+                    <viewLocators:ReactiveViewLocator />
+                </reactiveUi:RoutedViewHost.ViewLocator>
+            </reactiveUi:RoutedViewHost>
+        </Border>
 
+        <Panel IsVisible="{Binding Authenticated}">
             <Button
                 Height="48"
                 Margin="16"
