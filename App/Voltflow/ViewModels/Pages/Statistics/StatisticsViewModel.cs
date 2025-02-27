@@ -1,91 +1,31 @@
-﻿using Avalonia;
-using Avalonia.Controls.Notifications;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using SkiaSharp;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Ursa.Controls;
 using Voltflow.Models;
-using Voltflow.Services;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class StatisticsViewModel : ViewModelBase
+public class StatisticsViewModel : StatisticsPanelBase
 {
-	public WindowToastManager? ToastManager;
-	public Visual? Parent;
-
-	private readonly HttpClient _httpClient;
-	private readonly DialogService _dialogService;
-
-	public bool Mode
-	{
-		set
-		{
-			if (value)
-				EnergyUsedPieMode();
-			else
-				CostPieMode();
-		}
-	}
-
-	[Reactive] public IEnumerable<ISeries> PieData { get; set; } = [];
-
-	private Transaction[] _transactions = [];
-	private Car[] _cars = [];
-
 	//grid
 	[Reactive] public List<GridElement> Elements { get; set; } = [];
 
 	public StatisticsViewModel(IScreen screen) : base(screen)
 	{
-		_httpClient = GetService<HttpClient>();
-		_dialogService = GetService<DialogService>();
-
-		GetData();
 	}
 
-	private async void GetData()
-	{
-		//transactions
-		var request = await _httpClient.GetAsync("/api/Transactions");
-
-		if (request.StatusCode != HttpStatusCode.OK)
-			return;
-
-		var json = await request.Content.ReadAsStringAsync();
-
-		_transactions = JsonConverter.Deserialize<Transaction[]>(json);
-
-		//cars
-		request = await _httpClient.GetAsync("/api/Cars");
-
-		if (request.StatusCode != HttpStatusCode.OK)
-			return;
-
-		json = await request.Content.ReadAsStringAsync();
-
-		_cars = JsonConverter.Deserialize<Car[]>(json);
-
-		CostPieMode();
-		GenerateGridData();
-	}
-
-	private void EnergyUsedPieMode()
+    protected override void GenerateEnergyUsedData()
 	{
 		Dictionary<Car, float> total = new();
 
-		foreach (var t in _transactions)
+		foreach (var t in transactions.Values)
 		{
-			//TODO: optimize this
-			var car = _cars.Single(cars => cars.Id == t.CarId);
+			if(t.CarId is null)
+                continue;
+
+            //TODO: optimize this
+            var car = cars[t.CarId.Value];
 
 			if (total.ContainsKey(car))
 				total[car] += (float)t.EnergyConsumed;
@@ -93,62 +33,41 @@ public class StatisticsViewModel : ViewModelBase
 				total[car] = (float)t.EnergyConsumed;
 		}
 
-		ConstructPieChartSeries(total);
+		energyData = ConstructPieChartSeries(total);
 	}
 
-	private void CostPieMode()
+    protected override void GenerateCostData()
 	{
 		Dictionary<Car, float> total = new();
 
-		foreach (var t in _transactions)
+		foreach (var t in transactions.Values)
 		{
 			if (t.CarId is null)
 				continue;
 
-			//TODO: optimize this
-			var car = _cars.Single(cars => cars.Id == t.CarId);
+			var car = cars[t.CarId.Value];
 
-			if (total.ContainsKey(car))
+            if (total.ContainsKey(car))
 				total[car] += (float)t.Cost;
 			else
 				total[car] = (float)t.Cost;
 		}
 
-		ConstructPieChartSeries(total);
+		costData = ConstructPieChartSeries(total);
 	}
 
-	private void ConstructPieChartSeries(Dictionary<Car, float> total)
-	{
-		List<PieSeries<float>> dataTemp = new();
-
-		foreach (var t in total)
-		{
-			dataTemp.Add(new PieSeries<float>
-			{
-				Name = t.Key.Name,
-				Values = [t.Value],
-				DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-				DataLabelsSize = 15,
-				DataLabelsPaint = new SolidColorPaint(new SKColor(255, 255, 255)),
-				DataLabelsFormatter = point => t.Key.Name
-			});
-		}
-
-		PieData = dataTemp;
-	}
-
-	private void GenerateGridData()
+    protected override void GenerateGridData()
 	{
 		List<GridElement> elementsTemp = new();
 
-		foreach (var t in _transactions)
+		foreach (var t in transactions.Values)
 		{
 			if (t.CarId is null)
 				continue;
 
 			elementsTemp.Add(new GridElement
 			{
-				CarName = _cars.Single(cars => cars.Id == t.CarId).Name,
+				CarName = cars[t.CarId.Value].Name,
 				EnergyConsumed = t.EnergyConsumed,
 				Cost = t.Cost
 			});
@@ -161,17 +80,10 @@ public class StatisticsViewModel : ViewModelBase
 	{
 		string csv = "Station Id,Energy Consumed,Cost\n";
 
-		foreach (var t in _transactions)
+		foreach (var t in transactions.Values)
 			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
-		var results = await _dialogService.SaveFileDialog(Parent, csv);
-
-		ToastManager?.Show(
-			new Toast(results ? "Successfully saved the file!" : "Couldn't save the file!"),
-			showIcon: true,
-			showClose: false,
-			type: results ? NotificationType.Success : NotificationType.Error,
-			classes: ["Light"]);
+		await SaveCsv(csv);
 	}
 
 	public void NavigateAdvanced() => HostScreen.Router.NavigateAndReset.Execute(new AdvancedStatisticsViewModel(HostScreen));

@@ -10,10 +10,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <statistics:StatisticsViewModel />
-    </Design.DataContext>
-
     <ScrollViewer>
         <StackPanel
             Width="256"
@@ -38,8 +34,9 @@
                 <Button Command="{Binding GenerateCsv}" Content="Generate CSV" />
             </Panel>
 
-            <DataGrid
-                Height="100"
+			<DataGrid
+				Width="500"
+                Height="400"
                 AutoGenerateColumns="True"
                 BorderBrush="Gray"
                 BorderThickness="1"
