@@ -1,4 +1,5 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Avalonia;
+using Avalonia.Controls.Notifications;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -6,11 +7,11 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SkiaSharp;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Services;
 
@@ -18,6 +19,9 @@ namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class StatisticsViewModel : ViewModelBase
 {
+	public WindowToastManager? ToastManager;
+	public Visual? Parent;
+
 	private readonly HttpClient _httpClient;
 	private readonly DialogService _dialogService;
 
@@ -160,12 +164,14 @@ public class StatisticsViewModel : ViewModelBase
 		foreach (var t in _transactions)
 			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
-		var directory = await _dialogService.OpenDirectoryDialog(new FolderPickerOpenOptions()
-		{
-			AllowMultiple = false,
-		});
+		var results = await _dialogService.SaveFileDialog(Parent, csv);
 
-		await File.WriteAllTextAsync(directory + "output.csv", csv);
+		ToastManager?.Show(
+			new Toast(results ? "Successfully saved the file!" : "Couldn't save the file!"),
+			showIcon: true,
+			showClose: false,
+			type: results ? NotificationType.Success : NotificationType.Error,
+			classes: ["Light"]);
 	}
 
 	public void NavigateAdvanced() => HostScreen.Router.NavigateAndReset.Execute(new AdvancedStatisticsViewModel(HostScreen));

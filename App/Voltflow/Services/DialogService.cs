@@ -1,53 +1,47 @@
 ﻿using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Voltflow.Services;
 
 public class DialogService
 {
-	public async Task<string> OpenFileDialog(FilePickerOpenOptions options)
+	private readonly FilePickerSaveOptions _options = new()
 	{
-		string result = string.Empty;
+		Title = "Save File",
+		SuggestedFileName = "output",
+		DefaultExtension = ".csv",
+		FileTypeChoices =
+		[
+			new FilePickerFileType("CSV Files")
+			{
+				Patterns = ["*.csv"],
+				MimeTypes = ["text/csv"]
+			},
+			new FilePickerFileType("All Files")
+			{
+				Patterns = ["*.*"]
+			}
+		]
+	};
 
-		if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-		{
-			var files = await desktop.MainWindow!.StorageProvider.OpenFilePickerAsync(options);
-
-			if (files.Count == 0)
-				return "";
-
-			string? tempResult = files[0].Path.LocalPath;
-
-			if (result is null)
-				return "";
-
-			result = tempResult;
-		}
-
-		return result;
-	}
-
-	public async Task<string> OpenDirectoryDialog(FolderPickerOpenOptions options)
+	public async Task<bool> SaveFileDialog(Visual? parent, string csv)
 	{
-		string result = string.Empty;
+		var topLevel = TopLevel.GetTopLevel(parent);
+		if (topLevel == null)
+			return false;
 
-		if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-		{
-			var files = await desktop.MainWindow!.StorageProvider.OpenFolderPickerAsync(options);
+		var file = await topLevel.StorageProvider.SaveFilePickerAsync(_options);
+		if (file == null)
+			return false;
 
-			if (files.Count == 0)
-				return "";
+		await using var stream = await file.OpenWriteAsync();
+		await using var writer = new StreamWriter(stream, Encoding.UTF8);
+		await writer.WriteAsync(csv);
 
-			string? tempResult = files[0].Path.LocalPath;
-
-			if (result is null)
-				return "";
-
-			result = tempResult;
-		}
-
-		return result;
+		return true;
 	}
 }
