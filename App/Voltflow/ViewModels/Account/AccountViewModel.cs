@@ -36,7 +36,6 @@ public class AccountViewModel : ViewModelBase
 	#endregion
 
 	#region Commands
-	public void NavigateToDiscounts() => HostScreen.Router.Navigate.Execute(new DiscountsViewModel(HostScreen));
 	public void NavigateBack() => CurrentAuthType = AuthType.SignIn;
 	public void SwitchSignForms() => CurrentAuthType = CurrentAuthType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
 	public void SwitchToPasswordReset() => CurrentAuthType = AuthType.PasswordReset;
