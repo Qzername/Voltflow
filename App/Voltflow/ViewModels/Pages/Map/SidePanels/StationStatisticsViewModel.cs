@@ -48,8 +48,5 @@ public class StationStatisticsViewModel : MapSidePanelBase
 		};
 	}
 
-	public override void MapClicked(MapInfoEventArgs e)
-	{
-		HostScreen.Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, HostScreen));
-	}
+	public override void MapClicked(MapInfoEventArgs e) => HostScreen.Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, HostScreen));
 }

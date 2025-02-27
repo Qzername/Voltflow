@@ -114,7 +114,7 @@ public class MapViewModel : ViewModelBase, IScreen
 			else
 				_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
 
-			Router.Navigate.Execute(_currentModeViewModel);
+			Router.NavigateAndReset.Execute(_currentModeViewModel);
 		}
 	}
 

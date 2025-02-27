@@ -12,9 +12,9 @@ namespace Voltflow;
 
 public partial class App : Application
 {
-    public static INotificationService? NotificationService { get; set; }
+	public static INotificationService? NotificationService { get; set; }
 
-    public override void Initialize()
+	public override void Initialize()
 	{
 		if (ApplicationLifetime is not ISingleViewApplicationLifetime)
 			this.EnableHotReload();
