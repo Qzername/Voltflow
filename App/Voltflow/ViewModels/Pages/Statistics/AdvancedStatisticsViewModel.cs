@@ -1,6 +1,7 @@
 ﻿using Avalonia.Platform.Storage;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Avalonia;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
@@ -24,16 +25,19 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		set
 		{
 			if (value)
-				EnergyUsedPieMode();
-			else
-				CostPieMode();
-		}
+				PieData = energyData;
+            else
+				PieData = costData;
+        }
 	}
 
 	[Reactive] public IEnumerable<ISeries> PieData { get; set; } = [];
 
 	private Transaction[] _transactions = [];
 	private ChargingStation[] _stations = [];
+
+	List<PieSeries<float>> energyData;
+	List<PieSeries<float>> costData;
 
 	//grid
 	[Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
@@ -44,7 +48,10 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		_httpClient = GetService<HttpClient>();
 		_dialogService = GetService<DialogService>();
 
-		GetData();
+		energyData = new List<PieSeries<float>>();
+        costData = new List<PieSeries<float>>();
+
+        GetData();
 	}
 
 	private async void GetData()
@@ -70,7 +77,7 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		_stations = JsonConverter.Deserialize<ChargingStation[]>(json);
 
 		CostPieMode();
-		GenerateGridData();
+		EnergyUsedPieMode();
 	}
 
 	private void EnergyUsedPieMode()
@@ -109,7 +116,7 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 		ConstructPieChartSeries(total);
 	}
 
-	private void ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
+	private List<PieSeries<float>> ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
 	{
 		List<PieSeries<float>> dataTemp = new();
 
@@ -121,7 +128,7 @@ public class AdvancedStatisticsViewModel : ViewModelBase
 			});
 		}
 
-		PieData = dataTemp;
+		return dataTemp;
 	}
 
 	private void GenerateGridData()
