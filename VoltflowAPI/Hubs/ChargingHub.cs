@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Security.Claims;
 using VoltflowAPI.Contexts;
 using VoltflowAPI.Models;
-using VoltflowAPI.Models.Identity;
+using VoltflowAPI.Models.Application;
 
 namespace VoltflowAPI.Hubs;
 

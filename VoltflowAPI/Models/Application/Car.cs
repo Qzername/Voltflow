@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VoltflowAPI.Models.Identity;
+namespace VoltflowAPI.Models.Application;
 
 public class Car
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoltflowAPI.Contexts;
-using VoltflowAPI.Models.Identity;
+using VoltflowAPI.Models.Application;
 
 namespace VoltflowAPI.Controllers;
 
