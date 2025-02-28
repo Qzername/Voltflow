@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VoltflowAPI.Models.Identity;
+using VoltflowAPI.Models.Application;
 
 namespace VoltflowAPI.Contexts;
 
@@ -9,5 +9,6 @@ public class ApplicationContext : DbContext
 
     public DbSet<Car> Cars { get; set; }
     public DbSet<ChargingStation> ChargingStations { get; set; }
+    public DbSet<ChargingPort> ChargingPorts { get; set; }  
     public DbSet<Transaction> Transactions { get; set; }
 }

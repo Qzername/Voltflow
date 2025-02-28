@@ -43,14 +43,14 @@ public class ChargingHub : Hub
         var httpContext = Context.GetHttpContext();
 
         if (httpContext is null ||
-            !httpContext.Request.Query.ContainsKey("stationId") ||
+            !httpContext.Request.Query.ContainsKey("portId") ||
             !httpContext.Request.Query.ContainsKey("carId"))
         {
             await Clients.Caller.SendAsync("Error", "Invalid request");
             Context.Abort();
         }
 
-        var stationId = httpContext!.Request.Query["stationId"].ToString();
+        var portId = httpContext!.Request.Query["portId"].ToString();
         var carIdString = httpContext.Request.Query["carId"].ToString();
         int carId = 0;
 
@@ -60,22 +60,22 @@ public class ChargingHub : Hub
             Context.Abort();
         }
 
-        var station = _applicationContext.ChargingStations.Find(Convert.ToInt32(stationId));
+        var port = _applicationContext.ChargingPorts.Find(Convert.ToInt32(portId));
         
-        if (station is null)
+        if (port is null)
         {
             await Clients.Caller.SendAsync("Error", "Station not found");
             Context.Abort();
         }
 
-        if (station.Status != (int)ChargingStationStatus.Available)
+        if (port.Status != (int)ChargingPortStatus.Available)
         {
             await Clients.Caller.SendAsync("Error", "Station is not available");
             Context.Abort();
         }
 
-        station.Status = (int)ChargingStationStatus.Occupied;
-        _applicationContext.Update(station);
+        port.Status = (int)ChargingPortStatus.Occupied;
+        _applicationContext.Update(port);
         await _applicationContext.SaveChangesAsync();
 
         var utcNow = DateTime.UtcNow;
@@ -84,7 +84,7 @@ public class ChargingHub : Hub
         _connections[Context.ConnectionId] = new ChargingInfo()
         {
             StartDate = utcNow,
-            StationId = station.Id,
+            StationId = port.Id,
             CarId = carId
         };
 
@@ -104,10 +104,10 @@ public class ChargingHub : Hub
         var endTime = DateTime.UtcNow;
         var timePassed = endTime - connInfo.StartDate;
 
-        //set station status to available
-        var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
-        station.Status = (int)ChargingStationStatus.Available;
-        _applicationContext.Update(station);
+        //set port status to available
+        var port = _applicationContext.ChargingPorts.Find(connInfo.StationId);
+        port.Status = (int)ChargingPortStatus.Available;
+        _applicationContext.Update(port);
         await _applicationContext.SaveChangesAsync();
 
         //remove connection
@@ -116,7 +116,10 @@ public class ChargingHub : Hub
         //get car
         var car = _applicationContext.Cars.Find(connInfo.CarId);
 
-        //calculactions
+        //get station
+        var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
+
+        //calculactions for cost and energy
         var chargingRate = station.MaxChargeRate > car.ChargingRate ? car.ChargingRate : station.MaxChargeRate;
         var energyConsumed = chargingRate * timePassed.TotalSeconds / 1000;
         var totalCost = energyConsumed * station.Cost;

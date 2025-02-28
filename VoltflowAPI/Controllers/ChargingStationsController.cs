@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoltflowAPI.Contexts;
-using VoltflowAPI.Models.Identity;
+using VoltflowAPI.Models.Application;
 
 namespace VoltflowAPI.Controllers;
 
@@ -41,9 +41,6 @@ public class ChargingStationsController : ControllerBase
             Latitude = model.Latitude,
             Cost = model.Cost,
             MaxChargeRate = model.MaxChargeRate,
-
-            Status = (int)ChargingStationStatus.Available,
-            ServiceMode = false
         };
 
         await _applicationContext.ChargingStations.AddAsync(chargingStation);
@@ -74,12 +71,6 @@ public class ChargingStationsController : ControllerBase
 
         if (model.MaxChargeRate is not null)
             station.MaxChargeRate = model.MaxChargeRate.Value;
-
-        if (model.Status is not null)
-            station.Status = (int)model.Status.Value;
-
-        if (model.ServiceMode is not null)
-            station.ServiceMode = model.ServiceMode.Value;
 
         _applicationContext.Update(station);
         await _applicationContext.SaveChangesAsync();
@@ -114,7 +105,7 @@ public class ChargingStationsController : ControllerBase
         public double? Latitude { get; set; }
         public int? Cost { get; set; }
         public int? MaxChargeRate { get; set; }
-        public ChargingStationStatus? Status { get; set; }
+        public ChargingPortStatus? Status { get; set; }
         public bool? ServiceMode { get; set; }
     }
 }
