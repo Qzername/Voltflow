@@ -161,10 +161,10 @@ public class ChargingViewModel : ViewModelBase
 
 			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
 
-			if(App.NotificationService is not null)
+			if (App.NotificationService is not null)
 				App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
 
-            Finished = true;
+			Finished = true;
 		}
 	}
 

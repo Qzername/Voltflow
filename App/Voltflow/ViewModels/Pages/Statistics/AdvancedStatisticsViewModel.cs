@@ -15,22 +15,22 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(s
 	#region Chart data generation
 	protected override void GenerateEnergyUsedData()
 	{
-        Dictionary<ChargingStation, float> total = [];
+		Dictionary<ChargingStation, float> total = [];
 
-        foreach (var t in Transactions.Values)
-        {
+		foreach (var t in Transactions.Values)
+		{
 			var station = Stations[t.ChargingStationId];
 
-            if (total.ContainsKey(station))
-                total[station] += (float)t.EnergyConsumed;
-            else
-                total[station] = (float)t.EnergyConsumed;
-        }
+			if (total.ContainsKey(station))
+				total[station] += (float)t.EnergyConsumed;
+			else
+				total[station] = (float)t.EnergyConsumed;
+		}
 
-        EnergyData = ConstructPieChartSeries(total);
-    }
+		EnergyData = ConstructPieChartSeries(total);
+	}
 
-    protected override void GenerateCostData()
+	protected override void GenerateCostData()
 	{
 		Dictionary<ChargingStation, float> total = [];
 
@@ -38,17 +38,17 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(s
 		{
 			var station = Stations[t.ChargingStationId];
 
-            if (total.ContainsKey(station))
+			if (total.ContainsKey(station))
 				total[station] += (float)t.Cost;
 			else
 				total[station] = (float)t.Cost;
 		}
 
 		CostData = ConstructPieChartSeries(total);
-    }
-    #endregion
+	}
+	#endregion
 
-    protected override void GenerateGridData()
+	protected override void GenerateGridData()
 	{
 		//transactions
 		List<TransactionGridElement> elementsTemp = [];
@@ -81,8 +81,8 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(s
 		StationGridData = new List<StationGridElement>(stationGridElements);
 	}
 
-    #region CSV handling
-    public async Task GenerateTransactionsCsv()
+	#region CSV handling
+	public async Task GenerateTransactionsCsv()
 	{
 		string csv = "Station Id,Energy Consumed,Cost\n";
 
@@ -101,9 +101,9 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(s
 
 		await SaveCsv(csv);
 	}
-    #endregion
+	#endregion
 
-    public class TransactionGridElement
+	public class TransactionGridElement
 	{
 		public int StationId { get; set; }
 		public double EnergyConsumed { get; set; }

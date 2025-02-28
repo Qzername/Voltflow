@@ -17,11 +17,11 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 
 		foreach (var t in Transactions.Values)
 		{
-			if(t.CarId is null)
-                continue;
+			if (t.CarId is null)
+				continue;
 
-            //TODO: optimize this
-            var car = Cars[t.CarId.Value];
+			//TODO: optimize this
+			var car = Cars[t.CarId.Value];
 
 			if (total.ContainsKey(car))
 				total[car] += (float)t.EnergyConsumed;
@@ -32,7 +32,7 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 		EnergyData = ConstructPieChartSeries(total);
 	}
 
-    protected override void GenerateCostData()
+	protected override void GenerateCostData()
 	{
 		Dictionary<Car, float> total = new();
 
@@ -43,7 +43,7 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 
 			var car = Cars[t.CarId.Value];
 
-            if (total.ContainsKey(car))
+			if (total.ContainsKey(car))
 				total[car] += (float)t.Cost;
 			else
 				total[car] = (float)t.Cost;
@@ -52,7 +52,7 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 		CostData = ConstructPieChartSeries(total);
 	}
 
-    protected override void GenerateGridData()
+	protected override void GenerateGridData()
 	{
 		List<GridElement> elementsTemp = new();
 
