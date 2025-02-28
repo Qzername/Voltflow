@@ -6,24 +6,20 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class AdvancedStatisticsViewModel : StatisticsPanelBase
+public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 {
 	//grid
 	[Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
 	[Reactive] public List<StationGridElement> StationGridData { get; set; } = [];
 
-	public AdvancedStatisticsViewModel(IScreen screen) : base(screen)
-    {
-	}
-
-    #region Chart data generation
+	#region Chart data generation
 	protected override void GenerateEnergyUsedData()
 	{
-        Dictionary<ChargingStation, float> total = new();
+        Dictionary<ChargingStation, float> total = [];
 
-        foreach (var t in transactions.Values)
+        foreach (var t in Transactions.Values)
         {
-			var station = stations[t.ChargingStationId];
+			var station = Stations[t.ChargingStationId];
 
             if (total.ContainsKey(station))
                 total[station] += (float)t.EnergyConsumed;
@@ -31,16 +27,16 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
                 total[station] = (float)t.EnergyConsumed;
         }
 
-        energyData = ConstructPieChartSeries(total);
+        EnergyData = ConstructPieChartSeries(total);
     }
 
     protected override void GenerateCostData()
 	{
-		Dictionary<ChargingStation, float> total = new();
+		Dictionary<ChargingStation, float> total = [];
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 		{
-			var station = stations[t.ChargingStationId];
+			var station = Stations[t.ChargingStationId];
 
             if (total.ContainsKey(station))
 				total[station] += (float)t.Cost;
@@ -48,20 +44,20 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 				total[station] = (float)t.Cost;
 		}
 
-		costData = ConstructPieChartSeries(total);
+		CostData = ConstructPieChartSeries(total);
     }
     #endregion
 
     protected override void GenerateGridData()
 	{
 		//transactions
-		List<TransactionGridElement> elementsTemp = new();
+		List<TransactionGridElement> elementsTemp = [];
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 		{
 			elementsTemp.Add(new TransactionGridElement
 			{
-				StationId = stations[t.ChargingStationId].Id,
+				StationId = Stations[t.ChargingStationId].Id,
 				EnergyConsumed = t.EnergyConsumed,
 				Cost = t.Cost
 			});
@@ -70,9 +66,9 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 		TransactionsGridData = new List<TransactionGridElement>(elementsTemp);
 
 		//stations
-		List<StationGridElement> stationGridElements = new List<StationGridElement>();
+		List<StationGridElement> stationGridElements = [];
 
-		foreach (var s in stations.Values)
+		foreach (var s in Stations.Values)
 		{
 			stationGridElements.Add(new StationGridElement()
 			{
@@ -90,7 +86,7 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 	{
 		string csv = "Station Id,Energy Consumed,Cost\n";
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
 		await SaveCsv(csv);
@@ -100,7 +96,7 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 	{
 		string csv = "Station Id,Latitude,Longitude\n";
 
-		foreach (var s in stations.Values)
+		foreach (var s in Stations.Values)
 			csv += $"{s.Id},{s.Latitude},{s.Longitude}\n";
 
 		await SaveCsv(csv);

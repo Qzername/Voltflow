@@ -6,26 +6,22 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class StatisticsViewModel : StatisticsPanelBase
+public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 {
 	//grid
 	[Reactive] public List<GridElement> Elements { get; set; } = [];
 
-	public StatisticsViewModel(IScreen screen) : base(screen)
-	{
-	}
-
-    protected override void GenerateEnergyUsedData()
+	protected override void GenerateEnergyUsedData()
 	{
 		Dictionary<Car, float> total = new();
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 		{
 			if(t.CarId is null)
                 continue;
 
             //TODO: optimize this
-            var car = cars[t.CarId.Value];
+            var car = Cars[t.CarId.Value];
 
 			if (total.ContainsKey(car))
 				total[car] += (float)t.EnergyConsumed;
@@ -33,19 +29,19 @@ public class StatisticsViewModel : StatisticsPanelBase
 				total[car] = (float)t.EnergyConsumed;
 		}
 
-		energyData = ConstructPieChartSeries(total);
+		EnergyData = ConstructPieChartSeries(total);
 	}
 
     protected override void GenerateCostData()
 	{
 		Dictionary<Car, float> total = new();
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 		{
 			if (t.CarId is null)
 				continue;
 
-			var car = cars[t.CarId.Value];
+			var car = Cars[t.CarId.Value];
 
             if (total.ContainsKey(car))
 				total[car] += (float)t.Cost;
@@ -53,21 +49,21 @@ public class StatisticsViewModel : StatisticsPanelBase
 				total[car] = (float)t.Cost;
 		}
 
-		costData = ConstructPieChartSeries(total);
+		CostData = ConstructPieChartSeries(total);
 	}
 
     protected override void GenerateGridData()
 	{
 		List<GridElement> elementsTemp = new();
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 		{
 			if (t.CarId is null)
 				continue;
 
 			elementsTemp.Add(new GridElement
 			{
-				CarName = cars[t.CarId.Value].Name,
+				CarName = Cars[t.CarId.Value].Name,
 				EnergyConsumed = t.EnergyConsumed,
 				Cost = t.Cost
 			});
@@ -80,7 +76,7 @@ public class StatisticsViewModel : StatisticsPanelBase
 	{
 		string csv = "Station Id,Energy Consumed,Cost\n";
 
-		foreach (var t in transactions.Values)
+		foreach (var t in Transactions.Values)
 			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
 		await SaveCsv(csv);

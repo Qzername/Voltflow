@@ -29,44 +29,40 @@ public abstract class StatisticsPanelBase : ViewModelBase
     public WindowToastManager? ToastManager;
     public Visual? Parent;
 
-    //piechart handling
-    public ObservableCollection<ISeries> PieData { get; set; } = new ObservableCollection<ISeries>();
+    // PieChart handling
+    public ObservableCollection<ISeries> PieData { get; set; } = [];
     public bool Mode
     {
         set
         {
             PieData.Clear();
-
-            if (value)
-                PieData.AddRange(energyData);
-            else
-                PieData.AddRange(costData);
+            PieData.AddRange(value ? EnergyData : CostData);
         }
     }
 
     private readonly DialogService _dialogService;
-    protected readonly HttpClient _httpClient;
+    protected readonly HttpClient HttpClient;
 
-    protected Dictionary<int, Transaction> transactions = [];
-    protected Dictionary<int, ChargingStation> stations = [];
-    protected Dictionary<int, Car> cars = [];
+    protected Dictionary<int, Transaction> Transactions = [];
+    protected Dictionary<int, ChargingStation> Stations = [];
+    protected Dictionary<int, Car> Cars = [];
 
-    protected List<PieSeries<float>> energyData = [];
-    protected List<PieSeries<float>> costData = [];
+    protected List<PieSeries<float>> EnergyData = [];
+    protected List<PieSeries<float>> CostData = [];
 
     protected StatisticsPanelBase(IScreen screen) : base(screen)
     {
         _dialogService = GetService<DialogService>();
-        _httpClient = GetService<HttpClient>();
+        HttpClient = GetService<HttpClient>();
 
         GetData();
     }
 
-    async void GetData()
+    private async void GetData()
     {
         // --- prepare data for generation ---
-        //transactions
-        var request = await _httpClient.GetAsync("/api/Transactions/all");
+        //Transactions
+        var request = await HttpClient.GetAsync("/api/Transactions/all");
 
         if (request.StatusCode != HttpStatusCode.OK)
             return;
@@ -74,10 +70,10 @@ public abstract class StatisticsPanelBase : ViewModelBase
         var json = await request.Content.ReadAsStringAsync();
 
         var tempTransactions = JsonConverter.Deserialize<Transaction[]>(json);
-        transactions = tempTransactions!.ToDictionary(tempTransactions => tempTransactions.Id);
+        Transactions = tempTransactions!.ToDictionary(tempTransactions => tempTransactions.Id);
 
-        //stations
-        request = await _httpClient.GetAsync("/api/ChargingStations");
+        //Stations
+        request = await HttpClient.GetAsync("/api/ChargingStations");
 
         if (request.StatusCode != HttpStatusCode.OK)
             return;
@@ -85,10 +81,10 @@ public abstract class StatisticsPanelBase : ViewModelBase
         json = await request.Content.ReadAsStringAsync();
 
         var tempStations = JsonConverter.Deserialize<ChargingStation[]>(json);
-        stations = tempStations!.ToDictionary(tempStations => tempStations.Id);
+        Stations = tempStations!.ToDictionary(tempStations => tempStations.Id);
 
-        //cars
-        request = await _httpClient.GetAsync("/api/Cars");
+        //Cars
+        request = await HttpClient.GetAsync("/api/Cars");
 
         if (request.StatusCode != HttpStatusCode.OK)
             return;
@@ -96,7 +92,7 @@ public abstract class StatisticsPanelBase : ViewModelBase
         json = await request.Content.ReadAsStringAsync();
 
         var tempCars = JsonConverter.Deserialize<Car[]>(json);
-        cars = tempCars!.ToDictionary(tempCars => tempCars.Id);
+        Cars = tempCars!.ToDictionary(tempCars => tempCars.Id);
 
         // --- pie chart data generation ---
         GenerateCostData();
@@ -110,9 +106,9 @@ public abstract class StatisticsPanelBase : ViewModelBase
     protected abstract void GenerateCostData();
     protected abstract void GenerateGridData();
 
-    protected List<PieSeries<float>> ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
+    protected static List<PieSeries<float>> ConstructPieChartSeries(Dictionary<ChargingStation, float> total)
     {
-        List<PieSeries<float>> dataTemp = new();
+        List<PieSeries<float>> dataTemp = [];
 
         foreach (var t in total)
         {
@@ -121,12 +117,13 @@ public abstract class StatisticsPanelBase : ViewModelBase
                 Values = [t.Value],
             });
         }
+
         return dataTemp;
     }
 
-    protected List<PieSeries<float>> ConstructPieChartSeries(Dictionary<Car, float> total)
+    protected static List<PieSeries<float>> ConstructPieChartSeries(Dictionary<Car, float> total)
     {
-        List<PieSeries<float>> dataTemp = new();
+        List<PieSeries<float>> dataTemp = [];
 
         foreach (var t in total)
         {
