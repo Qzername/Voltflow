@@ -72,6 +72,18 @@ public class ChargingPortsController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeletePort(int id)
+    {
+        var chargingPort = await _applicationContext.ChargingPorts.FindAsync(id);
+        if (chargingPort is null)
+            return BadRequest(new { InvalidPort = true });
+        _applicationContext.ChargingPorts.Remove(chargingPort);
+        await _applicationContext.SaveChangesAsync();
+        return Ok();
+    }
+
     public struct CreatePortModel
     {
         public int StationId { get; set; }
