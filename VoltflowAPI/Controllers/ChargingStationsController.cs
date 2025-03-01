@@ -46,6 +46,7 @@ public class ChargingStationsController : ControllerBase
         var entry = await _applicationContext.ChargingStations.AddAsync(chargingStation);
         await _applicationContext.SaveChangesAsync();
 
+        //add default times
         await _applicationContext.ChargingStationOpeningHours.AddAsync(new ChargingStationOpeningHours()
         {
             StationId = chargingStation.Id,

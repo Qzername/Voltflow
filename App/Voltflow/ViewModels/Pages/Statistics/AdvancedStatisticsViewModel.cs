@@ -2,19 +2,29 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.Http;
 using System.Reactive;
 using System.Threading.Tasks;
 using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(true, screen)
+public class AdvancedStatisticsViewModel : StatisticsPanelBase
 {
+	HttpClient _httpClient;
+
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 
-	//grid
-	[Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
-	[Reactive] public List<StationGridElement> StationGridData { get; set; } = [];
+    //grid
+    [Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
+    [Reactive] public List<StationGridElement> StationGridData { get; set; } = [];
+
+    public AdvancedStatisticsViewModel(IScreen screen) : base(true, screen)
+    {
+        _httpClient = GetService<HttpClient>();
+    }
 
 	#region Chart data generation
 	protected override void GenerateEnergyUsedData()
@@ -52,7 +62,7 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 	}
 	#endregion
 
-	protected override void GenerateGridData()
+	protected override async void GenerateGridData()
 	{
 		Dictionary<int, TempStationData> tempStationData = [];
 
@@ -92,14 +102,39 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 
 		TransactionsGridData = new List<TransactionGridElement>(elementsTemp);
 
-		//stations
-		List<StationGridElement> stationGridElements = [];
+		//service history 
+		var weekAgo = DateTime.Now.AddDays(-7);
+        var weekAgoString = weekAgo.ToString("o");
+
+        var request = await _httpClient.GetAsync("api/ChargingStations/ServiceHistory?since"+weekAgoString);
+		Debug.WriteLine(request.StatusCode);
+
+		var json = await request.Content.ReadAsStringAsync();
+        var serviceHistoryTemp = JsonConverter.Deserialize<ChargingStationsServiceHistory[]>(json);
+
+		Dictionary<int, ChargingStationsServiceHistory[]> serviceHistory = [];
+
+        if (serviceHistoryTemp is not null)
+            serviceHistory = serviceHistoryTemp.ToDictionary(x => x.StationId, x => serviceHistoryTemp.Where(y=>y.StationId == x.StationId).ToArray());
+
+        //stations
+        List<StationGridElement> stationGridElements = [];
 
 		foreach (var s in Stations.Values)
 		{
-			stationGridElements.Add(new StationGridElement()
+			//check for possible warnings
+			string warning = "";
+
+			if (serviceHistory.ContainsKey(s.Id) && serviceHistory[s.Id].Length > 5)
+				warning = serviceHistory[s.Id].Length + " services in last week ";
+
+			if(!tempStationData.ContainsKey(s.Id))
+				warning += "no charges in last week";
+
+            stationGridElements.Add(new StationGridElement()
 			{
 				StationId = s.Id,
+				Warning = warning,
 				Longitude = s.Longitude,
 				Latitude = s.Latitude,
                 LastCharge = tempStationData.ContainsKey(s.Id) ? tempStationData[s.Id].LastCharge : null,

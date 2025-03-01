@@ -65,7 +65,18 @@ public class ChargingPortsController : ControllerBase
             chargingPort.Status = model.Status.Value;
 
         if (model.ServiceMode is not null)
+        {
+            //if service mode switched to false, add record to database
+            if(!model.ServiceMode.Value && chargingPort.ServiceMode)
+                _applicationContext.ChargingStationServiceHistory.Add(new ChargingStationsServiceHistory
+                {
+                    StationId = chargingPort.StationId,
+                    EndDate = DateTime.Now,
+                });
+
             chargingPort.ServiceMode = model.ServiceMode.Value;
+
+        }
       
         _applicationContext.Update(chargingPort);
         await _applicationContext.SaveChangesAsync();
