@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoltflowAPI.Contexts;
+using VoltflowAPI.Models.Application;
 
 namespace VoltflowAPI.Controllers;
 
@@ -25,11 +26,16 @@ public class TransactionsController : Controller
     /// Get all client's only transactions
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> GetTransactions()
+    public async Task<IActionResult> GetTransactions([FromQuery] DateTime? since)
     {
         var user = await _userManager.GetUserAsync(User);
 
-        var allClientTransactions = await _applicationContext.Transactions.Where(x=>x.AccountId == user.Id).ToListAsync();
+        List<Transaction> allClientTransactions;
+        
+        if(since is null)
+            allClientTransactions = await _applicationContext.Transactions.Where(x=>x.AccountId == user.Id).ToListAsync();
+        else
+            allClientTransactions = await _applicationContext.Transactions.Where(x => x.AccountId == user.Id && x.StartDate > since).ToListAsync();
 
         return Ok(allClientTransactions);
     }
@@ -39,9 +45,14 @@ public class TransactionsController : Controller
     /// </summary>
     [HttpGet("all")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> GetAllTransactions()
+    public async Task<IActionResult> GetAllTransactions([FromQuery] DateTime? since)
     {
-        var allTransactions = await _applicationContext.Transactions.ToListAsync();
+        List<Transaction> allTransactions;
+
+        if (since is null)
+            allTransactions = await _applicationContext.Transactions.ToListAsync();
+        else
+            allTransactions = await _applicationContext.Transactions.Where(x=>x.StartDate > since).ToListAsync();
 
         return Ok(allTransactions);
     }

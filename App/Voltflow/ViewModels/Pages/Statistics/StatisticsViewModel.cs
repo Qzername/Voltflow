@@ -6,7 +6,7 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
+public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(false, screen)
 {
 	//grid
 	[Reactive] public List<GridElement> Elements { get; set; } = [];

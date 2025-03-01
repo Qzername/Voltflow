@@ -4,8 +4,10 @@ using DynamicData;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using Microsoft.VisualBasic;
 using ReactiveUI;
 using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -47,19 +49,22 @@ public abstract class StatisticsPanelBase : ViewModelBase
 	protected List<PieSeries<float>> EnergyData = [];
 	protected List<PieSeries<float>> CostData = [];
 
-	protected StatisticsPanelBase(IScreen screen) : base(screen)
+	protected StatisticsPanelBase(bool loadAllTransactions, IScreen screen) : base(screen)
 	{
 		_dialogService = GetService<DialogService>();
 		HttpClient = GetService<HttpClient>();
 
-		GetData();
+		GetData(loadAllTransactions);
 	}
 
-	private async void GetData()
+	private async void GetData(bool loadAllTransactions)
 	{
-		// --- prepare data for generation ---
-		//Transactions
-		var request = await HttpClient.GetAsync("/api/Transactions/all");
+		var monthAgo = DateTime.Now.AddMonths(-1);
+		var monthAgoString = monthAgo.ToString("o");
+
+        // --- prepare data for generation ---
+        //Transactions
+        var request = await HttpClient.GetAsync($"/api/Transactions{(loadAllTransactions?"/all":string.Empty)}?since"+monthAgoString);
 
 		if (request.StatusCode != HttpStatusCode.OK)
 			return;
