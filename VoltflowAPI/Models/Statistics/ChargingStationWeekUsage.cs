@@ -1,6 +1,6 @@
 ﻿namespace VoltflowAPI.Models.Statistics;
 
-public struct ChargingStationRushHours
+public struct ChargingStationWeekUsage
 {
     public int Sunday { get; set; }
     public int Monday { get; set; }

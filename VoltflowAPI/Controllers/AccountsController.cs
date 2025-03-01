@@ -28,6 +28,10 @@ public class AccountsController : ControllerBase
 	    return Ok(new { Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber});
     }
 
+    [HttpGet("adminCheck")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> IsAdmin() => Ok();
+
     [HttpPatch]
     public async Task<IActionResult> UpdateAccount([FromBody] PatchAccountModel accountModel)
     {

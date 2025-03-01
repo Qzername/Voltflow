@@ -7,12 +7,21 @@ namespace VoltflowAPI.Controllers;
 [Route("api/[controller]")]
 public class StatisticsController : ControllerBase
 {
-    [HttpGet("ChargingStations/rushHours")]
-    public IActionResult GetRushHours([FromQuery] int stationId)
+    [HttpGet("ChargingStations/weekUsage")]
+    public IActionResult GetWeekUsage([FromQuery] int stationId)
     {
-        if (!StatisticsUpdateService.ChargingStationRushHours.ContainsKey(stationId))
+        if (!StatisticsUpdateService.ChargingStationWeekUsage.ContainsKey(stationId))
             return BadRequest();
 
-        return Ok(StatisticsUpdateService.ChargingStationRushHours[stationId]);
+        return Ok(StatisticsUpdateService.ChargingStationWeekUsage[stationId]);
+    }
+
+    [HttpGet("ChargingStations/peekHours")]
+    public IActionResult GetPeekHours([FromQuery] int stationId)
+    {
+        if (!StatisticsUpdateService.ChargingStationPeekHours.ContainsKey(stationId))
+            return BadRequest();
+
+        return Ok(StatisticsUpdateService.ChargingStationPeekHours[stationId]);
     }
 }
