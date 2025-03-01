@@ -10,10 +10,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <sidePanels:ManageStationViewModel />
-    </Design.DataContext>
-
+	
     <StackPanel VerticalAlignment="Top">
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
@@ -28,9 +25,11 @@
         </StackPanel>
 
         <Separator />
-
+		<!-- ]]]] Base value of station [[[[ -->
+		
         <StackPanel IsEnabled="{Binding Clicked}">
-            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <!-- Position -->
+			<StackPanel Classes="sm-spacing" Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign
                     Classes="size-sm"
                     IsVisible="True"
@@ -50,6 +49,7 @@
 
             <Separator />
 
+			<!-- data crucial for charging -->
             <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign
                     Classes="size-sm"
@@ -90,7 +90,24 @@
 
             <Separator />
 
+			<!-- charging ports -->
+
+			<TextBox Text="{Binding NewPortName}" Watermark="New port name"/>
+			
+			<Button Command="{Binding AddPort}" Content="Add port"/>
+			
+			<ComboBox 
+				ItemsSource="{Binding Ports}"
+				SelectedItem="{Binding SelectedPort}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			
             <StackPanel IsEnabled="{Binding !CreatingNewPoint}">
+				<TextBlock Text="{Binding SelectedPort.Name}"/>
                 <CheckBox Content="Out of Service" IsChecked="{Binding IsOutOfService}" />
                 <CheckBox
                     Content="Service Mode"
@@ -98,8 +115,11 @@
                     IsEnabled="{Binding IsOutOfService}" />
             </StackPanel>
 
+			<Button Command="{Binding DeletePort}" Content="Delete port"/>
+			
             <Separator />
-
+            <!-- manage stations -->
+			
             <Button
                 HorizontalAlignment="Stretch"
                 Classes="Success"

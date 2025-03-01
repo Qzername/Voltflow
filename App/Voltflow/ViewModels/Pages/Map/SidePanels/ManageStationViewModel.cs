@@ -1,10 +1,12 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using Avalonia.Collections;
+using Avalonia.Controls.Notifications;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -29,7 +31,12 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		[Reactive] public bool CreatingNewPoint { get; set; }
 		[Reactive] public bool Clicked { get; set; }
 
-		private bool _isOutOfService;
+		//ports
+		[Reactive] public string NewPortName { get; set; }
+		[Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = new();
+		[Reactive] public ChargingPort SelectedPort { get; set; }
+
+        private bool _isOutOfService;
 		public bool IsOutOfService
 		{
 			get => _isOutOfService;
@@ -45,7 +52,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 					this.RaisePropertyChanged(nameof(IsInServiceMode));
 				}
 
-				_ = UpdateStationStatus();
+				_ = UpdatePortStatus();
 			}
 		}
 
@@ -58,7 +65,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				this.RaiseAndSetIfChanged(ref _isInServiceMode, value);
 				_isInServiceMode = value;
 
-				_ = UpdateStationStatus();
+				_ = UpdatePortStatus();
 			}
 		}
 
@@ -131,9 +138,18 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			Cost = data.Cost;
 			MaxChargeRate = data.MaxChargeRate;
 
-			//update values, dont send updates to server
-			SetOutOfServiceNoServer(data.Status == ChargingStationStatus.OutOfService);
-			SetServiceModeNoServer(data.ServiceMode);
+			Ports.Clear();
+			var ports = (ChargingPort[])feature["ports"]!;
+
+			if(ports.Length > 0)
+            {
+                Ports.AddRange(ports);
+                SelectedPort = Ports[0];
+
+                //update values, dont send updates to server
+                SetOutOfServiceNoServer(SelectedPort.Status == ChargingPortStatus.OutOfService);
+                SetServiceModeNoServer(SelectedPort.ServiceMode);
+            }
 
 			CreatingNewPoint = false;
 		}
@@ -145,8 +161,31 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		}
 		#endregion
 
-		#region Handling view buttons
-		public async Task CreateStation()
+		#region Handling ports
+		public async Task AddPort()
+		{
+			//TODO: data checking
+
+			var content = JsonConverter.ToStringContent(new
+			{
+				StationId = CurrentStation.Id,
+				Name = NewPortName
+			});
+
+			var response = await _httpClient.PostAsync("/api/ChargingPorts", content);
+			Debug.WriteLine(response.StatusCode);
+        }
+
+        public async Task DeletePort()
+		{
+            var response = await _httpClient.DeleteAsync("/api/ChargingPorts/" + SelectedPort.Id);
+            Debug.WriteLine(response.StatusCode);
+        }
+
+        #endregion
+
+        #region Handling view buttons
+        public async Task CreateStation()
 		{
 			StringContent content = JsonConverter.ToStringContent(new
 			{
@@ -157,6 +196,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			});
 
 			var request = await _httpClient.PostAsync("/api/ChargingStations", content);
+			Debug.WriteLine(request.StatusCode);
 
 			if (request.StatusCode == HttpStatusCode.Forbidden)
 			{
@@ -274,21 +314,22 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				classes: ["Light"]);
 		}
 
-		public async Task UpdateStationStatus()
+		public async Task UpdatePortStatus()
 		{
-			var station = CurrentStation;
+			var selectedPort = SelectedPort;
 
-			station.Status = IsOutOfService ? ChargingStationStatus.OutOfService : ChargingStationStatus.Available;
-			station.ServiceMode = IsInServiceMode;
+            selectedPort.Status = IsOutOfService ? ChargingPortStatus.OutOfService : ChargingPortStatus.Available;
+            selectedPort.ServiceMode = IsInServiceMode;
 
 			var content = JsonConverter.ToStringContent(new
 			{
-				station.Id,
-				station.Status,
-				station.ServiceMode
+                selectedPort.Id,
+                selectedPort.Status,
+                selectedPort.ServiceMode
 			});
 
-			var request = await _httpClient.PatchAsync("/api/ChargingStations/", content);
+			var request = await _httpClient.PatchAsync("/api/ChargingPorts/", content);
+			Debug.WriteLine(request.StatusCode);
 
 			if (request.StatusCode == HttpStatusCode.Forbidden)
 			{
@@ -326,9 +367,9 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-			CurrentStation = station;
+			Ports[Ports.IndexOf(SelectedPort)] = selectedPort;
 
-			ToastManager?.Show(
+            ToastManager?.Show(
 				new Toast("Updated station successfully!"),
 				showIcon: true,
 				showClose: false,

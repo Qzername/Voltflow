@@ -7,6 +7,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Voltflow.Models;
@@ -71,7 +72,8 @@ public class MapViewModel : ViewModelBase, IScreen
 
 		// Add points to map
 		var request = await _httpClient.GetAsync("/api/ChargingStations");
-		var stationsJson = await request.Content.ReadAsStringAsync();
+        Debug.WriteLine(request.StatusCode);
+        var stationsJson = await request.Content.ReadAsStringAsync();
 		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
 		var list = (List<IFeature>)_pointsLayer.Features;
@@ -83,7 +85,13 @@ public class MapViewModel : ViewModelBase, IScreen
 			var feature = new PointFeature(point.x, point.y);
 			feature["data"] = chargingStation;
 
-			list.Add(feature);
+			request = await _httpClient.GetAsync("/api/ChargingPorts?stationId=" + chargingStation.Id);
+            Debug.WriteLine(request.StatusCode);
+            var portsJson = await request.Content.ReadAsStringAsync();
+            var ports = JsonConverter.Deserialize<ChargingPort[]>(portsJson);
+			feature["ports"] = ports;
+
+            list.Add(feature);
 		}
 
 		Map.Layers.Add(_pointsLayer);

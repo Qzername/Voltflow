@@ -19,7 +19,8 @@ public class ChargingViewModel : ViewModelBase
 {
 	public WindowToastManager? ToastManager;
 
-	[Reactive] public ChargingStation CurrentStation { get; set; }
+	[Reactive] public ChargingStation CurrentStation { get;set; }
+    [Reactive] public ChargingPort CurrentPort { get; set; }
 
 	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
 	[Reactive] public int SelectedIndex { get; set; } = 0;
@@ -45,10 +46,12 @@ public class ChargingViewModel : ViewModelBase
 	private DateTime _startTime;
 	private readonly HttpClient _httpClient;
 
-	public ChargingViewModel(ChargingStation chargingStation, IScreen screen) : base(screen)
+	public ChargingViewModel(ChargingStation chargingStation, ChargingPort chargingPort, IScreen screen) : base(screen)
 	{
 		_httpClient = GetService<HttpClient>();
-		CurrentStation = chargingStation;
+
+        CurrentStation = chargingStation;
+        CurrentPort = chargingPort;
 
 		_dataUpdate.Interval = TimeSpan.FromMilliseconds(100);
 		_dataUpdate.Tick += async (sender, e) => await UpdateData();
@@ -116,7 +119,7 @@ public class ChargingViewModel : ViewModelBase
 		var carId = Cars[SelectedIndex].Id;
 
 		_connection = new HubConnectionBuilder()
-			.WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&stationId={CurrentStation.Id}",
+			.WithUrl($"https://voltflow-api.heapy.xyz/charginghub?carId={carId}&portId={CurrentPort.Id}",
 				(options) => { options.AccessTokenProvider = () => Task.FromResult(token); }).Build();
 
 		await _connection.StartAsync();

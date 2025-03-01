@@ -20,7 +20,6 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(screen)
 			if (t.CarId is null)
 				continue;
 
-			//TODO: optimize this
 			var car = Cars[t.CarId.Value];
 
 			if (total.ContainsKey(car))

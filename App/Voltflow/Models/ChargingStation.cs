@@ -7,13 +7,4 @@ public struct ChargingStation
 	public double Latitude { get; set; }
 	public int Cost { get; set; }
 	public int MaxChargeRate { get; set; }
-	public ChargingStationStatus Status { get; set; }
-	public bool ServiceMode { get; set; }
-}
-
-public enum ChargingStationStatus
-{
-	Available,
-	Occupied,
-	OutOfService,
 }

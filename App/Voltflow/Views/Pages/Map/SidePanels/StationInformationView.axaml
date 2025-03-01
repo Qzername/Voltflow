@@ -7,9 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sidePanels="clr-namespace:Voltflow.ViewModels.Pages.Map.SidePanels"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <sidePanels:StationInformationViewModel />
-    </Design.DataContext>
 
     <StackPanel>
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
@@ -26,6 +23,7 @@
 
         <Separator />
 
+		<!-- Status -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -35,6 +33,7 @@
         </StackPanel>
         <TextBlock Classes="size-sm" Text="{Binding Status}" />
 
+		<!-- Cost -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -47,6 +46,7 @@
             <TextBlock Classes="size-sm" Text="zł" />
         </StackPanel>
 
+		<!-- Max charge rate -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -61,6 +61,17 @@
 
         <Separator IsVisible="{Binding Selected}" />
 
+		<!-- ports -->
+		<ComboBox
+				ItemsSource="{Binding Ports}"
+				SelectedItem="{Binding SelectedPort}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}" />
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		
         <Button
             HorizontalAlignment="Stretch"
             Classes="Success"
