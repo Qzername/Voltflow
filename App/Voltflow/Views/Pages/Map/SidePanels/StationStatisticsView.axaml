@@ -9,19 +9,35 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <sidePanels:StationStatisticsViewModel />
-    </Design.DataContext>
 
-    <StackPanel VerticalAlignment="Center">
-        <TextBlock
-            HorizontalAlignment="Center"
-            Classes="size-lg weight-bold"
-            Text="Rush hours (Monday to Sunday)" />
+	<ScrollViewer>
+		<StackPanel VerticalAlignment="Center">
+			<TextBlock
+				HorizontalAlignment="Center"
+				Classes="size-lg weight-bold"
+				Text="Rush hours (Monday to Sunday)" />
 
-        <lvc:CartesianChart
-            Height="512"
-            MaxWidth="512"
-            Series="{Binding Series}" />
-    </StackPanel>
+			<!-- Weekly usage -->
+			<lvc:CartesianChart
+				Height="512"
+				MaxWidth="512"
+				Series="{Binding WeekUsage}" />
+
+			<TextBlock
+				HorizontalAlignment="Center"
+				Classes="size-lg weight-bold"
+				Text="Peek hours"/>
+				
+			<!-- Peek hours -->
+			<lvc:CartesianChart
+				Height="512"
+				MaxWidth="512"
+				Series="{Binding PeekHours}" />
+
+			<TextBlock
+				HorizontalAlignment="Center"
+				Classes="size-lg weight-bold"
+				Text="Opening hours"/>
+		</StackPanel>
+	</ScrollViewer>
 </UserControl>

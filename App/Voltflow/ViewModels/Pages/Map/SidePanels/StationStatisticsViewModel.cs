@@ -4,6 +4,7 @@ using Mapsui;
 using Mapsui.Layers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Voltflow.Models;
@@ -13,7 +14,8 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 
 public class StationStatisticsViewModel : MapSidePanelBase
 {
-	[Reactive] public IEnumerable<ISeries> Series { get; set; } = [];
+	[Reactive] public IEnumerable<ISeries> WeekUsage { get; set; } = [];
+	[Reactive] public IEnumerable<ISeries> PeekHours { get; set; } = [];
 
 	private readonly ChargingStation _chargingStation;
 	private readonly HttpClient _httpClient;
@@ -27,26 +29,40 @@ public class StationStatisticsViewModel : MapSidePanelBase
 
 	private async void GetStatistics()
 	{
-		var request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/rushHours?stationId=" + _chargingStation.Id);
+		// --- week usage ---
+		var request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/weekUsage?stationId=" + _chargingStation.Id);
 		var json = await request.Content.ReadAsStringAsync();
-		ChargingStationRushHours stats = JsonConverter.Deserialize<ChargingStationRushHours>(json);
+		ChargingStationWeekUsage weekUsage = JsonConverter.Deserialize<ChargingStationWeekUsage>(json);
 
-		Series = new List<ISeries>()
+		WeekUsage = new List<ISeries>()
 		{
 			new ColumnSeries<int>
 			{
 				Values = [
-					stats.Monday,
-					stats.Tuesday,
-					stats.Wednesday,
-					stats.Thursday,
-					stats.Friday,
-					stats.Saturday,
-					stats.Sunday,
-				]
+					weekUsage.Monday,
+					weekUsage.Tuesday,
+					weekUsage.Wednesday,
+					weekUsage.Thursday,
+					weekUsage.Friday,
+					weekUsage.Saturday,
+					weekUsage.Sunday,
+				],
 			}
 		};
-	}
+
+		// --- peek hours ---
+		request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/peekHours?stationId=" + _chargingStation.Id);
+		json = await request.Content.ReadAsStringAsync();
+		int[] peekHours = JsonConverter.Deserialize<int[]>(json)!;
+
+        PeekHours = new List<ISeries>()
+        {
+            new ColumnSeries<int>
+            {
+                Values = peekHours,
+            }
+        };
+    }
 
 	public override void MapClicked(MapInfoEventArgs e) => HostScreen.Router.NavigateAndReset.Execute(new StationInformationViewModel(_pointsLayer, HostScreen));
 }

@@ -6,7 +6,8 @@ namespace VoltflowAPI.Services
 {
     public class StatisticsUpdateService : BackgroundService
     {
-        public static Dictionary<int,ChargingStationRushHours> ChargingStationRushHours { get; set; }
+        public static Dictionary<int,ChargingStationWeekUsage> ChargingStationWeekUsage { get; set; }
+        public static Dictionary<int, int[]> ChargingStationPeekHours { get; set; }
 
         readonly IServiceScopeFactory _scopeFactory;
         readonly ILogger<StatisticsUpdateService> _logger;
@@ -16,7 +17,8 @@ namespace VoltflowAPI.Services
             _scopeFactory = scopeFactory;
             _logger = logger;
 
-            ChargingStationRushHours = new Dictionary<int, ChargingStationRushHours>();
+            ChargingStationWeekUsage = new Dictionary<int, ChargingStationWeekUsage>();
+            ChargingStationPeekHours = new Dictionary<int, int[]>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,19 +39,21 @@ namespace VoltflowAPI.Services
                     if (!statistics.ContainsKey(t.ChargingStationId))
                     {
                         statistics[t.ChargingStationId] = new Dictionary<int, int>();
+                        ChargingStationPeekHours[t.ChargingStationId] = new int[24];
 
                         for (int i = 0; i < 7; i++)
                             statistics[t.ChargingStationId][i] = 0;
                     }
                    
                     statistics[t.ChargingStationId][(int)t.StartDate.DayOfWeek]++;
+                    ChargingStationPeekHours[t.ChargingStationId][t.StartDate.Hour]++;
                 }    
 
                 foreach(var kv in  statistics)
                 {
                     var weekStats = kv.Value;
 
-                    ChargingStationRushHours[kv.Key] = new ChargingStationRushHours()
+                    ChargingStationWeekUsage[kv.Key] = new ChargingStationWeekUsage()
                     {
                         Sunday = weekStats[0],
                         Monday = weekStats[1],
