@@ -144,8 +144,8 @@ public class ChargingHub : Hub
 	        ChargingStationId = connInfo.StationId,
 	        StartDate = connInfo.StartDate,
 	        EndDate = endTime,
-	        EnergyConsumed = energyConsumed,
-	        Cost = connInfo.IsDiscount ? totalCost * 0.9 : totalCost
+	        EnergyConsumed = Math.Round(energyConsumed,3),
+	        Cost = Math.Round(connInfo.IsDiscount ? totalCost * 0.9 : totalCost, 2)
         };
 
         _applicationContext.Transactions.Add(transaction);

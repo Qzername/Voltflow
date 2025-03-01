@@ -149,7 +149,7 @@ public class ChargingViewModel : ViewModelBase
 
 		var time = DateTime.UtcNow - _startTime;
 		Time = time.ToString("hh\\:mm\\:ss");
-		TotalCharge = Math.Round(chargingRate * time.TotalSeconds / 1000, 2); //per kwh
+		TotalCharge = Math.Round(chargingRate * time.TotalSeconds / 1000, 3); //per kwh
 		TotalCost = Math.Round(TotalCharge * CurrentStation.Cost, 2);
 
 		if (DeclaredAmount && TotalCharge >= Amount)
@@ -162,7 +162,7 @@ public class ChargingViewModel : ViewModelBase
 			bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 			await _connection.StopAsync();
 
-			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
+			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(TotalCost, TotalCharge, isDiscount, HostScreen));
 
 			if (App.NotificationService is not null)
 				App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
@@ -182,7 +182,7 @@ public class ChargingViewModel : ViewModelBase
 		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
 
-		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(isDiscount, HostScreen));
+		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(TotalCost, TotalCharge, isDiscount, HostScreen));
 
 		Finished = true;
 		Working = false;

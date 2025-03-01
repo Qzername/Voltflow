@@ -14,18 +14,24 @@
     </Design.DataContext>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock
+        <TextBlock Text="Transaction finished"/>
+        <TextBlock Text="{Binding Cost}"/>
+        <TextBlock Text="{Binding EnergyConsumed}"/>
+		
+		<TextBlock
             HorizontalAlignment="Center"
             Classes="size-lg weight-bold"
             IsVisible="{Binding ShowText}"
             Text="{Binding Text}" />
-        <!--  TODO: stats of transaction + fix issues with text showing  -->
 
+		<!--add some info abt how scrachcard works-->
         <controls:ScratchCard
             Width="150"
             Height="150"
             HorizontalAlignment="Center"
             IsDone="{Binding IsDone}"
             IsWon="{Binding IsWon, Mode=TwoWay}" />
+		
+		<Button Command="{Binding GenerateInvoice}" Content="Download invoice"/>
     </StackPanel>
 </UserControl>

@@ -102,8 +102,4 @@
       <DependentUpon>StatisticsGridDataView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Pages\Test\" />
-  </ItemGroup>
 </Project>
