@@ -80,11 +80,14 @@ public class ChargingHub : Hub
 
         var utcNow = DateTime.UtcNow;
 
+        var station = _applicationContext.ChargingStations.Find(port.StationId);
+
         await Clients.Caller.SendAsync("Ok", utcNow);
         _connections[Context.ConnectionId] = new ChargingInfo()
         {
             StartDate = utcNow,
-            StationId = port.Id,
+            PortId = port.Id,
+            StationId = station.Id,
             CarId = carId
         };
 
@@ -105,7 +108,7 @@ public class ChargingHub : Hub
         var timePassed = endTime - connInfo.StartDate;
 
         //set port status to available
-        var port = _applicationContext.ChargingPorts.Find(connInfo.StationId);
+        var port = _applicationContext.ChargingPorts.Find(connInfo.PortId);
         port.Status = (int)ChargingPortStatus.Available;
         _applicationContext.Update(port);
         await _applicationContext.SaveChangesAsync();
@@ -113,10 +116,8 @@ public class ChargingHub : Hub
         //remove connection
         _connections.TryRemove(Context.ConnectionId, out _);
 
-        //get car
+        //get car and station
         var car = _applicationContext.Cars.Find(connInfo.CarId);
-
-        //get station
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
         //calculactions for cost and energy

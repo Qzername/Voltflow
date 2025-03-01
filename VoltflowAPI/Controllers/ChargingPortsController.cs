@@ -22,8 +22,8 @@ public class ChargingPortsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetStations([FromQuery] int stationId)
     {
-        if(!_applicationContext.ChargingPorts.Any(x=>x.Equals(stationId)))
-            return BadRequest(new { InvalidStation = true });
+        if (!_applicationContext.ChargingPorts.Any(x => x.StationId == stationId))
+            return Ok(Array.Empty<ChargingStation>());
 
         var chargingPorts = _applicationContext.ChargingPorts.Where(x=>x.StationId == stationId);
         return Ok(chargingPorts);
@@ -33,7 +33,7 @@ public class ChargingPortsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreatePort([FromBody] CreatePortModel model)
     {
-        if (!_applicationContext.ChargingPorts.Any(x => x.Equals(model.StationId)))
+        if (!_applicationContext.ChargingStations.Any(x => x.Id == model.StationId))
             return BadRequest(new { InvalidStation = true });
 
         var chargingPort = new ChargingPort
@@ -77,10 +77,13 @@ public class ChargingPortsController : ControllerBase
     public async Task<IActionResult> DeletePort(int id)
     {
         var chargingPort = await _applicationContext.ChargingPorts.FindAsync(id);
+
         if (chargingPort is null)
             return BadRequest(new { InvalidPort = true });
+
         _applicationContext.ChargingPorts.Remove(chargingPort);
         await _applicationContext.SaveChangesAsync();
+
         return Ok();
     }
 
