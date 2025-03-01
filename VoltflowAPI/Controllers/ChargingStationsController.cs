@@ -43,7 +43,20 @@ public class ChargingStationsController : ControllerBase
             MaxChargeRate = model.MaxChargeRate,
         };
 
-        await _applicationContext.ChargingStations.AddAsync(chargingStation);
+        var entry = await _applicationContext.ChargingStations.AddAsync(chargingStation);
+        await _applicationContext.SaveChangesAsync();
+
+        await _applicationContext.ChargingStationOpeningHours.AddAsync(new ChargingStationOpeningHours()
+        {
+            StationId = chargingStation.Id,
+            Monday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Tuesday   = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Wednesday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Thursday  = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Friday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Saturday  = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Sunday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+        });
         await _applicationContext.SaveChangesAsync();
 
         return Ok();

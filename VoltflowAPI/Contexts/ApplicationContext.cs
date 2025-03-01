@@ -9,6 +9,7 @@ public class ApplicationContext : DbContext
 
     public DbSet<Car> Cars { get; set; }
     public DbSet<ChargingStation> ChargingStations { get; set; }
-    public DbSet<ChargingPort> ChargingPorts { get; set; }  
+    public DbSet<ChargingPort> ChargingPorts { get; set; }
+    public DbSet<ChargingStationOpeningHours> ChargingStationOpeningHours { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
 }

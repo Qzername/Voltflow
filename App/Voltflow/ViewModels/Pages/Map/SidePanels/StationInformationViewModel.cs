@@ -3,14 +3,18 @@ using Mapsui;
 using Mapsui.Layers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Diagnostics;
+using System.Net.Http;
 using Voltflow.Models;
 using Voltflow.ViewModels.Pages.Charging;
 
 namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 
-public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : MapSidePanelBase(layer, screen)
+public class StationInformationViewModel : MapSidePanelBase
 {
+	HttpClient _httpClient;
+
 	[Reactive] public bool Selected { get; set; }
 	[Reactive] public string ViewTitle { get; set; } = "Click on a point.";
 	[Reactive] public string Status { get; set; } = "Unknown";
@@ -23,6 +27,12 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
     [Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = [];
 
 	private ChargingPort? _selectedPort;
+
+    public StationInformationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
+    {
+        _httpClient = GetService<HttpClient>();
+    }
+
     public ChargingPort? SelectedPort 
 	{
 		get => _selectedPort;
@@ -55,7 +65,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 		MaxChargeRate = _data.MaxChargeRate;
 	}
 
-	private void UpdateUi(bool setIndex)
+	private async void UpdateUi(bool setIndex)
 	{
 		ContainsPorts = Ports.Count != 0;
 
@@ -65,8 +75,21 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
         Selected = SelectedPort?.Status != ChargingPortStatus.OutOfService && ContainsPorts;
         ViewTitle = $"Existing Point (ID: {_data.Id})";
         Status = SelectedPort == null ? "No Charging Ports" : SelectedPort.Status == ChargingPortStatus.OutOfService ? "Out of Service" : SelectedPort.Status.ToString();
+
+        //check if station is open
+
+        var request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + _data.Id);
+        Debug.WriteLine(request.StatusCode);
+
+        var json = await request.Content.ReadAsStringAsync();
+        var temp = JsonConverter.Deserialize<ChargingStationOpeningHours>(json)!;
+		var today = ChargingStationOpeningHours.GetToday(temp);
+		var now = DateTime.Now.TimeOfDay;
+
+        if (today[0] > now || today[1] < now)
+			Status = "Closed";
     }
 
-	public void NavigateToStatistics() => HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, _pointsLayer, HostScreen));
+	public void NavigateToStatistics() => HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, HostScreen));
 	public void NavigateToCharging() => HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, SelectedPort, HostScreen));
 }

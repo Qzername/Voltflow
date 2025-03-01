@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Voltflow.Views.Pages.Map.ModifyHoursView">
+
+	<!-- there should be button to come back -->
+	<!-- maybe clear button for setting default time for day? (0:00-23:59) -->
+	<ScrollViewer>
+		<StackPanel>
+			<TextBlock Text="Monday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Monday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Monday[1]}"/>
+
+			<Separator/>
+
+			<TextBlock Text="Tuesday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Tuesday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Tuesday[1]}"/>
+			
+			<Separator/>
+
+			<TextBlock Text="Wednesday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Wednesday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Wednesday[1]}"/>
+
+			<Separator/>
+
+			<TextBlock Text="Thursday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Thursday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Thursday[1]}"/>
+
+			<Separator/>
+
+			<TextBlock Text="Friday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Friday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Friday[1]}"/>
+
+			<Separator/>
+
+			<TextBlock Text="Saturday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Saturday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Saturday[1]}"/>
+
+			<Separator/>
+
+			<TextBlock Text="Sunday"/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Sunday[0]}"/>
+			<TextBlock Text=" - "/>
+			<TimePicker SelectedTime="{Binding OpeningHours.Sunday[1]}"/>
+
+			<Separator/>
+
+			<Button Command="{Binding Update}" Content="Update"/>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

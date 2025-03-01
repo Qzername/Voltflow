@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using VoltflowAPI.Contexts;
@@ -74,13 +75,23 @@ public class ChargingHub : Hub
             Context.Abort();
         }
 
+        var station = _applicationContext.ChargingStations.Find(port.StationId);
+        var openingHours = _applicationContext.ChargingStationOpeningHours.FirstOrDefault(x => x.StationId == station.Id);
+
+        var hours = openingHours.GetToday();
+
+        if(DateTime.UtcNow.TimeOfDay < hours[0] || 
+           DateTime.UtcNow.TimeOfDay > hours[1])
+        {
+            await Clients.Caller.SendAsync("Error", "Station is not available");
+            Context.Abort();
+        }
+
         port.Status = (int)ChargingPortStatus.Occupied;
         _applicationContext.Update(port);
         await _applicationContext.SaveChangesAsync();
 
         var utcNow = DateTime.UtcNow;
-
-        var station = _applicationContext.ChargingStations.Find(port.StationId);
 
         await Clients.Caller.SendAsync("Ok", utcNow);
         _connections[Context.ConnectionId] = new ChargingInfo()

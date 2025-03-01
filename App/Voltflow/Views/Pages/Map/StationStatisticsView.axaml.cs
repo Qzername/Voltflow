@@ -1,7 +1,7 @@
 using Avalonia.ReactiveUI;
-using Voltflow.ViewModels.Pages.Map.SidePanels;
+using Voltflow.ViewModels.Pages.Map;
 
-namespace Voltflow.Views.Pages.Map.SidePanels;
+namespace Voltflow.Views.Pages.Map;
 
 public partial class StationStatisticsView : ReactiveUserControl<StationStatisticsViewModel>
 {
