@@ -10,7 +10,10 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-	
+    <Design.DataContext>
+        <sidePanels:ManageStationViewModel />
+    </Design.DataContext>
+
     <StackPanel VerticalAlignment="Top">
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
@@ -25,11 +28,11 @@
         </StackPanel>
 
         <Separator />
-		<!-- ]]]] Base value of station [[[[ -->
-		
+        <!--  ]]]] Base value of station [[[[  -->
+
         <StackPanel IsEnabled="{Binding Clicked}">
-            <!-- Position -->
-			<StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <!--  Position  -->
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign
                     Classes="size-sm"
                     IsVisible="True"
@@ -49,7 +52,7 @@
 
             <Separator />
 
-			<!-- data crucial for charging -->
+            <!--  data crucial for charging  -->
             <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign
                     Classes="size-sm"
@@ -88,38 +91,11 @@
                 <TextBlock Grid.Column="2" Text="kW" />
             </Grid>
 
+            <!--  charging ports  -->
+
             <Separator />
+            <!--  manage stations  -->
 
-			<!-- charging ports -->
-
-			<TextBox Text="{Binding NewPortName}" Watermark="New port name"/>
-			
-			<Button Command="{Binding AddPort}" Content="Add port"/>
-			
-			<ComboBox 
-				ItemsSource="{Binding Ports}"
-				SelectedItem="{Binding SelectedPort}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding Name}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-			
-            <StackPanel IsEnabled="{Binding !CreatingNewPoint}">
-				<TextBlock Text="{Binding SelectedPort.Name}"/>
-                <CheckBox Content="Out of Service" IsChecked="{Binding IsOutOfService}" />
-                <CheckBox
-                    Content="Service Mode"
-                    IsChecked="{Binding IsInServiceMode}"
-                    IsEnabled="{Binding IsOutOfService}" />
-            </StackPanel>
-
-			<Button Command="{Binding DeletePort}" Content="Delete port"/>
-			
-            <Separator />
-            <!-- manage stations -->
-			
             <Button
                 HorizontalAlignment="Stretch"
                 Classes="Success"
@@ -152,6 +128,99 @@
                     <TextBlock Text="Delete Station" />
                 </StackPanel>
             </Button>
+
+            <StackPanel IsVisible="{Binding !CreatingNewPoint}">
+                <Separator />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="ElectricalServices" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Charging Port's Name" />
+                </StackPanel>
+                <TextBox Text="{Binding NewPortName}" Watermark="Charging Port #1" />
+
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Classes="Success"
+                    Command="{Binding AddPort}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Add" />
+                        <TextBlock Text="Add Port" />
+                    </StackPanel>
+                </Button>
+
+                <Separator />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="ElectricalServices" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Charging Port" />
+                </StackPanel>
+                <ComboBox
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Ports}"
+                    SelectedItem="{Binding SelectedPort}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel
+                        Grid.Column="0"
+                        Classes="sm-spacing"
+                        Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign
+                            Classes="size-sm"
+                            IsVisible="True"
+                            Kind="Info" />
+                        <TextBlock Classes="size-sm weight-bold" Text="Out of Service" />
+                    </StackPanel>
+
+                    <CheckBox Grid.Column="1" IsChecked="{Binding IsOutOfService}" />
+                </Grid>
+
+                <Grid IsEnabled="{Binding IsOutOfService}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel
+                        Grid.Column="0"
+                        Classes="sm-spacing"
+                        Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign
+                            Classes="size-sm"
+                            IsVisible="True"
+                            Kind="Info" />
+                        <TextBlock Classes="size-sm weight-bold" Text="Service Mode" />
+                    </StackPanel>
+
+                    <CheckBox Grid.Column="1" IsChecked="{Binding IsInServiceMode}" />
+                </Grid>
+
+                <Button
+                    HorizontalAlignment="Stretch"
+                    Classes="Danger"
+                    Command="{Binding DeletePort}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Delete" />
+                        <TextBlock Text="Delete Port" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -23,17 +23,19 @@
 
         <Border
             Width="256"
-            Margin="16"
+            Margin="16,16,16,80"
             Padding="16"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Classes="with-bg"
             CornerRadius="6">
-            <reactiveUi:RoutedViewHost Router="{Binding Router}">
-                <reactiveUi:RoutedViewHost.ViewLocator>
-                    <viewLocators:ReactiveViewLocator />
-                </reactiveUi:RoutedViewHost.ViewLocator>
-            </reactiveUi:RoutedViewHost>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <reactiveUi:RoutedViewHost Router="{Binding Router}">
+                    <reactiveUi:RoutedViewHost.ViewLocator>
+                        <viewLocators:ReactiveViewLocator />
+                    </reactiveUi:RoutedViewHost.ViewLocator>
+                </reactiveUi:RoutedViewHost>
+            </ScrollViewer>
         </Border>
 
         <Panel IsVisible="{Binding Authenticated}">

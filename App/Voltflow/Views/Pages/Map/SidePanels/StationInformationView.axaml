@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sidePanels="clr-namespace:Voltflow.ViewModels.Pages.Map.SidePanels"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <sidePanels:StationInformationViewModel />
+    </Design.DataContext>
 
     <StackPanel>
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
@@ -21,9 +24,32 @@
                 Text="{Binding ViewTitle}" />
         </StackPanel>
 
+        <StackPanel IsVisible="{Binding ContainsPorts}">
+            <Separator />
+
+            <!--  ports  -->
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="ElectricalServices" />
+                <TextBlock Classes="size-sm weight-bold" Text="Charging Port" />
+            </StackPanel>
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Ports}"
+                SelectedItem="{Binding SelectedPort}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+
         <Separator />
 
-		<!-- Status -->
+        <!--  Status  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -33,7 +59,7 @@
         </StackPanel>
         <TextBlock Classes="size-sm" Text="{Binding Status}" />
 
-		<!-- Cost -->
+        <!--  Cost  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -46,7 +72,7 @@
             <TextBlock Classes="size-sm" Text="zł" />
         </StackPanel>
 
-		<!-- Max charge rate -->
+        <!--  Max charge rate  -->
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">
             <iconPacks:PackIconMaterialDesign
                 Classes="size-sm"
@@ -59,40 +85,28 @@
             <TextBlock Classes="size-sm" Text="kW" />
         </StackPanel>
 
-        <Separator IsVisible="{Binding Selected}" />
+        <StackPanel IsVisible="{Binding Selected}">
+            <Separator />
 
-		<!-- ports -->
-		<ComboBox
-				ItemsSource="{Binding Ports}"
-				SelectedItem="{Binding SelectedPort}">
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<TextBlock Text="{Binding Name}" />
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-		
-        <Button
-            HorizontalAlignment="Stretch"
-            Classes="Success"
-            Command="{Binding NavigateToCharging}"
-            IsEnabled="{Binding Selected}"
-            IsVisible="{Binding Selected}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign Kind="Bolt" />
-                <TextBlock Text="Charge" />
-            </StackPanel>
-        </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Success"
+                Command="{Binding NavigateToCharging}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Bolt" />
+                    <TextBlock Text="Charge" />
+                </StackPanel>
+            </Button>
 
-        <Button
-            HorizontalAlignment="Stretch"
-            Classes="Primary"
-            Command="{Binding NavigateToStatistics}"
-            IsVisible="{Binding Selected}">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign Kind="List" />
-                <TextBlock Text="Statistics" />
-            </StackPanel>
-        </Button>
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Primary"
+                Command="{Binding NavigateToStatistics}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="List" />
+                    <TextBlock Text="Statistics" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </StackPanel>
 </UserControl>

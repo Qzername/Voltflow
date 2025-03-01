@@ -16,13 +16,14 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 	[Reactive] public string Status { get; set; } = "Unknown";
 	[Reactive] public int Cost { get; set; }
 	[Reactive] public int MaxChargeRate { get; set; }
+	[Reactive] public bool ContainsPorts { get; set; }
 
 	private ChargingStation _data;
 
-    [Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = new();
+    [Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = [];
 
-	ChargingPort _selectedPort;
-    public ChargingPort SelectedPort 
+	private ChargingPort? _selectedPort;
+    public ChargingPort? SelectedPort 
 	{
 		get => _selectedPort;
 		set
@@ -30,7 +31,7 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 			this.RaiseAndSetIfChanged(ref _selectedPort, value);
             _selectedPort = value;
 
-            UpdateUI(false);
+            UpdateUi(false);
         }
 	}
 
@@ -44,26 +45,26 @@ public class StationInformationViewModel(MemoryLayer layer, IScreen screen) : Ma
 		_data = (ChargingStation)point["data"]!;
 
         Ports.Clear();
-        var ports = (ChargingPort[])point["ports"]!;
-        Ports.AddRange(ports);
+        var ports = (ChargingPort[]?)point["ports"];
+		if (ports?.Length > 0)
+			Ports.AddRange(ports);
 
-		UpdateUI(true);
+		UpdateUi(true);
 
         Cost = _data.Cost;
 		MaxChargeRate = _data.MaxChargeRate;
 	}
 
-	void UpdateUI(bool setIndex)
+	private void UpdateUi(bool setIndex)
 	{
-		if (Ports.Count == 0)
-			return;
+		ContainsPorts = Ports.Count != 0;
 
-		if(setIndex)
+		if (ContainsPorts && setIndex)
 	        SelectedPort = Ports[0];
 
-        Selected = SelectedPort.Status != ChargingPortStatus.OutOfService;
-        ViewTitle = $"Existing point (ID: {_data.Id})";
-        Status = SelectedPort.Status == ChargingPortStatus.OutOfService ? "Out of Service" : SelectedPort.Status.ToString();
+        Selected = SelectedPort?.Status != ChargingPortStatus.OutOfService && ContainsPorts;
+        ViewTitle = $"Existing Point (ID: {_data.Id})";
+        Status = SelectedPort == null ? "No Charging Ports" : SelectedPort.Status == ChargingPortStatus.OutOfService ? "Out of Service" : SelectedPort.Status.ToString();
     }
 
 	public void NavigateToStatistics() => HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, _pointsLayer, HostScreen));
