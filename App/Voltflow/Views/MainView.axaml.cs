@@ -40,6 +40,10 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 				httpClient.DefaultRequestHeaders.Authorization = null;
 				viewModel.Authenticated = false;
 			}
+
+			// Checks if user is admin.
+			request = await httpClient.GetAsync("/api/Accounts/adminCheck");
+			viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
 		}
 
 		if (Application.Current == null)

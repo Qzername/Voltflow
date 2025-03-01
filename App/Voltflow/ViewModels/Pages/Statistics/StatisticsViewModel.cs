@@ -6,14 +6,14 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(false, screen)
+public class StatisticsViewModel(IScreen screen, bool isAdmin) : StatisticsPanelBase(false, screen)
 {
-	//grid
 	[Reactive] public List<GridElement> Elements { get; set; } = [];
+	[Reactive] public bool IsAdmin { get; set; } = isAdmin;
 
 	protected override void GenerateEnergyUsedData()
 	{
-		Dictionary<Car, float> total = new();
+		Dictionary<Car, float> total = [];
 
 		foreach (var t in Transactions.Values)
 		{
@@ -33,7 +33,7 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(false, sc
 
 	protected override void GenerateCostData()
 	{
-		Dictionary<Car, float> total = new();
+		Dictionary<Car, float> total = [];
 
 		foreach (var t in Transactions.Values)
 		{
@@ -53,7 +53,7 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(false, sc
 
 	protected override void GenerateGridData()
 	{
-		List<GridElement> elementsTemp = new();
+		List<GridElement> elementsTemp = [];
 
 		foreach (var t in Transactions.Values)
 		{
@@ -81,12 +81,6 @@ public class StatisticsViewModel(IScreen screen) : StatisticsPanelBase(false, sc
 		await SaveCsv(csv);
 	}
 
-	public void NavigateAdvanced() => HostScreen.Router.NavigateAndReset.Execute(new AdvancedStatisticsViewModel(HostScreen));
-
-	public class GridElement
-	{
-		public string? CarName { get; set; }
-		public double EnergyConsumed { get; set; }
-		public double Cost { get; set; }
-	}
+	public void NavigateToAdvanced() => HostScreen.Router.Navigate.Execute(new AdvancedStatisticsViewModel(HostScreen));
+	public void NavigateToStatisticsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, elements: Elements));
 }

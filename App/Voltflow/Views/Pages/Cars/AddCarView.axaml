@@ -15,7 +15,8 @@
     </Design.DataContext>
 
     <StackPanel
-        Width="256"
+        MaxWidth="256"
+        Margin="16"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Center">
         <StackPanel Classes="sm-spacing" Orientation="Horizontal">

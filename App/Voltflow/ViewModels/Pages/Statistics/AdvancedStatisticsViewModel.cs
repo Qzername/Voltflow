@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Threading.Tasks;
 using Voltflow.Models;
 
@@ -8,6 +9,8 @@ namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(true, screen)
 {
+	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
+
 	//grid
 	[Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];
 	[Reactive] public List<StationGridElement> StationGridData { get; set; } = [];
@@ -103,17 +106,6 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 	}
 	#endregion
 
-	public class TransactionGridElement
-	{
-		public int StationId { get; set; }
-		public double EnergyConsumed { get; set; }
-		public double Cost { get; set; }
-	}
-
-	public class StationGridElement
-	{
-		public int StationId { get; set; }
-		public double Latitude { get; set; }
-		public double Longitude { get; set; }
-	}
+	public void NavigateToStationsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, stations: StationGridData));
+	public void NavigateToTransactionsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, transactions: TransactionsGridData));
 }

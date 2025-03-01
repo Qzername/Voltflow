@@ -1,7 +1,9 @@
 ﻿using Avalonia.SimplePreferences;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
+using System.Net.Http;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
@@ -20,6 +22,7 @@ public class MainViewModel : ReactiveObject, IScreen
 
 	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
 	[Reactive] public bool Authenticated { get; set; }
+	[Reactive] public bool IsAdmin { get; set; }
 
 	/// <summary>
 	/// Constructor for MainViewModel.
@@ -71,7 +74,9 @@ public class MainViewModel : ReactiveObject, IScreen
 		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
 			return;
 
-		Router.Navigate.Execute(new StatisticsViewModel(this));
+		Router.Navigate.Execute(new StatisticsViewModel(this, IsAdmin));
 	}
+
+	protected T GetService<T>() => Locator.Current.GetService<T>()!;
 }
 

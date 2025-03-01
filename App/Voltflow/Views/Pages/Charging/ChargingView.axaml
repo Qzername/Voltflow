@@ -16,8 +16,9 @@
 
     <ScrollViewer>
         <StackPanel
-            Width="256"
-            HorizontalAlignment="Center"
+            MaxWidth="256"
+            Margin="16"
+            HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
             <!--  Data  -->
             <StackPanel Classes="sm-spacing" Orientation="Horizontal">

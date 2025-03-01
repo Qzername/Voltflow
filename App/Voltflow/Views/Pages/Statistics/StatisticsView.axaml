@@ -16,37 +16,64 @@
 
     <ScrollViewer>
         <StackPanel
-            Width="256"
+            MaxWidth="256"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="{Binding Title}" />
+
+            <Separator />
+
+            <lvc:PieChart Height="256" Series="{Binding PieData}" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel
+                    Grid.Column="0"
+                    Classes="sm-spacing"
+                    Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Bolt" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Show Used Energy?" />
+                </StackPanel>
+
+                <CheckBox Grid.Column="1" IsChecked="{Binding Mode}" />
+            </Grid>
+
+            <Separator />
 
             <!--  this button should be only visible when someone is admin  -->
-            <Button Command="{Binding NavigateAdvanced}" Content="Advanced statistics" />
+            <Button
+                HorizontalAlignment="Stretch"
+                Command="{Binding NavigateToAdvanced}"
+                IsVisible="{Binding IsAdmin}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="List" />
+                    <TextBlock Text="Advanced Statistics" />
+                </StackPanel>
+            </Button>
 
-            <!--  Switch this to whatever makes sense but no checkbox  -->
-            <CheckBox Content="Switch to energy used" IsChecked="{Binding Mode}" />
+            <Button HorizontalAlignment="Stretch" Command="{Binding GenerateCsv}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Download" />
+                    <TextBlock Text="Download Statistics" />
+                </StackPanel>
+            </Button>
 
-            <lvc:PieChart
-                Width="800"
-                Height="450"
-                Series="{Binding PieData}" />
-
-            <Panel
-                Width="500"
-                Height="50"
-                Background="Gray">
-                <Button Command="{Binding GenerateCsv}" Content="Generate CSV" />
-            </Panel>
-
-            <DataGrid
-                Width="500"
-                Height="400"
-                AutoGenerateColumns="True"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                GridLinesVisibility="All"
-                IsReadOnly="True"
-                ItemsSource="{Binding Elements}" />
+            <Button HorizontalAlignment="Stretch" Command="{Binding NavigateToStatisticsData}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Visibility" />
+                    <TextBlock Text="View Statistics" />
+                </StackPanel>
+            </Button>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

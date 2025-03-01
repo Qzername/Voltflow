@@ -1,0 +1,71 @@
+<UserControl
+    x:Class="Voltflow.Views.Pages.Statistics.StatisticsDataView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Voltflow.Models"
+    xmlns:statistics="clr-namespace:Voltflow.ViewModels.Pages.Statistics"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <statistics:StatisticsDataViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <!--  StatisticsTypeConverter checks if CurrentAuthType is AuthType.SignedIn.  -->
+        <models:StatisticsTypeConverter x:Key="StatisticsTypeConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="16" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0">
+            <StackPanel HorizontalAlignment="Stretch" Classes="no-spacing">
+                <DataGrid
+                    AutoGenerateColumns="True"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    GridLinesVisibility="All"
+                    IsReadOnly="True"
+                    IsVisible="{Binding CurrentStatisticsType, Converter={StaticResource StatisticsTypeConverter}, ConverterParameter=Default}"
+                    ItemsSource="{Binding Elements, Mode=OneTime}" />
+
+                <DataGrid
+                    AutoGenerateColumns="True"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    GridLinesVisibility="All"
+                    IsReadOnly="True"
+                    IsVisible="{Binding CurrentStatisticsType, Converter={StaticResource StatisticsTypeConverter}, ConverterParameter=Stations}"
+                    ItemsSource="{Binding Stations, Mode=OneTime}" />
+
+                <DataGrid
+                    AutoGenerateColumns="True"
+                    BorderBrush="Gray"
+                    BorderThickness="1"
+                    GridLinesVisibility="All"
+                    IsReadOnly="True"
+                    IsVisible="{Binding CurrentStatisticsType, Converter={StaticResource StatisticsTypeConverter}, ConverterParameter=Transactions}"
+                    ItemsSource="{Binding Transactions, Mode=OneTime}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button
+            Grid.Row="2"
+            MaxWidth="256"
+            HorizontalAlignment="Stretch"
+            Command="{Binding GoBack}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                <TextBlock Text="Go Back" />
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>

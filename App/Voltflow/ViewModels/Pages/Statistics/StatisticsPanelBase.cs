@@ -6,6 +6,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.VisualBasic;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Voltflow.ViewModels.Pages.Statistics;
 /// </summary>
 public abstract class StatisticsPanelBase : ViewModelBase
 {
+	[Reactive] public string Title { get; set; } = "Cost";
+
 	public WindowToastManager? ToastManager;
 	public Visual? Parent;
 
@@ -36,6 +39,7 @@ public abstract class StatisticsPanelBase : ViewModelBase
 		{
 			PieData.Clear();
 			PieData.AddRange(value ? EnergyData : CostData);
+			Title = value ? "Energy" : "Cost";
 		}
 	}
 

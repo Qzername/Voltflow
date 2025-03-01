@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:statistics="clr-namespace:Voltflow.ViewModels.Pages.Statistics"
@@ -15,53 +16,78 @@
 
     <ScrollViewer>
         <StackPanel
-            Width="256"
+            MaxWidth="256"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
-            <!--  Switch this to whatever makes sense but no checkbox  -->
-            <CheckBox Content="Switch to energy used" IsChecked="{Binding Mode}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="{Binding Title}" />
 
-            <lvc:PieChart
-                x:Name="PieChart"
-                Width="800"
-                Height="450"
-                Series="{Binding PieData}" />
+            <Separator />
 
-            <!--  Stations  -->
-            <Panel
-                Width="500"
-                Height="50"
-                Background="Gray">
-                <Button Command="{Binding GenerateStationsCsv}" Content="Generate CSV" />
-            </Panel>
+            <lvc:PieChart Height="256" Series="{Binding PieData}" />
 
-            <DataGrid
-                Width="500"
-                Height="400"
-                AutoGenerateColumns="True"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                GridLinesVisibility="All"
-                IsReadOnly="True"
-                ItemsSource="{Binding StationGridData}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <!--  Transactions  -->
-            <Panel
-                Width="500"
-                Height="50"
-                Background="Gray">
-                <Button Command="{Binding GenerateTransactionsCsv}" Content="Generate CSV" />
-            </Panel>
+                <StackPanel
+                    Grid.Column="0"
+                    Classes="sm-spacing"
+                    Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Bolt" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Show Used Energy?" />
+                </StackPanel>
 
-            <DataGrid
-                Width="500"
-                Height="400"
-                AutoGenerateColumns="True"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                GridLinesVisibility="All"
-                IsReadOnly="True"
-                ItemsSource="{Binding TransactionsGridData}" />
+                <CheckBox Grid.Column="1" IsChecked="{Binding Mode}" />
+            </Grid>
+
+            <Separator />
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding NavigateToStationsData}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Visibility" />
+                    <TextBlock Text="View Stations" />
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding NavigateToTransactionsData}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Visibility" />
+                    <TextBlock Text="View Transactions" />
+                </StackPanel>
+            </Button>
+
+            <Separator />
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding GenerateStationsCsv}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Download" />
+                    <TextBlock Text="Download Stations" />
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding GenerateTransactionsCsv}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Download" />
+                    <TextBlock Text="Download Transactions" />
+                </StackPanel>
+            </Button>
+
+            <Separator />
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                    <TextBlock Text="Go Back" />
+                </StackPanel>
+            </Button>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
