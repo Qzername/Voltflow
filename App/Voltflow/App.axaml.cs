@@ -28,7 +28,7 @@ public partial class App : Application
 		// Without this line you will get duplicate validations from both Avalonia and CT
 		BindingPlugins.DataValidators.RemoveAt(0);
 
-		Bootstraper.Register(Locator.CurrentMutable, Locator.Current);
+		Bootstrapper.Register(Locator.CurrentMutable, Locator.Current);
 
 		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 		{

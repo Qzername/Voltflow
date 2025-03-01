@@ -8,9 +8,9 @@ namespace Voltflow;
 /// <summary>
 /// Loads the services into the dependency resolver.
 /// </summary>
-internal static class Bootstraper
+internal static class Bootstrapper
 {
-	public async static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
+	public static void Register(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
 	{
 		services.RegisterLazySingleton(() => new HttpClient()
 		{
