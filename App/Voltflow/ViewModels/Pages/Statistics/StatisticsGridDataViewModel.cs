@@ -8,7 +8,7 @@ using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
 
-public class StatisticsDataViewModel : ViewModelBase
+public class StatisticsGridDataViewModel : ViewModelBase
 {
 	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 
@@ -17,7 +17,7 @@ public class StatisticsDataViewModel : ViewModelBase
 	[Reactive] public List<TransactionGridElement>? Transactions { get; set; }
 	[Reactive] public StatisticsType CurrentStatisticsType { get; set; }
 
-	public StatisticsDataViewModel(
+	public StatisticsGridDataViewModel(
 		IScreen screen, 
 		List<GridElement>? elements = null, 
 		List<StationGridElement>? stations = null,

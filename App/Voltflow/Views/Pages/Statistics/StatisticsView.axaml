@@ -71,7 +71,7 @@
             <Button HorizontalAlignment="Stretch" Command="{Binding NavigateToStatisticsData}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign Kind="Visibility" />
-                    <TextBlock Text="View Statistics" />
+                    <TextBlock Text="View Transactions" />
                 </StackPanel>
             </Button>
         </StackPanel>

@@ -3,9 +3,9 @@ using Voltflow.ViewModels.Pages.Statistics;
 
 namespace Voltflow.Views.Pages.Statistics;
 
-public partial class StatisticsDataView : ReactiveUserControl<StatisticsDataViewModel>
+public partial class StatisticsGridDataView : ReactiveUserControl<StatisticsGridDataViewModel>
 {
-    public StatisticsDataView()
+    public StatisticsGridDataView()
     {
         InitializeComponent();
     }

@@ -61,11 +61,14 @@ public class StatisticsViewModel(IScreen screen, bool isAdmin) : StatisticsPanel
 				continue;
 
 			elementsTemp.Add(new GridElement
-			{
-				CarName = Cars[t.CarId.Value].Name,
-				EnergyConsumed = t.EnergyConsumed,
-				Cost = t.Cost
-			});
+            {
+                CarName = Cars[t.CarId.Value].Name,
+                StationId = t.ChargingStationId,
+                StartDate = t.StartDate,
+                EndDate = t.EndDate,
+                EnergyConsumed = t.EnergyConsumed,
+				Cost = t.Cost,
+            });
 		}
 
 		Elements = new List<GridElement>(elementsTemp);
@@ -73,14 +76,14 @@ public class StatisticsViewModel(IScreen screen, bool isAdmin) : StatisticsPanel
 
 	public async Task GenerateCsv()
 	{
-		string csv = "Station Id,Energy Consumed,Cost\n";
+		string csv = "Car Name,Start Date,End date,Station Id,Energy Consumed,Cost\n";
 
 		foreach (var t in Transactions.Values)
-			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+			csv += $"{Cars[t.CarId.Value].Name},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
 		await SaveCsv(csv);
 	}
 
 	public void NavigateToAdvanced() => HostScreen.Router.Navigate.Execute(new AdvancedStatisticsViewModel(HostScreen));
-	public void NavigateToStatisticsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, elements: Elements));
+	public void NavigateToStatisticsData() => HostScreen.Router.Navigate.Execute(new StatisticsGridDataViewModel(HostScreen, elements: Elements));
 }

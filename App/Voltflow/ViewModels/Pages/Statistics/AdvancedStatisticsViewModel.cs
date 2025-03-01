@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -53,15 +54,38 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 
 	protected override void GenerateGridData()
 	{
-		//transactions
-		List<TransactionGridElement> elementsTemp = [];
+		Dictionary<int, TempStationData> tempStationData = [];
+
+        //transactions
+        List<TransactionGridElement> elementsTemp = [];
 
 		foreach (var t in Transactions.Values)
 		{
-			elementsTemp.Add(new TransactionGridElement
-			{
-				StationId = Stations[t.ChargingStationId].Id,
-				EnergyConsumed = t.EnergyConsumed,
+			if(tempStationData.ContainsKey(t.ChargingStationId))
+            {
+				var temp = tempStationData[t.ChargingStationId];
+
+				temp.NumberOfCharges++;
+                temp.LastCharge = t.EndDate > temp.LastCharge ? t.EndDate : temp.LastCharge;
+
+                tempStationData[t.ChargingStationId] = temp;
+            }
+            else
+            {
+                tempStationData[t.ChargingStationId] = new TempStationData
+                {
+                    NumberOfCharges = 1,
+                    LastCharge = t.EndDate
+                };
+            }
+
+            elementsTemp.Add(new TransactionGridElement
+            {
+                CarName = t.CarId is null ? "null" : Cars[t.CarId.Value].Name,
+                StationId = Stations[t.ChargingStationId].Id,
+                StartDate = t.StartDate,
+                EndDate = t.EndDate,
+                EnergyConsumed = t.EnergyConsumed,
 				Cost = t.Cost
 			});
 		}
@@ -78,7 +102,9 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 				StationId = s.Id,
 				Longitude = s.Longitude,
 				Latitude = s.Latitude,
-			});
+                LastCharge = tempStationData.ContainsKey(s.Id) ? tempStationData[s.Id].LastCharge : null,
+                NumberOfChargers = tempStationData.ContainsKey(s.Id) ? tempStationData[s.Id].NumberOfCharges : 0
+            });
 		}
 
 		StationGridData = new List<StationGridElement>(stationGridElements);
@@ -87,13 +113,13 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 	#region CSV handling
 	public async Task GenerateTransactionsCsv()
 	{
-		string csv = "Station Id,Energy Consumed,Cost\n";
+        string csv = "Car Name,Start Date,End date,Station Id,Energy Consumed,Cost\n";
 
-		foreach (var t in Transactions.Values)
-			csv += $"{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+        foreach (var t in Transactions.Values)
+            csv += $"{Cars[t.CarId.Value].Name},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
-		await SaveCsv(csv);
-	}
+        await SaveCsv(csv);
+    }
 
 	public async Task GenerateStationsCsv()
 	{
@@ -106,6 +132,13 @@ public class AdvancedStatisticsViewModel(IScreen screen) : StatisticsPanelBase(t
 	}
 	#endregion
 
-	public void NavigateToStationsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, stations: StationGridData));
-	public void NavigateToTransactionsData() => HostScreen.Router.Navigate.Execute(new StatisticsDataViewModel(HostScreen, transactions: TransactionsGridData));
+	public void NavigateToStationsData() => HostScreen.Router.Navigate.Execute(new StatisticsGridDataViewModel(HostScreen, stations: StationGridData));
+	public void NavigateToTransactionsData() => HostScreen.Router.Navigate.Execute(new StatisticsGridDataViewModel(HostScreen, transactions: TransactionsGridData));
+
+
+	struct TempStationData
+	{
+		public int NumberOfCharges;
+        public DateTime LastCharge;
+    }
 }

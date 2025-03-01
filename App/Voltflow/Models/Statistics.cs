@@ -34,17 +34,24 @@ public class StatisticsTypeConverter : IValueConverter
 		throw new NotSupportedException();
 }
 
+//TODO: remove grid element
 public class GridElement
 {
 	public string? CarName { get; set; }
-	public double EnergyConsumed { get; set; }
+	public int? StationId { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public double EnergyConsumed { get; set; }
 	public double Cost { get; set; }
 }
 
 public class TransactionGridElement
 {
-	public int StationId { get; set; }
-	public double EnergyConsumed { get; set; }
+    public string? CarName { get; set; }
+    public int? StationId { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public double EnergyConsumed { get; set; }
 	public double Cost { get; set; }
 }
 
@@ -53,4 +60,6 @@ public class StationGridElement
 	public int StationId { get; set; }
 	public double Latitude { get; set; }
 	public double Longitude { get; set; }
+	public DateTime? LastCharge { get; set; }
+    public int NumberOfChargers { get; set; }
 }
