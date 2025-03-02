@@ -90,7 +90,7 @@
                     <TextBlock
                         HorizontalAlignment="Right"
                         Classes="size-sm"
-                        Text="kW" />
+                        Text="kWh" />
                 </StackPanel>
 
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
