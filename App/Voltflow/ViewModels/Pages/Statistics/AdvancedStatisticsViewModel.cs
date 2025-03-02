@@ -91,7 +91,6 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 
 			elementsTemp.Add(new TransactionGridElement
 			{
-				CarName = t.CarId is null ? "null" : Cars[t.CarId.Value].Name,
 				StationId = Stations[t.ChargingStationId].Id,
 				StartDate = t.StartDate,
 				EndDate = t.EndDate,
@@ -148,10 +147,10 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 	#region CSV handling
 	public async Task GenerateTransactionsCsv()
 	{
-		string csv = "Car Name,Start Date,End date,Station Id,Energy Consumed,Cost\n";
+		string csv = "Id,Start Date,End date,Station Id,Energy Consumed,Cost\n";
 
 		foreach (var t in Transactions.Values)
-			csv += $"{Cars[t.CarId.Value].Name},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+			csv += $"{t.Id},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
 		await SaveCsv(csv);
 	}

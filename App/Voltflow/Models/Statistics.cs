@@ -34,7 +34,6 @@ public class StatisticsTypeConverter : IValueConverter
 		throw new NotSupportedException();
 }
 
-//TODO: remove grid element
 public class GridElement
 {
 	public string? CarName { get; set; }
@@ -47,7 +46,6 @@ public class GridElement
 
 public class TransactionGridElement
 {
-	public string? CarName { get; set; }
 	public int? StationId { get; set; }
 	public DateTime StartDate { get; set; }
 	public DateTime EndDate { get; set; }

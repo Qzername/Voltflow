@@ -14,7 +14,11 @@ public class TransactionViewModel(double cost, double energyUsed, bool isWon, IS
 		set
 		{
 			Text = IsWon ? "You won! -10%" : "Better luck next time...";
-			ShowText = true;
+
+			if(IsWon)
+                Cost *= 0.9;
+
+            ShowText = true;
 		}
 	}
 
