@@ -148,7 +148,7 @@ public abstract class StatisticsPanelBase : ViewModelBase
 
 	protected async Task SaveCsv(string csv)
 	{
-		var results = await _dialogService.SaveFileDialog(Parent, csv);
+		var results = await _dialogService.SaveFileDialog(Parent, csv, DialogService.CsvOptions);
 
 		ToastManager?.Show(
 			new Toast(results ? "Successfully saved the file!" : "Couldn't save the file!"),

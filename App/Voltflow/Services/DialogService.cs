@@ -9,7 +9,26 @@ namespace Voltflow.Services;
 
 public class DialogService
 {
-	private readonly FilePickerSaveOptions _options = new()
+	public static readonly FilePickerSaveOptions PdfOptions = new()
+	{
+		Title = "Save File",
+		SuggestedFileName = "output",
+		DefaultExtension = ".pdf",
+		FileTypeChoices =
+		[
+			new FilePickerFileType("PDF Files")
+			{
+				Patterns = ["*.pdf"],
+				MimeTypes = ["text/pdf"]
+			},
+			new FilePickerFileType("All Files")
+			{
+				Patterns = ["*.*"]
+			}
+		]
+	};
+
+	public static readonly FilePickerSaveOptions CsvOptions = new()
 	{
 		Title = "Save File",
 		SuggestedFileName = "output",
@@ -28,19 +47,35 @@ public class DialogService
 		]
 	};
 
-	public async Task<bool> SaveFileDialog(Visual? parent, string csv)
+	public async Task<bool> SaveFileDialog(Visual? parent, string data, FilePickerSaveOptions options)
 	{
 		var topLevel = TopLevel.GetTopLevel(parent);
 		if (topLevel == null)
 			return false;
 
-		var file = await topLevel.StorageProvider.SaveFilePickerAsync(_options);
+		var file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
 		if (file == null)
 			return false;
 
 		await using var stream = await file.OpenWriteAsync();
 		await using var writer = new StreamWriter(stream, Encoding.UTF8);
-		await writer.WriteAsync(csv);
+		await writer.WriteAsync(data);
+
+		return true;
+	}
+
+	public async Task<bool> SaveFileDialog(Visual? parent, Stream data, FilePickerSaveOptions options)
+	{
+		var topLevel = TopLevel.GetTopLevel(parent);
+		if (topLevel == null)
+			return false;
+
+		var file = await topLevel.StorageProvider.SaveFilePickerAsync(options);
+		if (file == null)
+			return false;
+
+		await using var stream = await file.OpenWriteAsync();
+		await data.CopyToAsync(stream);
 
 		return true;
 	}

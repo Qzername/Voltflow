@@ -8,15 +8,34 @@ using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Platform.Storage;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Voltflow.Services;
+using Ursa.Controls;
+using Avalonia.Controls.Notifications;
 
 namespace Voltflow.ViewModels.Pages.Charging;
 
-public class TransactionViewModel(ChargingStation station, double cost, double energyUsed, bool isWon, IScreen screen) : ViewModelBase(screen)
+public class TransactionViewModel : ViewModelBase
 {
-    public Visual? Parent;
-    [Reactive] public double Cost { get; set; } = cost;
-	[Reactive] public double EnergyConsumed { get; set; } = energyUsed;
-	[Reactive] public bool IsWon { get; set; } = isWon;
+	public TransactionViewModel(ChargingStation station, double cost, double energyConsumed, bool isWon, IScreen screen) : base(screen)
+	{
+		_httpClient = GetService<HttpClient>();
+		_dialogService = GetService<DialogService>();
+
+		Cost = cost;
+		EnergyConsumed = energyConsumed;
+		IsWon = isWon;
+	}
+
+	private readonly HttpClient _httpClient;
+	private readonly DialogService _dialogService;
+
+	public WindowToastManager? ToastManager;
+	public Visual? Parent;
+
+    [Reactive] public double Cost { get; set; }
+	[Reactive] public double EnergyConsumed { get; set; }
+	[Reactive] public bool IsWon { get; set; }
 
 	public bool IsDone
 	{
@@ -34,43 +53,20 @@ public class TransactionViewModel(ChargingStation station, double cost, double e
 	[Reactive] public string? Text { get; set; }
 	[Reactive] public bool ShowText { get; set; }
 
-	public async void GenerateInvoice()
+	public async Task GenerateInvoice()
     {
-        var topLevel = TopLevel.GetTopLevel(Parent);
-        if (topLevel == null)
-            return;
+        // Get pdf from server
+        var request = await _httpClient.GetAsync("api/Transactions/invoice");
+        var fileStream = await request.Content.ReadAsStreamAsync();
 
-        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new()
-        {
-            Title = "Save File",
-            SuggestedFileName = "output",
-            DefaultExtension = ".pdf",
-            FileTypeChoices =
-            [
-                new FilePickerFileType("PDF Files")
-                {
-                    Patterns = ["*.pdf"],
-                    MimeTypes = ["text/pdf"]
-                },
-                new FilePickerFileType("All Files")
-                {
-                    Patterns = ["*.*"]
-                }
-            ]
-        });
+		// Save pdf
+		var results = await _dialogService.SaveFileDialog(Parent, fileStream, DialogService.PdfOptions);
 
-        if (file == null)
-            return;
-
-        var stream = await file.OpenWriteAsync();
-
-        var client = GetService<HttpClient>();
-
-        //get pdf from server
-        var response = await client.GetAsync("api/Transactions/invoice");
-        var fileStream = await response.Content.ReadAsStreamAsync();
-        fileStream.CopyTo(stream);
-
-        stream.Close();
-    }
+		ToastManager?.Show(
+			new Toast(results ? "Successfully saved the file!" : "Couldn't save the file!"),
+			showIcon: true,
+			showClose: false,
+			type: results ? NotificationType.Success : NotificationType.Error,
+			classes: ["Light"]);
+	}
 }
