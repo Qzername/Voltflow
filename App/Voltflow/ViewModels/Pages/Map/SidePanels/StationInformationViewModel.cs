@@ -1,11 +1,15 @@
 ﻿using Avalonia.Collections;
+using Avalonia.Controls.Notifications;
 using Mapsui;
 using Mapsui.Layers;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.ViewModels.Pages.Charging;
 
@@ -13,6 +17,8 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels;
 
 public class StationInformationViewModel : MapSidePanelBase
 {
+	public WindowToastManager? ToastManager;
+
 	private readonly HttpClient _httpClient;
 
 	[Reactive] public bool Available { get; set; }
@@ -81,7 +87,7 @@ public class StationInformationViewModel : MapSidePanelBase
 		var today = ChargingStationOpeningHours.GetToday(temp);
 		var now = DateTime.Now.TimeOfDay;
 
-		Available = SelectedPort?.Status == ChargingPortStatus.Available;
+		Available = today[0] <= now && now <= today[1] && SelectedPort?.Status == ChargingPortStatus.Available;
 		Selected =
 			SelectedPort?.Status != ChargingPortStatus.OutOfService && // Is in service
 			ContainsPorts; // Has charging ports
@@ -110,10 +116,30 @@ public class StationInformationViewModel : MapSidePanelBase
 	}
 
 	public void NavigateToStatistics() => HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, HostScreen));
-	public void NavigateToCharging()
+	public async Task NavigateToCharging()
 	{
-		if (SelectedPort == null)
+		var request = await _httpClient.GetAsync("/api/Accounts");
+		if (request.StatusCode != HttpStatusCode.OK)
+		{
+			ToastManager?.Show(
+				new Toast("Sign in first!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
 			return;
+		}
+
+		if (SelectedPort == null)
+		{
+			ToastManager?.Show(
+				new Toast("Select a charging port first!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Error,
+				classes: ["Light"]);
+			return;
+		}
 
 		HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, SelectedPort, HostScreen));
 	}

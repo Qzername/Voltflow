@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
-using Avalonia.SimplePreferences;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.ViewModels;
@@ -26,7 +25,7 @@ public partial class AccountView : ReactiveUserControl<AccountViewModel>
 
 		var topLevel = TopLevel.GetTopLevel(this);
 		viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
-		
+
 		if (viewModel.HostScreen is MainViewModel mainViewModel)
 			viewModel.CurrentAuthType = mainViewModel.Authenticated ? AuthType.SignedIn : AuthType.SignIn;
 	}
