@@ -5,6 +5,7 @@
     xmlns:charging="clr-namespace:Voltflow.ViewModels.Pages.Charging"
     xmlns:controls="clr-namespace:Voltflow.Controls;assembly=Voltflow"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -13,25 +14,75 @@
         <charging:TransactionViewModel />
     </Design.DataContext>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="Transaction finished"/>
-        <TextBlock Text="{Binding Cost}"/>
-        <TextBlock Text="{Binding EnergyConsumed}"/>
-		
-		<TextBlock
+    <StackPanel
+        MaxWidth="256"
+        Margin="16"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Center">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Classes="size-lg weight-bold"
+            Text="Transaction Finished" />
+
+        <Separator />
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="Payment" />
+            <TextBlock Classes="size-sm weight-bold" Text="Cost" />
+        </StackPanel>
+        <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+            <TextBlock Classes="size-sm" Text="{Binding Cost}" />
+            <TextBlock Classes="size-sm" Text="zł" />
+        </StackPanel>
+
+        <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+            <iconPacks:PackIconMaterialDesign
+                Classes="size-sm"
+                IsVisible="True"
+                Kind="BatteryFull" />
+            <TextBlock Classes="size-sm weight-bold" Text="Charged (kWh)" />
+        </StackPanel>
+        <StackPanel Classes="xs-spacing" Orientation="Horizontal">
+            <TextBlock Classes="size-sm" Text="{Binding EnergyConsumed}" />
+            <TextBlock
+                HorizontalAlignment="Right"
+                Classes="size-sm"
+                Text="kWh" />
+        </StackPanel>
+
+        <Separator />
+
+        <TextBlock
             HorizontalAlignment="Center"
             Classes="size-lg weight-bold"
             IsVisible="{Binding ShowText}"
             Text="{Binding Text}" />
 
-		<!--add some info abt how scrachcard works-->
+        <!--  add some info abt how scratch card works  -->
         <controls:ScratchCard
             Width="150"
             Height="150"
             HorizontalAlignment="Center"
             IsDone="{Binding IsDone}"
             IsWon="{Binding IsWon, Mode=TwoWay}" />
-		
-		<Button Command="{Binding GenerateInvoice}" Content="Download invoice"/>
+
+        <Separator />
+
+        <Button HorizontalAlignment="Stretch" Command="{Binding GenerateInvoice}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="Download" />
+                <TextBlock Text="Download Invoice" />
+            </StackPanel>
+        </Button>
+
+        <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                <TextBlock Text="Go Back" />
+            </StackPanel>
+        </Button>
     </StackPanel>
 </UserControl>
