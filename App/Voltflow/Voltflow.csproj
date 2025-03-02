@@ -36,7 +36,6 @@
     <PackageReference Include="Mapsui.Avalonia" Version="4.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="PDFsharp" Version="6.1.1" />
     <PackageReference Include="Quick.AvaloniaFonts.Roboto" Version="1.0.0" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageReference Include="Sandreas.Avalonia.SimplePreferences" Version="0.0.4" />
