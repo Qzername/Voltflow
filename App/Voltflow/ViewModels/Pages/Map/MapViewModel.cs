@@ -50,7 +50,7 @@ public class MapViewModel : ViewModelBase, IScreen
 		_httpClient = GetService<HttpClient>();
 
 		Router = new RoutingState();
-		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, Authenticated, HostScreen);
+		_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
 		Router.NavigateAndReset.Execute(_currentModeViewModel);
 	}
 
@@ -120,7 +120,7 @@ public class MapViewModel : ViewModelBase, IScreen
 			if (_isCreatingMode)
 				_currentModeViewModel = new ManageStationViewModel(_pointsLayer, HostScreen);
 			else
-				_currentModeViewModel = new StationInformationViewModel(_pointsLayer, Authenticated, HostScreen);
+				_currentModeViewModel = new StationInformationViewModel(_pointsLayer, HostScreen);
 
 			Router.NavigateAndReset.Execute(_currentModeViewModel);
 		}
