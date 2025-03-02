@@ -52,7 +52,6 @@ namespace Voltflow.Controls
 		{
 			FormattedText X = new FormattedText("X", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Typeface.Default, 24, Brushes.Red);
 
-
 			for (int i = 0; i < 9; i++)
 			{
 				var gridX = i % 3;
