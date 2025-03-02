@@ -87,7 +87,10 @@ public class AccountViewModel : ViewModelBase
 		_httpClient.DefaultRequestHeaders.Authorization = null;
 
 		if (HostScreen is MainViewModel screen)
+		{
 			screen.Authenticated = false;
+			screen.IsAdmin = false;
+		}
 
 		CurrentAuthType = AuthType.SignIn;
 	}
@@ -154,8 +157,13 @@ public class AccountViewModel : ViewModelBase
 				await Preferences.SetAsync("token", (string?)response["token"]);
 				_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string?)response["token"]);
 
-				if (HostScreen is MainViewModel screen)
-					screen.Authenticated = true;
+				request = await _httpClient.GetAsync("/api/Accounts/adminCheck");
+
+				if (HostScreen is MainViewModel viewModel)
+				{
+					viewModel.Authenticated = true;
+					viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
+				}
 
 				SignInForm.Reset();
 
@@ -212,8 +220,13 @@ public class AccountViewModel : ViewModelBase
 
 				CurrentAuthType = AuthType.SignedIn;
 
-				if (HostScreen is MainViewModel screen)
-					screen.Authenticated = true;
+				request = await _httpClient.GetAsync("/api/Accounts/adminCheck");
+
+				if (HostScreen is MainViewModel viewModel)
+				{
+					viewModel.Authenticated = true;
+					viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
+				}
 
 				TwoFactorAuthForm.Reset();
 			}

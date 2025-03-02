@@ -41,9 +41,8 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 		}
 
 		var token = await Preferences.GetAsync<string>("token", null);
-		viewModel.Authenticated = token != null;
-
 		var httpClient = Locator.Current.GetService<HttpClient>();
+
 		if (httpClient is not null && token is not null)
 		{
 			httpClient.DefaultRequestHeaders.Authorization = new("Bearer", token);
@@ -51,11 +50,11 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 			// Check if token is valid, account deleted, etc.
 			var request = await httpClient.GetAsync("/api/Accounts");
 
-			if (request.StatusCode != HttpStatusCode.OK)
+			viewModel.Authenticated = request.StatusCode == HttpStatusCode.OK;
+			if (!viewModel.Authenticated)
 			{
 				await Preferences.RemoveAsync("token");
 				httpClient.DefaultRequestHeaders.Authorization = null;
-				viewModel.Authenticated = false;
 			}
 
 			// Checks if user is admin.

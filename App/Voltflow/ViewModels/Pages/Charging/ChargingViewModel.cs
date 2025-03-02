@@ -87,7 +87,7 @@ public class ChargingViewModel : ViewModelBase
 		if (Cars.Count == 0 || SelectedIndex > Cars.Count)
 		{
 			ToastManager?.Show(
-				new Toast("You must select a car!"),
+				new Toast("Select a car first!"),
 				showIcon: true,
 				showClose: false,
 				type: NotificationType.Error,

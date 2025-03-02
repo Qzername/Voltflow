@@ -15,7 +15,7 @@ public class StationInformationViewModel : MapSidePanelBase
 {
 	private readonly HttpClient _httpClient;
 
-	[Reactive] public bool Closed { get; set; }
+	[Reactive] public bool Available { get; set; }
 	[Reactive] public bool Selected { get; set; }
 	[Reactive] public string ViewTitle { get; set; } = "Click on a point.";
 	[Reactive] public string Status { get; set; } = "Unknown";
@@ -23,10 +23,9 @@ public class StationInformationViewModel : MapSidePanelBase
 	[Reactive] public int MaxChargeRate { get; set; }
 	[Reactive] public bool ContainsPorts { get; set; }
 
-	private ChargingStation _data;
-
 	[Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = [];
 
+	private ChargingStation _data;
 	private ChargingPort? _selectedPort;
 
 	public StationInformationViewModel(MemoryLayer layer, IScreen screen) : base(layer, screen)
@@ -82,7 +81,7 @@ public class StationInformationViewModel : MapSidePanelBase
 		var today = ChargingStationOpeningHours.GetToday(temp);
 		var now = DateTime.Now.TimeOfDay;
 
-		Closed = today[0] > now || today[1] < now;
+		Available = SelectedPort?.Status == ChargingPortStatus.Available;
 		Selected =
 			SelectedPort?.Status != ChargingPortStatus.OutOfService && // Is in service
 			ContainsPorts; // Has charging ports
@@ -90,7 +89,7 @@ public class StationInformationViewModel : MapSidePanelBase
 		Cost = _data.Cost;
 		MaxChargeRate = _data.MaxChargeRate;
 
-		if (today[0] > now || today[1] < now)
+		if (today[0] > now || now > today[1])
 			Status = "Closed";
 		else if (SelectedPort == null)
 			Status = "No Charging Ports";
@@ -111,5 +110,11 @@ public class StationInformationViewModel : MapSidePanelBase
 	}
 
 	public void NavigateToStatistics() => HostScreen.Router.Navigate.Execute(new StationStatisticsViewModel(_data, HostScreen));
-	public void NavigateToCharging() => HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, SelectedPort, HostScreen));
+	public void NavigateToCharging()
+	{
+		if (SelectedPort == null)
+			return;
+
+		HostScreen.Router.Navigate.Execute(new ChargingViewModel(_data, SelectedPort, HostScreen));
+	}
 }

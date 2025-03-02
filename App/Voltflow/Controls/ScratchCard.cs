@@ -64,7 +64,7 @@ namespace Voltflow.Controls
 				if (!_showGrid[gridX, gridY])
 					context.DrawRectangle(Brushes.Red, null, new Rect(pos, new Size(50, 50)));
 			}
-        }
+		}
 
 		protected override void OnPointerReleased(PointerReleasedEventArgs e)
 		{
@@ -75,7 +75,7 @@ namespace Voltflow.Controls
 
 			_showGrid[gridX, gridY] = true;
 
-            bool cardCompleted = true;
+			bool cardCompleted = true;
 
 			for (int i = 0; i < 9; i++)
 			{
@@ -88,10 +88,10 @@ namespace Voltflow.Controls
 				}
 			}
 
-            if (cardCompleted)
-                IsDone = true;
+			if (cardCompleted)
+				IsDone = true;
 
-            InvalidateVisual();
+			InvalidateVisual();
 		}
 
 		void GenerateGrid()

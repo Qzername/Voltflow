@@ -121,8 +121,11 @@ public class SettingsViewModel : ViewModelBase
 		await Preferences.RemoveAsync("token");
 		_httpClient.DefaultRequestHeaders.Authorization = null;
 
-		if (HostScreen is MainViewModel screen)
-			screen.Authenticated = false;
+		if (HostScreen is MainViewModel viewModel)
+		{
+			viewModel.Authenticated = false;
+			viewModel.IsAdmin = false;
+		}
 
 		HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
 	}

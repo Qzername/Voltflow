@@ -4,6 +4,7 @@ using Avalonia.ReactiveUI;
 using Avalonia.SimplePreferences;
 using Ursa.Controls;
 using Voltflow.Models;
+using Voltflow.ViewModels;
 using Voltflow.ViewModels.Account;
 
 namespace Voltflow.Views.Account;
@@ -16,7 +17,7 @@ public partial class AccountView : ReactiveUserControl<AccountViewModel>
 	}
 
 	// https://github.com/irihitech/Ursa.Avalonia/blob/main/demo/Ursa.Demo/Pages/ToastDemo.axaml.cs
-	protected async override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+	protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
 	{
 		base.OnAttachedToVisualTree(e);
 
@@ -25,9 +26,9 @@ public partial class AccountView : ReactiveUserControl<AccountViewModel>
 
 		var topLevel = TopLevel.GetTopLevel(this);
 		viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
-
-		var token = await Preferences.GetAsync<string>("token", null);
-		viewModel.CurrentAuthType = token == null ? AuthType.SignIn : AuthType.SignedIn;
+		
+		if (viewModel.HostScreen is MainViewModel mainViewModel)
+			viewModel.CurrentAuthType = mainViewModel.Authenticated ? AuthType.SignedIn : AuthType.SignIn;
 	}
 
 	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
