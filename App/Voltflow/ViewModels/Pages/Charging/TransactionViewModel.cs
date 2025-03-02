@@ -109,6 +109,8 @@ public class TransactionViewModel(ChargingStation station, double cost, double e
         if (file == null)
             return;
 
-        document.Save(file.Path.AbsolutePath);
+        await using var stream = await file.OpenWriteAsync();
+        document.Save(stream);
+        stream.Close();
     }
 }
