@@ -25,8 +25,8 @@ public class TransactionViewModel(ChargingStation station, double cost, double e
 		{
 			Text = IsWon ? "You won! -10%" : "Better luck next time...";
 
-			if(IsWon)
-                Cost *= 0.9;
+			if (IsWon)
+                Cost = Math.Round(Cost * 0.9, 2);
 
             ShowText = true;
 		}
