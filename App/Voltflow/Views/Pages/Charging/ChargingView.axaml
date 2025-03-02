@@ -76,7 +76,7 @@
                         Kind="Schedule" />
                     <TextBlock Classes="size-sm weight-bold" Text="Time" />
                 </StackPanel>
-                <TextBlock Text="{Binding Time}" />
+                <TextBlock Classes="size-sm" Text="{Binding Time}" />
 
                 <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign
