@@ -20,50 +20,53 @@
             Margin="16"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Center">
-            <!--  Data  -->
-            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
-                <iconPacks:PackIconMaterialDesign
-                    Classes="size-sm"
-                    IsVisible="True"
-                    Kind="DirectionsCar" />
-                <TextBlock Classes="size-sm weight-bold" Text="Car" />
-            </StackPanel>
-            <ComboBox
-                HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Cars}"
-                SelectedIndex="{Binding SelectedIndex}"
-                SelectedItem="{Binding SelectedCar}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel
-                    Grid.Column="0"
-                    Classes="sm-spacing"
-                    Orientation="Horizontal">
+            <StackPanel IsEnabled="{Binding !Started}">
+                <!--  Data  -->
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign
                         Classes="size-sm"
                         IsVisible="True"
-                        Kind="Battery3Bar" />
-                    <TextBlock Classes="size-sm weight-bold" Text="Set Charge Limit? (kWh)" />
+                        Kind="DirectionsCar" />
+                    <TextBlock Classes="size-sm weight-bold" Text="Car" />
                 </StackPanel>
+                <ComboBox
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding Cars}"
+                    SelectedIndex="{Binding SelectedIndex}"
+                    SelectedItem="{Binding SelectedCar}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
-                <CheckBox Grid.Column="1" IsChecked="{Binding DeclaredAmount}" />
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <controls:NumberBox
-                AllowFloats="True"
-                IsEnabled="{Binding DeclaredAmount}"
-                Text="{Binding Amount}" />
+                    <StackPanel
+                        Grid.Column="0"
+                        Classes="sm-spacing"
+                        Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign
+                            Classes="size-sm"
+                            IsVisible="True"
+                            Kind="Battery3Bar" />
+                        <TextBlock Classes="size-sm weight-bold" Text="Set Charge Limit? (kWh)" />
+                    </StackPanel>
+
+                    <CheckBox Grid.Column="1" IsChecked="{Binding DeclaredAmount}" />
+                </Grid>
+
+                <controls:NumberBox
+                    AllowFloats="True"
+                    IsEnabled="{Binding DeclaredAmount}"
+                    Text="{Binding Amount}" />
+            </StackPanel>
+
 
             <Separator />
 
