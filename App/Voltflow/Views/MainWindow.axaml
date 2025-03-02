@@ -8,7 +8,7 @@
     Title="Voltflow"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Icon="/Assets/avalonia-logo.ico"
+    Icon="/Assets/icon.png"
     mc:Ignorable="d">
     <!--  MainWindow is only used in Desktop/Mobile app. Browser app uses "SingleView" ApplicationLifetime.  -->
     <views:MainView />

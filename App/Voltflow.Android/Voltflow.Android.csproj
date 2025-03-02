@@ -4,7 +4,7 @@
     <TargetFramework>net9.0-android35.0</TargetFramework>
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
-    <ApplicationId>com.CompanyName.AvaloniaTest</ApplicationId>
+    <ApplicationId>xyz.heapy.voltflow</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <AndroidPackageFormat>apk</AndroidPackageFormat>
@@ -12,9 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AndroidResource Include="Icon.png">
-      <Link>Resources\drawable\Icon.png</Link>
-    </AndroidResource>
+    <AndroidResource Include="Resources\**" />
   </ItemGroup>
 
   <ItemGroup>
