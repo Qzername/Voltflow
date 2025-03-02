@@ -23,6 +23,23 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 		if (DataContext is not MainViewModel viewModel)
 			return;
 
+		if (Application.Current != null)
+		{
+			var theme = await Preferences.GetAsync<string?>("theme", null);
+			switch (theme)
+			{
+				case "dark":
+					Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
+					break;
+				case "light":
+					Application.Current.RequestedThemeVariant = ThemeVariant.Light;
+					break;
+				default: // This is used when theme is null or "default".
+					Application.Current.RequestedThemeVariant = ThemeVariant.Default;
+					break;
+			}
+		}
+
 		var token = await Preferences.GetAsync<string>("token", null);
 		viewModel.Authenticated = token != null;
 
@@ -44,23 +61,6 @@ public partial class MainView : ReactiveUserControl<MainViewModel>
 			// Checks if user is admin.
 			request = await httpClient.GetAsync("/api/Accounts/adminCheck");
 			viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
-		}
-
-		if (Application.Current == null)
-			return;
-
-		var theme = await Preferences.GetAsync<string?>("theme", null);
-		switch (theme)
-		{
-			case "dark":
-				Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
-				break;
-			case "light":
-				Application.Current.RequestedThemeVariant = ThemeVariant.Light;
-				break;
-			default: // This is used when theme is null or "default".
-				Application.Current.RequestedThemeVariant = ThemeVariant.Default;
-				break;
 		}
 	}
 }
