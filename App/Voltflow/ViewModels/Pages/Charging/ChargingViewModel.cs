@@ -110,6 +110,7 @@ public class ChargingViewModel : ViewModelBase
 			return;
 
 		Working = true;
+		Started = true;
 
 		Time = "00:00:00";
 		TotalCharge = 0;
@@ -126,7 +127,6 @@ public class ChargingViewModel : ViewModelBase
 
 		_startTime = DateTime.UtcNow;
 		_dataUpdate.IsEnabled = true;
-		Started = true;
 		Finished = false;
 
 		ToastManager?.Show(
