@@ -12,8 +12,9 @@ namespace Voltflow.Android;
 
 [Activity(
 	Label = "Voltflow",
-	Theme = "@style/MyTheme.NoActionBar",
-	Icon = "@drawable/icon",
+	Theme = "@style/Voltflow",
+	Icon = "@mipmap/ic_launcher",
+    RoundIcon = "@mipmap/ic_launcher",
 	MainLauncher = true,
 	ScreenOrientation = ScreenOrientation.Portrait,
 	ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
@@ -24,12 +25,8 @@ public class MainActivity : AvaloniaMainActivity<App>
         base.OnCreate(savedInstanceState);
 
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu) // API 33 = Android 13
-        {
             if (ContextCompat.CheckSelfPermission(this, and.Manifest.Permission.PostNotifications) != Permission.Granted)
-            {
-                ActivityCompat.RequestPermissions(this, new string[] { and.Manifest.Permission.PostNotifications }, 0);
-            }
-        }
+                ActivityCompat.RequestPermissions(this, [and.Manifest.Permission.PostNotifications], 0);
 
         var notificationService = new AndroidNotificationService(this);
         App.NotificationService = notificationService;
