@@ -52,7 +52,6 @@ namespace Voltflow.Controls
 		{
 			FormattedText X = new FormattedText("X", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Typeface.Default, 24, Brushes.Red);
 
-			bool cardCompleted = true;
 
 			for (int i = 0; i < 9; i++)
 			{
@@ -64,15 +63,9 @@ namespace Voltflow.Controls
 					context.DrawText(X, pos);
 
 				if (!_showGrid[gridX, gridY])
-				{
-					cardCompleted = false;
 					context.DrawRectangle(Brushes.Red, null, new Rect(pos, new Size(50, 50)));
-				}
 			}
-
-			if (cardCompleted)
-				IsDone = true;
-		}
+        }
 
 		protected override void OnPointerReleased(PointerReleasedEventArgs e)
 		{
@@ -83,7 +76,23 @@ namespace Voltflow.Controls
 
 			_showGrid[gridX, gridY] = true;
 
-			InvalidateVisual();
+            bool cardCompleted = true;
+
+			for (int i = 0; i < 9; i++)
+			{
+				gridX = i % 3;
+				gridY = i / 3;
+
+				if (!_showGrid[gridX, gridY])
+				{
+					cardCompleted = false;
+				}
+			}
+
+            if (cardCompleted)
+                IsDone = true;
+
+            InvalidateVisual();
 		}
 
 		void GenerateGrid()
