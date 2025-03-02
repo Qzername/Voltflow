@@ -92,7 +92,7 @@
                 HorizontalAlignment="Stretch"
                 Classes="Success"
                 Command="{Binding NavigateToCharging}"
-                IsEnabled="{Binding !Closed}">
+                IsEnabled="{Binding Available}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign Kind="Bolt" />
                     <TextBlock Text="Charge" />

@@ -20,7 +20,7 @@
         <StyleInclude Source="avares://Semi.Avalonia.TreeDataGrid/Index.axaml" />
 
         <!--  Include styles (even for Icons from IconPacks.Avalonia)  -->
-        <StyleInclude Source="avares://IconPacks.Avalonia/Icons.axaml" />
+        <StyleInclude Source="avares://IconPacks.Avalonia.MaterialDesign/MaterialDesign.axaml" />
         <StyleInclude Source="/Styles/BorderStyle.axaml" />
         <StyleInclude Source="/Styles/ButtonStyle.axaml" />
         <StyleInclude Source="/Styles/IconStyle.axaml" />

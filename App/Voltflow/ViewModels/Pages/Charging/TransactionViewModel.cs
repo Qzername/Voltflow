@@ -1,17 +1,13 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using Avalonia.Controls.Notifications;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using Voltflow.Models;
-using Avalonia.Controls;
-using Avalonia;
-using Avalonia.Platform.Storage;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Voltflow.Services;
 using Ursa.Controls;
-using Avalonia.Controls.Notifications;
+using Voltflow.Models;
+using Voltflow.Services;
 
 namespace Voltflow.ViewModels.Pages.Charging;
 
@@ -33,7 +29,7 @@ public class TransactionViewModel : ViewModelBase
 	public WindowToastManager? ToastManager;
 	public Visual? Parent;
 
-    [Reactive] public double Cost { get; set; }
+	[Reactive] public double Cost { get; set; }
 	[Reactive] public double EnergyConsumed { get; set; }
 	[Reactive] public bool IsWon { get; set; }
 
@@ -44,9 +40,9 @@ public class TransactionViewModel : ViewModelBase
 			Text = IsWon ? "You won! -10%" : "Better luck next time...";
 
 			if (IsWon)
-                Cost = Math.Round(Cost * 0.9, 2);
+				Cost = Math.Round(Cost * 0.9, 2);
 
-            ShowText = true;
+			ShowText = true;
 		}
 	}
 
@@ -54,10 +50,10 @@ public class TransactionViewModel : ViewModelBase
 	[Reactive] public bool ShowText { get; set; }
 
 	public async Task GenerateInvoice()
-    {
-        // Get pdf from server
-        var request = await _httpClient.GetAsync("api/Transactions/invoice");
-        var fileStream = await request.Content.ReadAsStreamAsync();
+	{
+		// Get pdf from server
+		var request = await _httpClient.GetAsync("api/Transactions/invoice");
+		var fileStream = await request.Content.ReadAsStreamAsync();
 
 		// Save pdf
 		var results = await _dialogService.SaveFileDialog(Parent, fileStream, DialogService.PdfOptions);

@@ -35,7 +35,7 @@ public class StationStatisticsViewModel : ViewModelBase
 			IsAdmin = viewModel.IsAdmin;
 	}
 
-	async void GetStatistics()
+	private async void GetStatistics()
 	{
 		// --- week usage ---
 		var request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/weekUsage?stationId=" + _chargingStation.Id);
@@ -97,7 +97,7 @@ public class StationStatisticsViewModel : ViewModelBase
 		};
 	}
 
-	async void GetOpeningHours()
+	private async void GetOpeningHours()
 	{
 		var request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + _chargingStation.Id);
 		Debug.WriteLine(request.StatusCode);
