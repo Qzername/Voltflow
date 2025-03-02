@@ -162,7 +162,7 @@ public class ChargingViewModel : ViewModelBase
 			bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 			await _connection.StopAsync();
 
-			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(TotalCost, TotalCharge, isDiscount, HostScreen));
+			HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost, TotalCharge, isDiscount, HostScreen));
 
 			if (App.NotificationService is not null)
 				App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
@@ -182,7 +182,7 @@ public class ChargingViewModel : ViewModelBase
 		bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
 		await _connection.StopAsync();
 
-		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(TotalCost, TotalCharge, isDiscount, HostScreen));
+		HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost, TotalCharge, isDiscount, HostScreen));
 
 		Finished = true;
 		Working = false;
