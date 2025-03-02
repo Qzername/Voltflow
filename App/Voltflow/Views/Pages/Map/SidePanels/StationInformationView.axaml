@@ -91,7 +91,8 @@
             <Button
                 HorizontalAlignment="Stretch"
                 Classes="Success"
-                Command="{Binding NavigateToCharging}">
+                Command="{Binding NavigateToCharging}"
+                IsEnabled="{Binding !Closed}">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconMaterialDesign Kind="Bolt" />
                     <TextBlock Text="Charge" />

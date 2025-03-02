@@ -19,8 +19,8 @@ public class ChargingViewModel : ViewModelBase
 {
 	public WindowToastManager? ToastManager;
 
-	[Reactive] public ChargingStation CurrentStation { get;set; }
-    [Reactive] public ChargingPort CurrentPort { get; set; }
+	[Reactive] public ChargingStation CurrentStation { get; set; }
+	[Reactive] public ChargingPort CurrentPort { get; set; }
 
 	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
 	[Reactive] public int SelectedIndex { get; set; } = 0;
@@ -50,8 +50,8 @@ public class ChargingViewModel : ViewModelBase
 	{
 		_httpClient = GetService<HttpClient>();
 
-        CurrentStation = chargingStation;
-        CurrentPort = chargingPort;
+		CurrentStation = chargingStation;
+		CurrentPort = chargingPort;
 
 		_dataUpdate.Interval = TimeSpan.FromMilliseconds(100);
 		_dataUpdate.Tick += async (sender, e) => await UpdateData();

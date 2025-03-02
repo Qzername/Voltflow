@@ -72,8 +72,8 @@ public class MapViewModel : ViewModelBase, IScreen
 
 		// Add points to map
 		var request = await _httpClient.GetAsync("/api/ChargingStations");
-        Debug.WriteLine(request.StatusCode);
-        var stationsJson = await request.Content.ReadAsStringAsync();
+		Debug.WriteLine(request.StatusCode);
+		var stationsJson = await request.Content.ReadAsStringAsync();
 		var chargingStations = JsonConverter.Deserialize<ChargingStation[]>(stationsJson);
 
 		var list = (List<IFeature>)_pointsLayer.Features;
@@ -86,12 +86,12 @@ public class MapViewModel : ViewModelBase, IScreen
 			feature["data"] = chargingStation;
 
 			request = await _httpClient.GetAsync("/api/ChargingPorts?stationId=" + chargingStation.Id);
-            Debug.WriteLine(request.StatusCode);
-            var portsJson = await request.Content.ReadAsStringAsync();
-            var ports = JsonConverter.Deserialize<ChargingPort[]>(portsJson);
+			Debug.WriteLine(request.StatusCode);
+			var portsJson = await request.Content.ReadAsStringAsync();
+			var ports = JsonConverter.Deserialize<ChargingPort[]>(portsJson);
 			feature["ports"] = ports;
 
-            list.Add(feature);
+			list.Add(feature);
 		}
 
 		Map.Layers.Add(_pointsLayer);

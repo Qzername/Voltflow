@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive;
-using System.Runtime.CompilerServices;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System.Collections.Generic;
+using System.Reactive;
 using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Statistics;
@@ -18,8 +16,8 @@ public class StatisticsGridDataViewModel : ViewModelBase
 	[Reactive] public StatisticsType CurrentStatisticsType { get; set; }
 
 	public StatisticsGridDataViewModel(
-		IScreen screen, 
-		List<GridElement>? elements = null, 
+		IScreen screen,
+		List<GridElement>? elements = null,
 		List<StationGridElement>? stations = null,
 		List<TransactionGridElement>? transactions = null
 	) : base(screen)

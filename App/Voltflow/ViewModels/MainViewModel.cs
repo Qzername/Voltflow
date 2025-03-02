@@ -3,7 +3,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
-using System.Net.Http;
 using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;

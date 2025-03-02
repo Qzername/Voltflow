@@ -61,14 +61,14 @@ public class StatisticsViewModel(IScreen screen, bool isAdmin) : StatisticsPanel
 				continue;
 
 			elementsTemp.Add(new GridElement
-            {
-                CarName = Cars[t.CarId.Value].Name,
-                StationId = t.ChargingStationId,
-                StartDate = t.StartDate,
-                EndDate = t.EndDate,
-                EnergyConsumed = t.EnergyConsumed,
+			{
+				CarName = Cars[t.CarId.Value].Name,
+				StationId = t.ChargingStationId,
+				StartDate = t.StartDate,
+				EndDate = t.EndDate,
+				EnergyConsumed = t.EnergyConsumed,
 				Cost = t.Cost,
-            });
+			});
 		}
 
 		Elements = new List<GridElement>(elementsTemp);

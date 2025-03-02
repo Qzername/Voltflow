@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Map;
 
 public partial class ModifyHoursView : ReactiveUserControl<ModifyHoursViewModel>
 {
-    public ModifyHoursView()
-    {
-        InitializeComponent();
-    }
+	public ModifyHoursView()
+	{
+		InitializeComponent();
+	}
 }

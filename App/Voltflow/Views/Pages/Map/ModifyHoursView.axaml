@@ -1,64 +1,246 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Voltflow.Views.Pages.Map.ModifyHoursView">
+<UserControl
+    x:Class="Voltflow.Views.Pages.Map.ModifyHoursView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
+    xmlns:map="clr-namespace:Voltflow.ViewModels.Pages.Map"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <map:ModifyHoursViewModel />
+    </Design.DataContext>
 
-	<!-- there should be button to come back -->
-	<!-- maybe clear button for setting default time for day? (0:00-23:59) -->
-	<ScrollViewer>
-		<StackPanel>
-			<TextBlock Text="Monday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Monday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Monday[1]}"/>
+    <!--  there should be button to come back  -->
+    <!--  maybe clear button for setting default time for day? (0:00-23:59)  -->
+    <ScrollViewer>
+        <StackPanel
+            MaxWidth="256"
+            Margin="16"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center"
+            IsEnabled="{Binding !Working}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Monday" />
 
-			<Separator/>
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
 
-			<TextBlock Text="Tuesday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Tuesday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Tuesday[1]}"/>
-			
-			<Separator/>
+                <TimePicker SelectedTime="{Binding OpeningHours.Monday[0]}" />
 
-			<TextBlock Text="Wednesday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Wednesday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Wednesday[1]}"/>
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
 
-			<Separator/>
+                <TimePicker SelectedTime="{Binding OpeningHours.Monday[1]}" />
+            </StackPanel>
 
-			<TextBlock Text="Thursday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Thursday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Thursday[1]}"/>
+            <Separator />
 
-			<Separator/>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Tuesday" />
 
-			<TextBlock Text="Friday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Friday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Friday[1]}"/>
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
 
-			<Separator/>
+                <TimePicker SelectedTime="{Binding OpeningHours.Tuesday[0]}" />
 
-			<TextBlock Text="Saturday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Saturday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Saturday[1]}"/>
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
 
-			<Separator/>
+                <TimePicker SelectedTime="{Binding OpeningHours.Tuesday[1]}" />
+            </StackPanel>
 
-			<TextBlock Text="Sunday"/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Sunday[0]}"/>
-			<TextBlock Text=" - "/>
-			<TimePicker SelectedTime="{Binding OpeningHours.Sunday[1]}"/>
+            <Separator />
 
-			<Separator/>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Wednesday" />
 
-			<Button Command="{Binding Update}" Content="Update"/>
-		</StackPanel>
-	</ScrollViewer>
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Wednesday[0]}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Wednesday[1]}" />
+            </StackPanel>
+
+            <Separator />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Thursday" />
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Thursday[0]}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Thursday[1]}" />
+            </StackPanel>
+
+            <Separator />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Friday" />
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Friday[0]}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Friday[1]}" />
+            </StackPanel>
+
+            <Separator />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Saturday" />
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Saturday[0]}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Saturday[1]}" />
+            </StackPanel>
+
+            <Separator />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="weight-bold size-lg"
+                Text="Sunday" />
+
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="From" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Sunday[0]}" />
+
+                <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign
+                        Classes="size-sm"
+                        IsVisible="True"
+                        Kind="Schedule" />
+                    <TextBlock Classes="size-sm weight-bold" Text="To" />
+                </StackPanel>
+
+                <TimePicker SelectedTime="{Binding OpeningHours.Sunday[1]}" />
+            </StackPanel>
+
+            <Separator />
+
+            <Button
+                HorizontalAlignment="Stretch"
+                Classes="Success"
+                Command="{Binding Update}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="Update" />
+                    <TextBlock Text="Update" />
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                    <TextBlock Text="Go Back" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -3,90 +3,122 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="https://github.com/MahApps/IconPacks.Avalonia"
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+    xmlns:map="clr-namespace:Voltflow.ViewModels.Pages.Map"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sidePanels="clr-namespace:Voltflow.ViewModels.Pages.Map.SidePanels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <map:StationStatisticsViewModel />
+    </Design.DataContext>
 
-	<ScrollViewer>
-		<StackPanel VerticalAlignment="Center">
-			<TextBlock
-				HorizontalAlignment="Center"
-				Classes="size-lg weight-bold"
-				Text="Rush hours (Monday to Sunday)" />
+    <ScrollViewer>
+        <StackPanel
+            MaxWidth="384"
+            Margin="16"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-lg weight-bold"
+                Text="Rush hours" />
 
-			<!-- Weekly usage -->
-			<lvc:CartesianChart
-				Height="512"
-				MaxWidth="512"
-				Series="{Binding WeekUsage}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-sm weight-bold"
+                Text="(Monday to Sunday)" />
 
-			<TextBlock
-				HorizontalAlignment="Center"
-				Classes="size-lg weight-bold"
-				Text="Peek hours"/>
-				
-			<!-- Peek hours -->
-			<lvc:CartesianChart
-				Height="512"
-				MaxWidth="512"
-				Series="{Binding PeekHours}" />
+            <!--  Weekly usage  -->
+            <lvc:CartesianChart Height="256" Series="{Binding WeekUsage}" />
 
-			<!-- Opening hours -->
-			
-			<TextBlock
-				HorizontalAlignment="Center"
-				Classes="size-lg weight-bold"
-				Text="Opening hours"/>
-			
-			<!--these are days of week-->
-			<!--im not bothering using textblock formating, you can change it if you want-->
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Monday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Monday[1]}"/>
-			</StackPanel>
+            <Separator />
 
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Tuesday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Tuesday[1]}"/>
-			</StackPanel>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-lg weight-bold"
+                Text="Peek Hours" />
 
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Wednesday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Wednesday[1]}"/>
-			</StackPanel>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-sm weight-bold"
+                Text="(0 to 24)" />
 
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Thursday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Thursday[1]}"/>
-			</StackPanel>
-			
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Friday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Friday[1]}"/>
-			</StackPanel>
-			
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Saturday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Saturday[1]}"/>
-			</StackPanel>
-			
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="{Binding Hours.Sunday[0]}"/>
-				<TextBlock Text=" - "/>
-				<TextBlock Text="{Binding Hours.Sunday[1]}"/>
-			</StackPanel>
+            <!--  Peek hours  -->
+            <lvc:CartesianChart Height="256" Series="{Binding PeekHours}" />
 
-			<!--this should be visible for admins only-->
-			<Button Command="{Binding NavigateToModifyHours}" Content="Modify opening hours"/>
-		</StackPanel>
-	</ScrollViewer>
+            <Separator />
+
+            <!--  Opening hours  -->
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-lg weight-bold"
+                Text="Opening Hours" />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                Classes="size-sm weight-bold"
+                Text="(0 to 24)" />
+
+            <!--  these are days of week  -->
+            <StackPanel HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Monday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Monday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Tuesday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Tuesday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Wednesday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Wednesday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Thursday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Thursday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Friday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Friday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Saturday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Saturday[1]}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Hours.Sunday[0]}" />
+                    <TextBlock Text=" - " />
+                    <TextBlock Text="{Binding Hours.Sunday[1]}" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel IsVisible="{Binding IsAdmin}">
+                <Separator />
+
+                <Button
+                    MaxWidth="256"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding NavigateToModifyHours}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterialDesign Kind="Edit" />
+                        <TextBlock Text="Modify Open Hours" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

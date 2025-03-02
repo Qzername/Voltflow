@@ -1,6 +1,5 @@
 ﻿using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
-using BruTile.Wms;
 using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
@@ -37,7 +36,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 		[Reactive] public AvaloniaList<ChargingPort> Ports { get; set; } = [];
 		[Reactive] public ChargingPort? SelectedPort { get; set; }
 
-        private bool _isOutOfService;
+		private bool _isOutOfService;
 		public bool IsOutOfService
 		{
 			get => _isOutOfService;
@@ -150,8 +149,8 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 			}
 
 			//update values, dont send updates to server
-            SetOutOfServiceNoServer(SelectedPort?.Status == ChargingPortStatus.OutOfService);
-            SetServiceModeNoServer(SelectedPort?.ServiceMode ?? false);
+			SetOutOfServiceNoServer(SelectedPort?.Status == ChargingPortStatus.OutOfService);
+			SetServiceModeNoServer(SelectedPort?.ServiceMode ?? false);
 
 			CreatingNewPoint = false;
 		}
@@ -220,7 +219,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				classes: ["Light"]);
 		}
 
-        public async Task DeletePort()
+		public async Task DeletePort()
 		{
 			if (SelectedPort == null)
 			{
@@ -234,56 +233,56 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 				return;
 			}
 
-            var request = await _httpClient.DeleteAsync("/api/ChargingPorts/" + SelectedPort.Id);
+			var request = await _httpClient.DeleteAsync("/api/ChargingPorts/" + SelectedPort.Id);
 
-            if (request.StatusCode == HttpStatusCode.Forbidden)
-            {
-	            ToastManager?.Show(
-		            new Toast("Not an administrator - missing permissions!"),
-		            showIcon: true,
-		            showClose: false,
-		            type: NotificationType.Error,
-		            classes: ["Light"]);
-	            return;
-            }
+			if (request.StatusCode == HttpStatusCode.Forbidden)
+			{
+				ToastManager?.Show(
+					new Toast("Not an administrator - missing permissions!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+				return;
+			}
 
-            if (request.StatusCode == HttpStatusCode.BadRequest)
-            {
-	            ToastManager?.Show(
-		            new Toast("Provided values are invalid!"),
-		            showIcon: true,
-		            showClose: false,
-		            type: NotificationType.Error,
-		            classes: ["Light"]);
-	            return;
-            }
+			if (request.StatusCode == HttpStatusCode.BadRequest)
+			{
+				ToastManager?.Show(
+					new Toast("Provided values are invalid!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
+				return;
+			}
 
-            if (request.StatusCode != HttpStatusCode.OK)
-            {
-	            ToastManager?.Show(
-		            new Toast("Unknown error!"),
-		            showIcon: true,
-		            showClose: false,
-		            type: NotificationType.Error,
-		            classes: ["Light"]);
+			if (request.StatusCode != HttpStatusCode.OK)
+			{
+				ToastManager?.Show(
+					new Toast("Unknown error!"),
+					showIcon: true,
+					showClose: false,
+					type: NotificationType.Error,
+					classes: ["Light"]);
 
-	            return;
-            }
+				return;
+			}
 
-            await GetStations();
+			await GetStations();
 
-            ToastManager?.Show(
-	            new Toast("Deleted charging port successfully!"),
-	            showIcon: true,
-	            showClose: false,
-	            type: NotificationType.Success,
-	            classes: ["Light"]);
+			ToastManager?.Show(
+				new Toast("Deleted charging port successfully!"),
+				showIcon: true,
+				showClose: false,
+				type: NotificationType.Success,
+				classes: ["Light"]);
 		}
 
-        #endregion
+		#endregion
 
-        #region Handling view buttons
-        public async Task CreateStation()
+		#region Handling view buttons
+		public async Task CreateStation()
 		{
 			StringContent content = JsonConverter.ToStringContent(new
 			{
@@ -428,14 +427,14 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
 			var selectedPort = SelectedPort;
 
-            selectedPort.Status = IsOutOfService ? ChargingPortStatus.OutOfService : ChargingPortStatus.Available;
-            selectedPort.ServiceMode = IsInServiceMode;
+			selectedPort.Status = IsOutOfService ? ChargingPortStatus.OutOfService : ChargingPortStatus.Available;
+			selectedPort.ServiceMode = IsInServiceMode;
 
 			var content = JsonConverter.ToStringContent(new
 			{
-                selectedPort.Id,
-                selectedPort.Status,
-                selectedPort.ServiceMode
+				selectedPort.Id,
+				selectedPort.Status,
+				selectedPort.ServiceMode
 			});
 
 			var request = await _httpClient.PatchAsync("/api/ChargingPorts/", content);
@@ -479,7 +478,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
 			Ports[Ports.IndexOf(SelectedPort)] = selectedPort;
 
-            ToastManager?.Show(
+			ToastManager?.Show(
 				new Toast("Updated station successfully!"),
 				showIcon: true,
 				showClose: false,

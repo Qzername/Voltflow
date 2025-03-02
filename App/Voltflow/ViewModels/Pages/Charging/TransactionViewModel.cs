@@ -6,8 +6,8 @@ namespace Voltflow.ViewModels.Pages.Charging;
 public class TransactionViewModel(double cost, double energyUsed, bool isWon, IScreen screen) : ViewModelBase(screen)
 {
 	[Reactive] public double Cost { get; set; } = cost;
-    [Reactive] public double EnergyConsumed { get; set; } = energyUsed;
-    [Reactive] public bool IsWon { get; set; } = isWon;
+	[Reactive] public double EnergyConsumed { get; set; } = energyUsed;
+	[Reactive] public bool IsWon { get; set; } = isWon;
 
 	public bool IsDone
 	{

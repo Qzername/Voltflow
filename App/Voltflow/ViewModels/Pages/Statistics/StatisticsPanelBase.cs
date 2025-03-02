@@ -4,7 +4,6 @@ using DynamicData;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using Microsoft.VisualBasic;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SkiaSharp;
@@ -66,9 +65,9 @@ public abstract class StatisticsPanelBase : ViewModelBase
 		var monthAgo = DateTime.Now.AddMonths(-1);
 		var monthAgoString = monthAgo.ToString("o");
 
-        // --- prepare data for generation ---
-        //Transactions
-        var request = await HttpClient.GetAsync($"/api/Transactions{(loadAllTransactions?"/all":string.Empty)}?since"+monthAgoString);
+		// --- prepare data for generation ---
+		//Transactions
+		var request = await HttpClient.GetAsync($"/api/Transactions{(loadAllTransactions ? "/all" : string.Empty)}?since" + monthAgoString);
 
 		if (request.StatusCode != HttpStatusCode.OK)
 			return;

@@ -1,31 +1,43 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
+using System.Reactive;
+using System.Threading.Tasks;
 using Voltflow.Models;
 
 namespace Voltflow.ViewModels.Pages.Map;
 
 public class ModifyHoursViewModel : ViewModelBase
 {
-    HttpClient _httpClient;
+	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 
-    ChargingStation _chargingStation;
-    [Reactive] public ChargingStationOpeningHours OpeningHours { get; set; }
+	private readonly HttpClient _httpClient;
 
-    public ModifyHoursViewModel(ChargingStation station, ChargingStationOpeningHours hours, IScreen screen) : base(screen)
-    {
-        _httpClient = GetService<HttpClient>();
+	private ChargingStation _chargingStation;
+	[Reactive] public ChargingStationOpeningHours OpeningHours { get; set; }
+	[Reactive] public bool Working { get; set; }
 
-        _chargingStation = station;
-        OpeningHours = hours;
-    }
+	public ModifyHoursViewModel(ChargingStation station, ChargingStationOpeningHours hours, IScreen screen) : base(screen)
+	{
+		_httpClient = GetService<HttpClient>();
 
-    public async void Update()
-    {
-        var body = JsonConverter.ToStringContent(OpeningHours);
+		_chargingStation = station;
+		OpeningHours = hours;
+	}
 
-        var request = await _httpClient.PatchAsync("/api/ChargingStations/OpeningHours", body);
-        Debug.WriteLine(request.StatusCode);
-    }
+	public async Task Update()
+	{
+		Working = true;
+		var body = JsonConverter.ToStringContent(OpeningHours);
+
+		var request = await _httpClient.PatchAsync("/api/ChargingStations/OpeningHours", body);
+		Debug.WriteLine(request.StatusCode);
+
+		if (request.StatusCode == HttpStatusCode.OK)
+			HostScreen.Router.NavigateBack.Execute();
+		else
+			Working = false; // If we're navigating back, there's no need to manage Working
+	}
 }
