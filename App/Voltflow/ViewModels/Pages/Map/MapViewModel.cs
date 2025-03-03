@@ -1,5 +1,6 @@
 ﻿using Avalonia.SimplePreferences;
 using Mapsui;
+using Mapsui.Extensions;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using Mapsui.Styles;
@@ -34,19 +35,25 @@ public class MapViewModel : ViewModelBase, IScreen
 
 	// Map config
 	[Reactive] public M.Map? Map { get; set; }
-	private readonly MemoryLayer _pointsLayer = new()
-	{
-		Name = "Points",
-		Features = new List<IFeature>(),
-		IsMapInfoLayer = true,
-		Style = new SymbolStyle()
-		{
-			Fill = new Brush(Color.Red),
-		}
-	};
+	private readonly MemoryLayer _pointsLayer;
 
 	public MapViewModel(IScreen screen) : base(screen)
 	{
+		var bitmapId = typeof(MapViewModel).LoadBitmapId("Assets.marker.png");
+
+		_pointsLayer = new MemoryLayer
+		{
+			Name = "Points",
+			Features = new List<IFeature>(),
+			IsMapInfoLayer = true,
+			Style = new SymbolStyle
+			{
+				BitmapId = bitmapId,
+				SymbolScale = 0.6,
+				SymbolOffset = new RelativeOffset(0.0, 0.5)
+			}
+		};
+
 		_httpClient = GetService<HttpClient>();
 
 		Router = new RoutingState();
