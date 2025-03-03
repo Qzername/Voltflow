@@ -20,12 +20,12 @@ public class AccountsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAccount()
     {
-	    var user = await _userManager.GetUserAsync(User);
+        var user = await _userManager.GetUserAsync(User);
 
-	    if (user is null)
-		    return BadRequest();
+        if (user is null)
+            return BadRequest();
 
-	    return Ok(new { Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber});
+        return Ok(new { Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber });
     }
 
     [HttpGet("adminCheck")]
@@ -41,8 +41,8 @@ public class AccountsController : ControllerBase
             return BadRequest();
 
         //meet data criteria
-        if (accountModel.Name?.Length > 100 || 
-            accountModel.Surname?.Length > 100 || 
+        if (accountModel.Name?.Length > 100 ||
+            accountModel.Surname?.Length > 100 ||
             accountModel.PhoneNumber?.Length != 9)
             return BadRequest(new { InvalidData = true });
 

@@ -7,15 +7,15 @@ namespace Voltflow.Models.Forms;
 /// </summary>
 public class TwoFactorAuthForm : BaseForm
 {
-	[Reactive] public string? Token { get; set; }
+    [Reactive] public string? Token { get; set; }
 
-	/// <summary>
-	/// Resets variables stored in the form.
-	/// </summary>
-	public void Reset()
-	{
-		Token = null;
-		Working = false;
-	}
+    /// <summary>
+    /// Resets variables stored in the form.
+    /// </summary>
+    public void Reset()
+    {
+        Token = null;
+        Working = false;
+    }
 }
 

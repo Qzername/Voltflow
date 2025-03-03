@@ -8,82 +8,82 @@ namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class StatisticsViewModel(IScreen screen, bool isAdmin) : StatisticsPanelBase(false, screen)
 {
-	[Reactive] public List<GridElement> Elements { get; set; } = [];
-	[Reactive] public bool IsAdmin { get; set; } = isAdmin;
+    [Reactive] public List<GridElement> Elements { get; set; } = [];
+    [Reactive] public bool IsAdmin { get; set; } = isAdmin;
 
-	protected override void GenerateEnergyUsedData()
-	{
-		Dictionary<Car, float> total = [];
+    protected override void GenerateEnergyUsedData()
+    {
+        Dictionary<Car, float> total = [];
 
-		foreach (var t in Transactions.Values)
-		{
-			if (t.CarId is null)
-				continue;
+        foreach (var t in Transactions.Values)
+        {
+            if (t.CarId is null)
+                continue;
 
-			var car = Cars[t.CarId.Value];
+            var car = Cars[t.CarId.Value];
 
-			if (total.ContainsKey(car))
-				total[car] += (float)t.EnergyConsumed;
-			else
-				total[car] = (float)t.EnergyConsumed;
-		}
+            if (total.ContainsKey(car))
+                total[car] += (float)t.EnergyConsumed;
+            else
+                total[car] = (float)t.EnergyConsumed;
+        }
 
-		EnergyData = ConstructPieChartSeries(total);
-	}
+        EnergyData = ConstructPieChartSeries(total);
+    }
 
-	protected override void GenerateCostData()
-	{
-		Dictionary<Car, float> total = [];
+    protected override void GenerateCostData()
+    {
+        Dictionary<Car, float> total = [];
 
-		foreach (var t in Transactions.Values)
-		{
-			if (t.CarId is null)
-				continue;
+        foreach (var t in Transactions.Values)
+        {
+            if (t.CarId is null)
+                continue;
 
-			var car = Cars[t.CarId.Value];
+            var car = Cars[t.CarId.Value];
 
-			if (total.ContainsKey(car))
-				total[car] += (float)t.Cost;
-			else
-				total[car] = (float)t.Cost;
-		}
+            if (total.ContainsKey(car))
+                total[car] += (float)t.Cost;
+            else
+                total[car] = (float)t.Cost;
+        }
 
-		CostData = ConstructPieChartSeries(total);
-	}
+        CostData = ConstructPieChartSeries(total);
+    }
 
-	protected override void GenerateGridData()
-	{
-		List<GridElement> elementsTemp = [];
+    protected override void GenerateGridData()
+    {
+        List<GridElement> elementsTemp = [];
 
-		foreach (var t in Transactions.Values)
-		{
-			if (t.CarId is null)
-				continue;
+        foreach (var t in Transactions.Values)
+        {
+            if (t.CarId is null)
+                continue;
 
-			elementsTemp.Add(new GridElement
-			{
-				CarName = Cars[t.CarId.Value].Name,
-				StationId = t.ChargingStationId,
-				StartDate = t.StartDate,
-				EndDate = t.EndDate,
-				EnergyConsumed = t.EnergyConsumed,
-				Cost = t.Cost,
-			});
-		}
+            elementsTemp.Add(new GridElement
+            {
+                CarName = Cars[t.CarId.Value].Name,
+                StationId = t.ChargingStationId,
+                StartDate = t.StartDate,
+                EndDate = t.EndDate,
+                EnergyConsumed = t.EnergyConsumed,
+                Cost = t.Cost,
+            });
+        }
 
-		Elements = new List<GridElement>(elementsTemp);
-	}
+        Elements = new List<GridElement>(elementsTemp);
+    }
 
-	public async Task GenerateCsv()
-	{
-		string csv = "Car Name,Start Date,End date,Station Id,Energy Consumed,Cost\n";
+    public async Task GenerateCsv()
+    {
+        string csv = "Car Name,Start Date,End date,Station Id,Energy Consumed,Cost\n";
 
-		foreach (var t in Transactions.Values)
-			csv += $"{Cars[t.CarId.Value].Name},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
+        foreach (var t in Transactions.Values)
+            csv += $"{Cars[t.CarId.Value].Name},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
 
-		await SaveCsv(csv);
-	}
+        await SaveCsv(csv);
+    }
 
-	public void NavigateToAdvanced() => HostScreen.Router.Navigate.Execute(new AdvancedStatisticsViewModel(HostScreen));
-	public void NavigateToStatisticsData() => HostScreen.Router.Navigate.Execute(new StatisticsGridDataViewModel(HostScreen, elements: Elements));
+    public void NavigateToAdvanced() => HostScreen.Router.Navigate.Execute(new AdvancedStatisticsViewModel(HostScreen));
+    public void NavigateToStatisticsData() => HostScreen.Router.Navigate.Execute(new StatisticsGridDataViewModel(HostScreen, elements: Elements));
 }

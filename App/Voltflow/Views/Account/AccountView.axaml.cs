@@ -10,30 +10,30 @@ namespace Voltflow.Views.Account;
 
 public partial class AccountView : ReactiveUserControl<AccountViewModel>
 {
-	public AccountView()
-	{
-		InitializeComponent();
-	}
+    public AccountView()
+    {
+        InitializeComponent();
+    }
 
-	// https://github.com/irihitech/Ursa.Avalonia/blob/main/demo/Ursa.Demo/Pages/ToastDemo.axaml.cs
-	protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-	{
-		base.OnAttachedToVisualTree(e);
+    // https://github.com/irihitech/Ursa.Avalonia/blob/main/demo/Ursa.Demo/Pages/ToastDemo.axaml.cs
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
 
-		if (DataContext is not AccountViewModel viewModel)
-			return;
+        if (DataContext is not AccountViewModel viewModel)
+            return;
 
-		var topLevel = TopLevel.GetTopLevel(this);
-		viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
+        var topLevel = TopLevel.GetTopLevel(this);
+        viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
 
-		if (viewModel.HostScreen is MainViewModel mainViewModel)
-			viewModel.CurrentAuthType = mainViewModel.Authenticated ? AuthType.SignedIn : AuthType.SignIn;
-	}
+        if (viewModel.HostScreen is MainViewModel mainViewModel)
+            viewModel.CurrentAuthType = mainViewModel.Authenticated ? AuthType.SignedIn : AuthType.SignIn;
+    }
 
-	protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-	{
-		base.OnDetachedFromVisualTree(e);
-		if (DataContext is AccountViewModel viewModel)
-			viewModel.ToastManager?.Uninstall();
-	}
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        if (DataContext is AccountViewModel viewModel)
+            viewModel.ToastManager?.Uninstall();
+    }
 }

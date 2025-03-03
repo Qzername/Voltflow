@@ -6,7 +6,7 @@ namespace VoltflowAPI.Services
 {
     public class StatisticsUpdateService : BackgroundService
     {
-        public static Dictionary<int,ChargingStationWeekUsage> ChargingStationWeekUsage { get; set; }
+        public static Dictionary<int, ChargingStationWeekUsage> ChargingStationWeekUsage { get; set; }
         public static Dictionary<int, int[]> ChargingStationPeekHours { get; set; }
 
         readonly IServiceScopeFactory _scopeFactory;
@@ -29,7 +29,7 @@ namespace VoltflowAPI.Services
             {
                 var applicationContext = scope.ServiceProvider.GetService<ApplicationContext>();
 
-                Dictionary<int, Dictionary<int, int>> statistics = new Dictionary<int, Dictionary<int,int>>();
+                Dictionary<int, Dictionary<int, int>> statistics = new Dictionary<int, Dictionary<int, int>>();
 
                 DateTime weekAgo = DateTime.UtcNow.AddDays(-7);
                 var transcations = applicationContext.Transactions.Where(x => x.StartDate >= weekAgo);
@@ -44,12 +44,12 @@ namespace VoltflowAPI.Services
                         for (int i = 0; i < 7; i++)
                             statistics[t.ChargingStationId][i] = 0;
                     }
-                   
+
                     statistics[t.ChargingStationId][(int)t.StartDate.DayOfWeek]++;
                     ChargingStationPeekHours[t.ChargingStationId][t.StartDate.Hour]++;
-                }    
+                }
 
-                foreach(var kv in  statistics)
+                foreach (var kv in statistics)
                 {
                     var weekStats = kv.Value;
 
@@ -65,7 +65,7 @@ namespace VoltflowAPI.Services
                     };
                 }
             }
-            
+
             _logger.LogInformation("Generation of statistics is done");
 
             await Task.Delay(TimeSpan.FromDays(1), stoppingToken);

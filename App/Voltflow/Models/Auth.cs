@@ -9,12 +9,12 @@ namespace Voltflow.Models;
 /// </summary>
 public enum AuthType
 {
-	SignIn = 0,
-	SignUp = 1,
-	TwoFactorAuth = 2,
-	PasswordReset = 3,
-	EmailVerification = 4,
-	SignedIn = 5 // Not a form - shows account panel.
+    SignIn = 0,
+    SignUp = 1,
+    TwoFactorAuth = 2,
+    PasswordReset = 3,
+    EmailVerification = 4,
+    SignedIn = 5 // Not a form - shows account panel.
 }
 
 /// <summary>
@@ -24,14 +24,14 @@ public enum AuthType
 /// </summary>
 public class AuthTypeConverter : IValueConverter
 {
-	public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-	{
-		if (value is AuthType authType && parameter is string paramString)
-			if (Enum.TryParse(paramString, out AuthType paramAuthType))
-				return authType == paramAuthType;
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is AuthType authType && parameter is string paramString)
+            if (Enum.TryParse(paramString, out AuthType paramAuthType))
+                return authType == paramAuthType;
 
-		return false;
-	}
+        return false;
+    }
 
-	public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }

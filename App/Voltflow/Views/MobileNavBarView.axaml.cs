@@ -4,8 +4,8 @@ namespace Voltflow.Views;
 
 public partial class MobileNavBarView : UserControl
 {
-	public MobileNavBarView()
-	{
-		InitializeComponent();
-	}
+    public MobileNavBarView()
+    {
+        InitializeComponent();
+    }
 }

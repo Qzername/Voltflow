@@ -5,5 +5,5 @@ namespace VoltflowAPI.Contexts;
 
 public class IdentityContext : IdentityDbContext<Account>
 {
-	public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
+    public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
 }

@@ -5,8 +5,8 @@ namespace Voltflow.Views.Pages.Map;
 
 public partial class StationStatisticsView : ReactiveUserControl<StationStatisticsViewModel>
 {
-	public StationStatisticsView()
-	{
-		InitializeComponent();
-	}
+    public StationStatisticsView()
+    {
+        InitializeComponent();
+    }
 }

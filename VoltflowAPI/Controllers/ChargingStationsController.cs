@@ -32,7 +32,7 @@ public class ChargingStationsController : ControllerBase
     public async Task<IActionResult> CreateStation([FromBody] CreateStationModel model)
     {
         //meet data criteria
-        if(model.Cost < 1 || model.MaxChargeRate < 1)
+        if (model.Cost < 1 || model.MaxChargeRate < 1)
             return BadRequest(new { InvalidData = true });
 
         ChargingStation chargingStation = new ChargingStation
@@ -50,13 +50,13 @@ public class ChargingStationsController : ControllerBase
         await _applicationContext.ChargingStationOpeningHours.AddAsync(new ChargingStationOpeningHours()
         {
             StationId = chargingStation.Id,
-            Monday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
-            Tuesday   = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Monday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Tuesday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
             Wednesday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
-            Thursday  = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
-            Friday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
-            Saturday  = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
-            Sunday    = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Thursday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Friday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Saturday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
+            Sunday = [new TimeSpan(0, 0, 0), new TimeSpan(23, 59, 59)],
         });
         await _applicationContext.SaveChangesAsync();
 
@@ -68,13 +68,13 @@ public class ChargingStationsController : ControllerBase
     public async Task<IActionResult> PatchStation(PatchStationModel model)
     {
         //meet data criteria
-        if ((model.Cost is not null && model.Cost < 1)|| 
+        if ((model.Cost is not null && model.Cost < 1) ||
             (model.MaxChargeRate is not null && model.MaxChargeRate < 1))
             return BadRequest(new { InvalidData = true });
 
-        var station = _applicationContext.ChargingStations.Single(x=>x.Id == model.Id);
+        var station = _applicationContext.ChargingStations.Single(x => x.Id == model.Id);
 
-        if(model.Latitude is not null)
+        if (model.Latitude is not null)
             station.Latitude = model.Latitude.Value;
 
         if (model.Longitude is not null)

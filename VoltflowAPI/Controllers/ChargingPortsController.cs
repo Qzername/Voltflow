@@ -25,7 +25,7 @@ public class ChargingPortsController : ControllerBase
         if (!_applicationContext.ChargingPorts.Any(x => x.StationId == stationId))
             return Ok(Array.Empty<ChargingStation>());
 
-        var chargingPorts = _applicationContext.ChargingPorts.Where(x=>x.StationId == stationId);
+        var chargingPorts = _applicationContext.ChargingPorts.Where(x => x.StationId == stationId);
         return Ok(chargingPorts);
     }
 
@@ -54,7 +54,7 @@ public class ChargingPortsController : ControllerBase
     public async Task<IActionResult> PatchPort([FromBody] PatchPortModel model)
     {
         var chargingPort = await _applicationContext.ChargingPorts.FindAsync(model.Id);
-        
+
         if (chargingPort is null)
             return BadRequest(new { InvalidPort = true });
 
@@ -67,7 +67,7 @@ public class ChargingPortsController : ControllerBase
         if (model.ServiceMode is not null)
         {
             //if service mode switched to false, add record to database
-            if(!model.ServiceMode.Value && chargingPort.ServiceMode)
+            if (!model.ServiceMode.Value && chargingPort.ServiceMode)
                 _applicationContext.ChargingStationServiceHistory.Add(new ChargingStationsServiceHistory
                 {
                     StationId = chargingPort.StationId,
@@ -77,7 +77,7 @@ public class ChargingPortsController : ControllerBase
             chargingPort.ServiceMode = model.ServiceMode.Value;
 
         }
-      
+
         _applicationContext.Update(chargingPort);
         await _applicationContext.SaveChangesAsync();
         return Ok();

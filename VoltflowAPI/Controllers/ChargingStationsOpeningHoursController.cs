@@ -22,7 +22,7 @@ public class ChargingStationsOpeningHoursController : Controller
     [AllowAnonymous]
     public IActionResult GetOpeningHours([FromQuery] int stationId)
     {
-        var openingHours = _applicationContext.ChargingStationOpeningHours.Single(x=>x.StationId == stationId);
+        var openingHours = _applicationContext.ChargingStationOpeningHours.Single(x => x.StationId == stationId);
         return Ok(openingHours);
     }
 

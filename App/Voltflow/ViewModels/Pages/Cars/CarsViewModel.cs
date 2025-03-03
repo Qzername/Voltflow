@@ -9,31 +9,31 @@ namespace Voltflow.ViewModels.Pages.Cars;
 
 public class CarsViewModel : ViewModelBase
 {
-	[Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
+    [Reactive] public AvaloniaList<Car> Cars { get; set; } = [];
 
-	private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
-	public CarsViewModel(IScreen screen) : base(screen)
-	{
-		_httpClient = GetService<HttpClient>();
-		GetCars();
-	}
+    public CarsViewModel(IScreen screen) : base(screen)
+    {
+        _httpClient = GetService<HttpClient>();
+        GetCars();
+    }
 
-	private async void GetCars()
-	{
-		Cars.Clear();
+    private async void GetCars()
+    {
+        Cars.Clear();
 
-		var request = await _httpClient.GetAsync("/api/Cars");
+        var request = await _httpClient.GetAsync("/api/Cars");
 
-		if (request.StatusCode != HttpStatusCode.OK)
-			return;
+        if (request.StatusCode != HttpStatusCode.OK)
+            return;
 
-		var jsonString = await request.Content.ReadAsStringAsync();
+        var jsonString = await request.Content.ReadAsStringAsync();
 
-		var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
-		Cars.AddRange(carsObjs);
-	}
+        var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
+        Cars.AddRange(carsObjs);
+    }
 
-	public void NavigateToCarDetails(object carObj) => HostScreen.Router.Navigate.Execute(new CarInfoViewModel((Car)carObj, HostScreen));
-	public void NavigateToCreateCar() => HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen));
+    public void NavigateToCarDetails(object carObj) => HostScreen.Router.Navigate.Execute(new CarInfoViewModel((Car)carObj, HostScreen));
+    public void NavigateToCreateCar() => HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen));
 }

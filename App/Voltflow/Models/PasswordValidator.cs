@@ -9,7 +9,7 @@ namespace Voltflow.Models;
 /// </summary>
 public static class PasswordValidator
 {
-	/*
+    /*
 	 * Password requirements
 	 *
 	 * Minimum eight characters,
@@ -19,15 +19,15 @@ public static class PasswordValidator
 	 * one number
 	 * one special character
 	 */
-	public const string PasswordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$";
-	// Copied from VoltflowAPI.
+    public const string PasswordRegex = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$";
+    // Copied from VoltflowAPI.
 
-	public static bool IsValid(string? password)
-	{
-		if (password == null)
-			return false;
+    public static bool IsValid(string? password)
+    {
+        if (password == null)
+            return false;
 
-		return Regex.IsMatch(password, PasswordRegex);
-	}
+        return Regex.IsMatch(password, PasswordRegex);
+    }
 }
 

@@ -16,66 +16,66 @@ namespace Voltflow.ViewModels;
 /// </summary>
 public class MainViewModel : ReactiveObject, IScreen
 {
-	public RoutingState Router { get; } = new();
-	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
+    public RoutingState Router { get; } = new();
+    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
 
-	[Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
-	[Reactive] public bool Authenticated { get; set; }
-	[Reactive] public bool IsAdmin { get; set; }
+    [Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
+    [Reactive] public bool Authenticated { get; set; }
+    [Reactive] public bool IsAdmin { get; set; }
 
-	/// <summary>
-	/// Constructor for MainViewModel.
-	/// When constructed, the router navigates to MapView (if on Desktop/Browser or Mobile - authenticated) or AccountView (if on Mobile - not authenticated).
-	/// </summary>
-	public MainViewModel()
-	{
-		//setup views
-		if (IsMobile)
-		{
-			var token = Preferences.Get<string>("token", null);
-			if (token is null)
-				Router.Navigate.Execute(new AccountViewModel(this));
-			else
-				Router.Navigate.Execute(new MapViewModel(this));
-		}
-		else
-			Router.Navigate.Execute(new MapViewModel(this));
-	}
+    /// <summary>
+    /// Constructor for MainViewModel.
+    /// When constructed, the router navigates to MapView (if on Desktop/Browser or Mobile - authenticated) or AccountView (if on Mobile - not authenticated).
+    /// </summary>
+    public MainViewModel()
+    {
+        //setup views
+        if (IsMobile)
+        {
+            var token = Preferences.Get<string>("token", null);
+            if (token is null)
+                Router.Navigate.Execute(new AccountViewModel(this));
+            else
+                Router.Navigate.Execute(new MapViewModel(this));
+        }
+        else
+            Router.Navigate.Execute(new MapViewModel(this));
+    }
 
-	private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
+    private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
 
-	public void NavigateToCars()
-	{
-		if (GetCurrentViewModel() == typeof(CarsViewModel))
-			return;
+    public void NavigateToCars()
+    {
+        if (GetCurrentViewModel() == typeof(CarsViewModel))
+            return;
 
-		Router.Navigate.Execute(new CarsViewModel(this));
-	}
+        Router.Navigate.Execute(new CarsViewModel(this));
+    }
 
-	public void NavigateToMap()
-	{
-		if (GetCurrentViewModel() == typeof(MapViewModel))
-			return;
+    public void NavigateToMap()
+    {
+        if (GetCurrentViewModel() == typeof(MapViewModel))
+            return;
 
-		Router.Navigate.Execute(new MapViewModel(this));
-	}
+        Router.Navigate.Execute(new MapViewModel(this));
+    }
 
-	public void NavigateToAccount()
-	{
-		if (GetCurrentViewModel() == typeof(AccountViewModel))
-			return;
+    public void NavigateToAccount()
+    {
+        if (GetCurrentViewModel() == typeof(AccountViewModel))
+            return;
 
-		Router.Navigate.Execute(new AccountViewModel(this));
-	}
+        Router.Navigate.Execute(new AccountViewModel(this));
+    }
 
-	public void NavigateToStatistics()
-	{
-		if (GetCurrentViewModel() == typeof(StatisticsViewModel))
-			return;
+    public void NavigateToStatistics()
+    {
+        if (GetCurrentViewModel() == typeof(StatisticsViewModel))
+            return;
 
-		Router.Navigate.Execute(new StatisticsViewModel(this, IsAdmin));
-	}
+        Router.Navigate.Execute(new StatisticsViewModel(this, IsAdmin));
+    }
 
-	protected T GetService<T>() => Locator.Current.GetService<T>()!;
+    protected T GetService<T>() => Locator.Current.GetService<T>()!;
 }
 

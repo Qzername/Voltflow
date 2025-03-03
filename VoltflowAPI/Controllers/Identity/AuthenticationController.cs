@@ -118,10 +118,11 @@ public class AuthenticationController : ControllerBase
 
         if (roles.Contains("Admin"))
             isAdmin = true;
-        
+
         var token = _tokenGenerator.GenerateJwtToken(user, isAdmin);
 
-        return Ok(new { 
+        return Ok(new
+        {
             Token = token,
         });
     }

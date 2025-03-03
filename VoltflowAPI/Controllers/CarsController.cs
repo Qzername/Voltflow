@@ -30,7 +30,7 @@ public class CarsController : ControllerBase
         if (user is null)
             return BadRequest();
 
-        var cars = await _applicationContext.Cars.Where(x=>x.AccountId == user.Id).ToArrayAsync();
+        var cars = await _applicationContext.Cars.Where(x => x.AccountId == user.Id).ToArrayAsync();
 
         return Ok(cars);
     }
@@ -44,7 +44,7 @@ public class CarsController : ControllerBase
             return BadRequest();
 
         //meet data criteria    
-        if (model.Name.Length > 100 || 
+        if (model.Name.Length > 100 ||
             model.BatteryCapacity < 1 ||
             model.ChargingRate < 1)
             return BadRequest(new { InvalidData = true });
@@ -58,7 +58,7 @@ public class CarsController : ControllerBase
         if (model.BatteryCapacity is not null)
             car.BatteryCapacity = model.BatteryCapacity.Value;
 
-        if(model.ChargingRate is not null)
+        if (model.ChargingRate is not null)
             car.ChargingRate = model.ChargingRate.Value;
 
         await _applicationContext.AddAsync(car);
@@ -84,7 +84,7 @@ public class CarsController : ControllerBase
         var car = _applicationContext.Cars.Single(x => x.Id == model.Id);
 
         if (car is null)
-            return BadRequest(new { CarExist = false});
+            return BadRequest(new { CarExist = false });
 
         if (!string.IsNullOrEmpty(model.Name) && model.Name.Length < 100)
             car.Name = model.Name;
@@ -92,7 +92,7 @@ public class CarsController : ControllerBase
         if (model.BatteryCapacity is not null && model.BatteryCapacity > 0)
             car.BatteryCapacity = model.BatteryCapacity.Value;
 
-        if(model.ChargingRate is not null && model.ChargingRate > 0)
+        if (model.ChargingRate is not null && model.ChargingRate > 0)
             car.ChargingRate = model.ChargingRate.Value;
 
         _applicationContext.Update(car);
@@ -122,14 +122,14 @@ public class CarsController : ControllerBase
 
     public struct CreateCarModel
     {
-        public string Name { get;set; }
+        public string Name { get; set; }
         public int? BatteryCapacity { get; set; }
         public int? ChargingRate { get; set; }
     }
 
     public struct PatchCarModel
     {
-        public int Id { get; set;}
+        public int Id { get; set; }
         public string? Name { get; set; }
         public int? BatteryCapacity { get; set; }
         public int? ChargingRate { get; set; }

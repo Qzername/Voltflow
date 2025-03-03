@@ -7,16 +7,16 @@ namespace Voltflow.Models.Forms;
 /// </summary>
 public class EmailVerificationForm : BaseForm
 {
-	[Reactive] public string? Email { get; set; }
-	[Reactive] public string? Token { get; set; }
+    [Reactive] public string? Email { get; set; }
+    [Reactive] public string? Token { get; set; }
 
-	/// <summary>
-	/// Resets variables stored in the form.
-	/// </summary>
-	public void Reset()
-	{
-		Email = null;
-		Token = null;
-		Working = false;
-	}
+    /// <summary>
+    /// Resets variables stored in the form.
+    /// </summary>
+    public void Reset()
+    {
+        Email = null;
+        Token = null;
+        Working = false;
+    }
 }

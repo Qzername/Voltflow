@@ -6,11 +6,11 @@ using Voltflow;
 
 internal sealed partial class Program
 {
-	private static Task Main(string[] args) => BuildAvaloniaApp()
-			.WithFont_Roboto()
-			.UseReactiveUI()
-			.StartBrowserAppAsync("out");
+    private static Task Main(string[] args) => BuildAvaloniaApp()
+            .WithFont_Roboto()
+            .UseReactiveUI()
+            .StartBrowserAppAsync("out");
 
-	public static AppBuilder BuildAvaloniaApp()
-		=> AppBuilder.Configure<App>();
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>();
 }

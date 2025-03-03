@@ -11,33 +11,33 @@ namespace Voltflow.ViewModels.Pages.Map;
 
 public class ModifyHoursViewModel : ViewModelBase
 {
-	public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
+    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 
-	private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
-	private ChargingStation _chargingStation;
-	[Reactive] public ChargingStationOpeningHours OpeningHours { get; set; }
-	[Reactive] public bool Working { get; set; }
+    private ChargingStation _chargingStation;
+    [Reactive] public ChargingStationOpeningHours OpeningHours { get; set; }
+    [Reactive] public bool Working { get; set; }
 
-	public ModifyHoursViewModel(ChargingStation station, ChargingStationOpeningHours hours, IScreen screen) : base(screen)
-	{
-		_httpClient = GetService<HttpClient>();
+    public ModifyHoursViewModel(ChargingStation station, ChargingStationOpeningHours hours, IScreen screen) : base(screen)
+    {
+        _httpClient = GetService<HttpClient>();
 
-		_chargingStation = station;
-		OpeningHours = hours;
-	}
+        _chargingStation = station;
+        OpeningHours = hours;
+    }
 
-	public async Task Update()
-	{
-		Working = true;
-		var body = JsonConverter.ToStringContent(OpeningHours);
+    public async Task Update()
+    {
+        Working = true;
+        var body = JsonConverter.ToStringContent(OpeningHours);
 
-		var request = await _httpClient.PatchAsync("/api/ChargingStations/OpeningHours", body);
-		Debug.WriteLine(request.StatusCode);
+        var request = await _httpClient.PatchAsync("/api/ChargingStations/OpeningHours", body);
+        Debug.WriteLine(request.StatusCode);
 
-		if (request.StatusCode == HttpStatusCode.OK)
-			HostScreen.Router.NavigateBack.Execute();
-		else
-			Working = false; // If we're navigating back, there's no need to manage Working
-	}
+        if (request.StatusCode == HttpStatusCode.OK)
+            HostScreen.Router.NavigateBack.Execute();
+        else
+            Working = false; // If we're navigating back, there's no need to manage Working
+    }
 }

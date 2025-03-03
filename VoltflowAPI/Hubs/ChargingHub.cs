@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using VoltflowAPI.Contexts;
@@ -33,7 +32,7 @@ public class ChargingHub : Hub
         var conn = _connections[Context.ConnectionId];
         conn.IsDiscount = isDiscount;
         _connections[Context.ConnectionId] = conn;
-        
+
         return isDiscount;
     }
 
@@ -55,14 +54,14 @@ public class ChargingHub : Hub
         var carIdString = httpContext.Request.Query["carId"].ToString();
         int carId = 0;
 
-        if(!int.TryParse(carIdString, out carId))
+        if (!int.TryParse(carIdString, out carId))
         {
             await Clients.Caller.SendAsync("Error", "Invalid request");
             Context.Abort();
         }
 
         var port = _applicationContext.ChargingPorts.Find(Convert.ToInt32(portId));
-        
+
         if (port is null)
         {
             await Clients.Caller.SendAsync("Error", "Station not found");
@@ -80,7 +79,7 @@ public class ChargingHub : Hub
 
         var hours = openingHours.GetToday();
 
-        if(DateTime.UtcNow.TimeOfDay < hours[0] || 
+        if (DateTime.UtcNow.TimeOfDay < hours[0] ||
            DateTime.UtcNow.TimeOfDay > hours[1])
         {
             await Clients.Caller.SendAsync("Error", "Station is not available");
@@ -107,7 +106,7 @@ public class ChargingHub : Hub
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        var id = Context.User.Claims.ToList().Single(x=>x.Type == ClaimTypes.NameIdentifier);
+        var id = Context.User.Claims.ToList().Single(x => x.Type == ClaimTypes.NameIdentifier);
 
         //get user
         var userName = Context.User?.Identity.Name;
@@ -139,13 +138,13 @@ public class ChargingHub : Hub
         //register transaction
         Transaction transaction = new()
         {
-	        AccountId = user.Id,
-	        CarId = connInfo.CarId,
-	        ChargingStationId = connInfo.StationId,
-	        StartDate = connInfo.StartDate,
-	        EndDate = endTime,
-	        EnergyConsumed = Math.Round(energyConsumed,3),
-	        Cost = Math.Round(connInfo.IsDiscount ? totalCost * 0.9 : totalCost, 2)
+            AccountId = user.Id,
+            CarId = connInfo.CarId,
+            ChargingStationId = connInfo.StationId,
+            StartDate = connInfo.StartDate,
+            EndDate = endTime,
+            EnergyConsumed = Math.Round(energyConsumed, 3),
+            Cost = Math.Round(connInfo.IsDiscount ? totalCost * 0.9 : totalCost, 2)
         };
 
         _applicationContext.Transactions.Add(transaction);

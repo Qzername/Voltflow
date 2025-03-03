@@ -1,5 +1,4 @@
-﻿using and = Android;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using AndroidX.Core.App;
@@ -7,17 +6,18 @@ using AndroidX.Core.Content;
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
+using and = Android;
 
 namespace Voltflow.Android;
 
 [Activity(
-	Label = "Voltflow",
-	Theme = "@style/Voltflow",
-	Icon = "@mipmap/ic_launcher",
+    Label = "Voltflow",
+    Theme = "@style/Voltflow",
+    Icon = "@mipmap/ic_launcher",
     RoundIcon = "@mipmap/ic_launcher",
-	MainLauncher = true,
-	ScreenOrientation = ScreenOrientation.Portrait,
-	ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
+    MainLauncher = true,
+    ScreenOrientation = ScreenOrientation.Portrait,
+    ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize | ConfigChanges.UiMode)]
 public class MainActivity : AvaloniaMainActivity<App>
 {
     protected override void OnCreate(Bundle? savedInstanceState)
@@ -33,9 +33,9 @@ public class MainActivity : AvaloniaMainActivity<App>
     }
 
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
-	{
-		return base.CustomizeAppBuilder(builder)
-			.WithFont_Roboto()
-			.UseReactiveUI();
-	}
+    {
+        return base.CustomizeAppBuilder(builder)
+            .WithFont_Roboto()
+            .UseReactiveUI();
+    }
 }

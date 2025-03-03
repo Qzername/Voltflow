@@ -40,27 +40,27 @@ builder.Services.AddDbContext<ApplicationContext>(opt => opt.UseNpgsql(connectio
 
 // --- ASP.NET Identity configuration --- 
 builder.Services.AddIdentity<Account, IdentityRole>()
-	.AddEntityFrameworkStores<IdentityContext>()
-	.AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddDefaultTokenProviders();
 
 // --- Authentication and autorization --- 
 //Requires Jwt -> Key to be set
 builder.Services.AddCors();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(o =>
-	{
-		o.TokenValidationParameters = new TokenValidationParameters
-		{
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true,
-			//for now, we don't have domain
-			//this will require configuration when server is bought
-			ValidateAudience = false,
-			ValidateIssuer = false,
-		};
-	});
+    .AddJwtBearer(o =>
+    {
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            //for now, we don't have domain
+            //this will require configuration when server is bought
+            ValidateAudience = false,
+            ValidateIssuer = false,
+        };
+    });
 
 // --- Use SignalR --- 
 builder.Services.AddSignalR();
@@ -71,7 +71,7 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
-	app.MapOpenApi();
+    app.MapOpenApi();
 
 //Ensure admin role is created
 using (var scope = app.Services.CreateScope())
@@ -87,9 +87,9 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseCors(x => x.AllowAnyMethod()
-			      .AllowAnyHeader()
-			      .SetIsOriginAllowed(origin => true) // allow any origin
-				  .AllowCredentials()); // allow credentials
+                  .AllowAnyHeader()
+                  .SetIsOriginAllowed(origin => true) // allow any origin
+                  .AllowCredentials()); // allow credentials
 
 app.UseHttpsRedirection();
 

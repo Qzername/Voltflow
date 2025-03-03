@@ -8,21 +8,21 @@ namespace Voltflow.Views.Pages.Statistics;
 
 public partial class StatisticsView : ReactiveUserControl<StatisticsViewModel>
 {
-	public StatisticsView()
-	{
-		InitializeComponent();
-	}
+    public StatisticsView()
+    {
+        InitializeComponent();
+    }
 
-	protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-	{
-		base.OnAttachedToVisualTree(e);
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
 
-		if (DataContext is StatisticsViewModel viewModel)
-		{
-			viewModel.Parent = this;
+        if (DataContext is StatisticsViewModel viewModel)
+        {
+            viewModel.Parent = this;
 
-			var topLevel = TopLevel.GetTopLevel(this);
-			viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
-		}
-	}
+            var topLevel = TopLevel.GetTopLevel(this);
+            viewModel.ToastManager = new WindowToastManager(topLevel) { MaxItems = 1 };
+        }
+    }
 }

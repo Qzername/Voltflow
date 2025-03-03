@@ -8,6 +8,6 @@ namespace Voltflow.Models.Forms;
 /// </summary>
 public class BaseForm : ReactiveObject
 {
-	[Reactive] public bool Working { get; set; }
+    [Reactive] public bool Working { get; set; }
 }
 
