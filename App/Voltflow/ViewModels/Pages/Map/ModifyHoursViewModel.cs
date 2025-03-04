@@ -1,9 +1,7 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
-using System.Reactive;
 using System.Threading.Tasks;
 using Voltflow.Models;
 
@@ -11,8 +9,6 @@ namespace Voltflow.ViewModels.Pages.Map;
 
 public class ModifyHoursViewModel : ViewModelBase
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
-
     private readonly HttpClient _httpClient;
 
     private ChargingStation _chargingStation;

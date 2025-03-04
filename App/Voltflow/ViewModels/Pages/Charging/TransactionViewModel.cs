@@ -4,11 +4,11 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Net.Http;
-using System.Reactive;
 using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
 using Voltflow.Services;
+using Voltflow.ViewModels.Pages.Map;
 
 namespace Voltflow.ViewModels.Pages.Charging;
 
@@ -23,8 +23,6 @@ public class TransactionViewModel : ViewModelBase
         EnergyConsumed = energyConsumed;
         IsWon = isWon;
     }
-
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
 
     private readonly HttpClient _httpClient;
     private readonly DialogService _dialogService;
@@ -68,4 +66,6 @@ public class TransactionViewModel : ViewModelBase
             type: results ? NotificationType.Success : NotificationType.Error,
             classes: ["Light"]);
     }
+
+    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
 }

@@ -7,7 +7,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Net;
 using System.Net.Http;
-using System.Reactive;
 using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
@@ -18,8 +17,6 @@ namespace Voltflow.ViewModels.Account;
 
 public class SettingsViewModel : ViewModelBase
 {
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
-
     public WindowToastManager? ToastManager;
     public SettingsForm SettingsForm { get; set; }
 

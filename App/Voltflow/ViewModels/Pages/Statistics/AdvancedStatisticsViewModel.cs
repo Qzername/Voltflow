@@ -2,10 +2,8 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Reactive;
 using System.Threading.Tasks;
 using Voltflow.Models;
 
@@ -13,9 +11,7 @@ namespace Voltflow.ViewModels.Pages.Statistics;
 
 public class AdvancedStatisticsViewModel : StatisticsPanelBase
 {
-    HttpClient _httpClient;
-
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
+    private readonly HttpClient _httpClient;
 
     //grid
     [Reactive] public List<TransactionGridElement> TransactionsGridData { get; set; } = [];

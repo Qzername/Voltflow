@@ -3,7 +3,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Net;
 using System.Net.Http;
-using System.Reactive;
 using System.Threading.Tasks;
 using Ursa.Controls;
 using Voltflow.Models;
@@ -19,7 +18,6 @@ public class AddCarViewModel : ViewModelBase
 
     private readonly HttpClient _httpClient;
 
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => HostScreen.Router.NavigateBack;
     public WindowToastManager? ToastManager;
 
     [Reactive] public string? Name { get; set; }

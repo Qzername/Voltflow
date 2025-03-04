@@ -78,7 +78,7 @@
             </StackPanel>
         </Button>
 
-        <Button HorizontalAlignment="Stretch" Command="{Binding GoBack}">
+        <Button HorizontalAlignment="Stretch" Command="{Binding NavigateHome}">
             <StackPanel Orientation="Horizontal">
                 <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
                 <TextBlock Text="Go Back" />

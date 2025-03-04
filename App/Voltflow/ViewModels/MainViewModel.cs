@@ -3,7 +3,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
-using System.Reactive;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Map;
@@ -17,7 +16,6 @@ namespace Voltflow.ViewModels;
 public class MainViewModel : ReactiveObject, IScreen
 {
     public RoutingState Router { get; } = new();
-    public ReactiveCommand<Unit, IRoutableViewModel> GoBack => Router.NavigateBack;
 
     [Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
     [Reactive] public bool Authenticated { get; set; }
