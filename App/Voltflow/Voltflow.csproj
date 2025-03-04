@@ -21,7 +21,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
-    <EmbeddedResource Include="Assets\marker.png" />
+    <EmbeddedResource Include="Assets\red-marker.png" />
+    <EmbeddedResource Include="Assets\green-marker.png" />
+    <EmbeddedResource Include="Assets\blue-marker.png" />
   </ItemGroup>
 
   <ItemGroup>

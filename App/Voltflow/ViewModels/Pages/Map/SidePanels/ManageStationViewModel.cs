@@ -5,8 +5,10 @@ using Mapsui.Layers;
 using Mapsui.Projections;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -165,7 +167,16 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         #region Handling ports
         public async Task AddPort()
         {
-            //TODO: data checking
+            if (string.IsNullOrEmpty(NewPortName))
+            {
+                ToastManager?.Show(
+                    new Toast("Provide a name for the port!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
 
             var content = JsonConverter.ToStringContent(new
             {
@@ -559,6 +570,23 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
                 var portsJson = await request.Content.ReadAsStringAsync();
                 var ports = JsonConverter.Deserialize<ChargingPort[]>(portsJson);
                 feature["ports"] = ports;
+
+                request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + chargingStation.Id);
+                Debug.WriteLine(request.StatusCode);
+
+                var json = await request.Content.ReadAsStringAsync();
+                var temp = JsonConverter.Deserialize<ChargingStationOpeningHours>(json)!;
+                var today = ChargingStationOpeningHours.GetToday(temp);
+                var now = DateTime.Now.TimeOfDay;
+
+                if (ports == null)
+                    feature.Styles = [Marker.Create(Marker.Red)]; // No ports exist, so station is unavailable
+                else if (ports.All(x => x.Status == ChargingPortStatus.OutOfService) || today[0] > now || now > today[1])
+                    feature.Styles = [Marker.Create(Marker.Red)]; // All ports are out of service or station is closed
+                else if (ports.Any(x => x.Status == ChargingPortStatus.Available))
+                    feature.Styles = [Marker.Create(Marker.Green)]; // At least one port is available
+                else if (ports.All(x => x.Status == ChargingPortStatus.Occupied))
+                    feature.Styles = [Marker.Create(Marker.Blue)]; // All ports are occupied
 
                 list.Add(feature);
             }
