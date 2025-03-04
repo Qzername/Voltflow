@@ -33,7 +33,6 @@ public class ModifyHoursViewModel : ViewModelBase
         var body = JsonConverter.ToStringContent(OpeningHours);
 
         var request = await _httpClient.PatchAsync("/api/ChargingStations/OpeningHours", body);
-        Debug.WriteLine(request.StatusCode);
 
         if (request.StatusCode == HttpStatusCode.OK)
             HostScreen.Router.NavigateBack.Execute();

@@ -39,7 +39,6 @@ public class StationStatisticsViewModel : ViewModelBase
     {
         // --- week usage ---
         var request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/weekUsage?stationId=" + _chargingStation.Id);
-        Debug.WriteLine(request.StatusCode + " - ignore if BadRequest");
 
         //new station, no data
         if (request.StatusCode == HttpStatusCode.BadRequest)
@@ -84,7 +83,7 @@ public class StationStatisticsViewModel : ViewModelBase
 
         // --- peek hours ---
         request = await _httpClient.GetAsync("/api/Statistics/ChargingStations/peekHours?stationId=" + _chargingStation.Id);
-        Debug.WriteLine(request.StatusCode);
+
         json = await request.Content.ReadAsStringAsync();
         int[] peekHours = JsonConverter.Deserialize<int[]>(json)!;
 
@@ -100,7 +99,6 @@ public class StationStatisticsViewModel : ViewModelBase
     private async void GetOpeningHours()
     {
         var request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + _chargingStation.Id);
-        Debug.WriteLine(request.StatusCode);
 
         var json = await request.Content.ReadAsStringAsync();
         var temp = JsonConverter.Deserialize<ChargingStationOpeningHours>(json)!;

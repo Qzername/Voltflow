@@ -106,7 +106,6 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
         var weekAgoString = weekAgo.ToString("o");
 
         var request = await _httpClient.GetAsync("api/ChargingStations/ServiceHistory?since" + weekAgoString);
-        Debug.WriteLine(request.StatusCode);
 
         var json = await request.Content.ReadAsStringAsync();
         var serviceHistoryTemp = JsonConverter.Deserialize<ChargingStationsServiceHistory[]>(json);

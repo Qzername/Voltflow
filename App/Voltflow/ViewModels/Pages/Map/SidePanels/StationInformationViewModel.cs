@@ -80,7 +80,6 @@ public class StationInformationViewModel : MapSidePanelBase
     {
         //check if station is open
         var request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + _data.Id);
-        Debug.WriteLine(request.StatusCode);
 
         var json = await request.Content.ReadAsStringAsync();
         var temp = JsonConverter.Deserialize<ChargingStationOpeningHours>(json)!;
