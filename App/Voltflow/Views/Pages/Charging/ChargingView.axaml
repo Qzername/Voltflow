@@ -112,48 +112,50 @@
             </StackPanel>
 
             <!--  Controls  -->
-            <Grid IsEnabled="{Binding !Working}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="8" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+            <StackPanel IsEnabled="{Binding !Working}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        Classes="Success"
+                        Command="{Binding Start}"
+                        IsEnabled="{Binding Finished}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterialDesign Kind="Check" />
+                            <TextBlock Text="Start" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Grid.Column="2"
+                        HorizontalAlignment="Stretch"
+                        Classes="Danger"
+                        Command="{Binding Stop}"
+                        IsEnabled="{Binding !Finished}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterialDesign Kind="Close" />
+                            <TextBlock Text="Stop" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
                 <Button
-                    Grid.Column="0"
                     HorizontalAlignment="Stretch"
-                    Classes="Success"
-                    Command="{Binding Start}"
-                    IsEnabled="{Binding Finished}">
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding NavigateHome}"
+                    IsEnabled="{Binding !Started}">
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterialDesign Kind="Check" />
-                        <TextBlock Text="Start" />
+                        <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
+                        <TextBlock Text="Go Back" />
                     </StackPanel>
                 </Button>
-
-                <Button
-                    Grid.Column="2"
-                    HorizontalAlignment="Stretch"
-                    Classes="Danger"
-                    Command="{Binding Stop}"
-                    IsEnabled="{Binding !Finished}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterialDesign Kind="Close" />
-                        <TextBlock Text="Stop" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-
-            <Button
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Command="{Binding NavigateHome}"
-                IsEnabled="{Binding !Working}">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterialDesign Kind="ArrowBack" />
-                    <TextBlock Text="Go Back" />
-                </StackPanel>
-            </Button>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

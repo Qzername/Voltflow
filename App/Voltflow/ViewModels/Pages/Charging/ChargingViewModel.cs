@@ -124,17 +124,29 @@ public class ChargingViewModel : ViewModelBase
                 (options) => { options.AccessTokenProvider = () => Task.FromResult(token); }).Build();
 
         await _connection.StartAsync();
-
-        _startTime = DateTime.UtcNow;
-        _dataUpdate.IsEnabled = true;
         Finished = false;
 
-        ToastManager?.Show(
-            new Toast("Started charging."),
-            showIcon: true,
-            showClose: false,
-            type: NotificationType.Success,
-            classes: ["Light"]);
+        if (_connection.State == HubConnectionState.Connected)
+        {
+            _startTime = DateTime.UtcNow;
+            _dataUpdate.IsEnabled = true;
+
+            ToastManager?.Show(
+                new Toast("Started charging."),
+                showIcon: true,
+                showClose: false,
+                type: NotificationType.Success,
+                classes: ["Light"]);
+        }
+        else
+        {
+            ToastManager?.Show(
+                new Toast("Charging port is unavailable!"),
+                showIcon: true,
+                showClose: false,
+                type: NotificationType.Error,
+                classes: ["Light"]);
+        }
 
         Working = false;
     }
@@ -174,7 +186,10 @@ public class ChargingViewModel : ViewModelBase
     public async Task Stop()
     {
         if (!_dataUpdate.IsEnabled || _connection == null || Working)
+        {
+            NavigateHome();
             return;
+        }
 
         Working = true;
         _dataUpdate.IsEnabled = false;
