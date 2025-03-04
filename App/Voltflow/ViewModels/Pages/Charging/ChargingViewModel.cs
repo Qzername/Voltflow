@@ -68,8 +68,9 @@ public class ChargingViewModel : ViewModelBase
         if (request.StatusCode != HttpStatusCode.OK)
             return;
 
-        var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
-        Cars.AddRange(carsObjs);
+        var cars = JsonConverter.Deserialize<Car[]>(jsonString);
+        if (cars != null)
+            Cars.AddRange(cars);
 
         if (Cars.Count > 0)
             SelectedCar = Cars[SelectedIndex]; // SelectedIndex is 0 by default.

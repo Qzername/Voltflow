@@ -6,7 +6,7 @@ using AndroidX.Core.Content;
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
-using and = Android;
+using And = Android;
 
 namespace Voltflow.Android;
 
@@ -25,8 +25,8 @@ public class MainActivity : AvaloniaMainActivity<App>
         base.OnCreate(savedInstanceState);
 
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu) // API 33 = Android 13
-            if (ContextCompat.CheckSelfPermission(this, and.Manifest.Permission.PostNotifications) != Permission.Granted)
-                ActivityCompat.RequestPermissions(this, [and.Manifest.Permission.PostNotifications], 0);
+            if (ContextCompat.CheckSelfPermission(this, And.Manifest.Permission.PostNotifications) != Permission.Granted)
+                ActivityCompat.RequestPermissions(this, [And.Manifest.Permission.PostNotifications], 0);
 
         var notificationService = new AndroidNotificationService(this);
         App.NotificationService = notificationService;
