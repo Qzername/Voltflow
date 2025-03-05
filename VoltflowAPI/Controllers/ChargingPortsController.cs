@@ -71,7 +71,7 @@ public class ChargingPortsController : ControllerBase
                 _applicationContext.ChargingStationServiceHistory.Add(new ChargingStationsServiceHistory
                 {
                     StationId = chargingPort.StationId,
-                    EndDate = DateTime.Now,
+                    EndDate = DateTime.UtcNow,
                 });
 
             chargingPort.ServiceMode = model.ServiceMode.Value;

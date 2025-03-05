@@ -2,6 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -109,7 +110,7 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
         Dictionary<int, ChargingStationsServiceHistory[]> serviceHistory = [];
 
         if (serviceHistoryTemp is not null)
-            serviceHistory = serviceHistoryTemp.ToDictionary(x => x.StationId, x => serviceHistoryTemp.Where(y => y.StationId == x.StationId).ToArray());
+            serviceHistory = serviceHistoryTemp.GroupBy(x=>x.StationId).ToDictionary(x => x.Key, x => serviceHistoryTemp.Where(y => y.StationId == x.Key).ToArray());
 
         //stations
         List<StationGridElement> stationGridElements = [];
@@ -119,8 +120,11 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
             //check for possible warnings
             string warning = "";
 
+            if (serviceHistory.ContainsKey(s.Id))
+                Debug.WriteLine(serviceHistory[s.Id].Length);
+
             if (serviceHistory.ContainsKey(s.Id) && serviceHistory[s.Id].Length > 5)
-                warning = serviceHistory[s.Id].Length + " services in last week ";
+                warning = serviceHistory[s.Id].Length + " services in last week, ";
 
             if (!tempStationData.ContainsKey(s.Id))
                 warning += "no charges in last week";
@@ -142,7 +146,7 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
     #region CSV handling
     public async Task GenerateTransactionsCsv()
     {
-        string csv = "Id,Start Date,End date,Station Id,Energy Consumed,Cost\n";
+        string csv = "Id;Start Date;End date;Station Id;Energy Consumed;Cost\n";
 
         foreach (var t in Transactions.Values)
             csv += $"{t.Id},{t.StartDate.ToString()},{t.EndDate.ToString()},{t.ChargingStationId},{t.EnergyConsumed},{t.Cost}\n";
@@ -152,10 +156,10 @@ public class AdvancedStatisticsViewModel : StatisticsPanelBase
 
     public async Task GenerateStationsCsv()
     {
-        string csv = "Station Id,Latitude,Longitude\n";
+        string csv = "Station Id;Warnings;Latitude;Longitude;Last Charge;Number Of Charges\n";
 
-        foreach (var s in Stations.Values)
-            csv += $"{s.Id},{s.Latitude},{s.Longitude}\n";
+        foreach (var s in StationGridData)
+            csv += $"{s.StationId};{s.Warning};{s.Latitude};{s.Longitude};{s.LastCharge};{s.NumberOfChargers}\n";
 
         await SaveCsv(csv);
     }
