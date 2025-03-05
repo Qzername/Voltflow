@@ -68,7 +68,10 @@
                     <ColumnDefinition Width="24" />
                 </Grid.ColumnDefinitions>
 
-                <controls:NumberBox Grid.Column="0" Text="{Binding Cost}" />
+                <controls:NumberBox
+                    Grid.Column="0"
+                    AllowFloats="True"
+                    Text="{Binding Cost}" />
                 <TextBlock Grid.Column="2" Text="zł" />
             </Grid>
 
@@ -87,7 +90,10 @@
                     <ColumnDefinition Width="24" />
                 </Grid.ColumnDefinitions>
 
-                <controls:NumberBox Text="{Binding MaxChargeRate}" />
+                <controls:NumberBox
+                    Grid.Column="0"
+                    AllowFloats="True"
+                    Text="{Binding MaxChargeRate}" />
                 <TextBlock Grid.Column="2" Text="kW" />
             </Grid>
 
