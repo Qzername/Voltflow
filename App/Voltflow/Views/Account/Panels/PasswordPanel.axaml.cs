@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Voltflow.Views.Account.Panels;
 
-public partial class PasswordResetForm : UserControl
+public partial class PasswordForm : UserControl
 {
-    public PasswordResetForm()
+    public PasswordForm()
     {
         InitializeComponent();
     }

@@ -15,8 +15,8 @@ public class CarInfoViewModel : ViewModelBase
     private readonly HttpClient _httpClient;
 
     [Reactive] public string Name { get; set; }
-    [Reactive] public int BatteryCapacity { get; set; }
-    [Reactive] public int ChargingRate { get; set; }
+    [Reactive] public int? BatteryCapacity { get; set; }
+    [Reactive] public int? ChargingRate { get; set; }
 
     private Car _currentCar;
 
@@ -44,7 +44,7 @@ public class CarInfoViewModel : ViewModelBase
             return;
         }
 
-        if (BatteryCapacity <= 0)
+        if (BatteryCapacity == null || BatteryCapacity <= 0)
         {
             ToastManager?.Show(
                 new Toast("Battery capacity cannot must be above 0!"),
@@ -55,7 +55,7 @@ public class CarInfoViewModel : ViewModelBase
             return;
         }
 
-        if (ChargingRate <= 0)
+        if (ChargingRate == null || ChargingRate <= 0)
         {
             ToastManager?.Show(
                 new Toast("Charging rate cannot must be above 0!"),
@@ -67,8 +67,8 @@ public class CarInfoViewModel : ViewModelBase
         }
 
         _currentCar.Name = Name;
-        _currentCar.BatteryCapacity = BatteryCapacity;
-        _currentCar.ChargingRate = ChargingRate;
+        _currentCar.BatteryCapacity = (int)BatteryCapacity;
+        _currentCar.ChargingRate = (int)ChargingRate;
 
         var request = await _httpClient.PatchAsync("/api/Cars", JsonConverter.ToStringContent(_currentCar));
         if (request.StatusCode == HttpStatusCode.OK)

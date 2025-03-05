@@ -38,7 +38,7 @@
             </ScrollViewer>
         </Border>
 
-        <Panel IsVisible="{Binding Authenticated}">
+        <Panel IsVisible="{Binding IsAdmin}">
             <Button
                 Height="48"
                 Margin="16"

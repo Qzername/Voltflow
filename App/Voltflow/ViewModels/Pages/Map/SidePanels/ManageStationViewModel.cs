@@ -25,10 +25,10 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
         // Data for view
         [Reactive] public string ViewTitle { get; set; } = "Click on a point/blank space.";
-        [Reactive] public double Longitude { get; set; }
-        [Reactive] public double Latitude { get; set; }
-        [Reactive] public int Cost { get; set; }
-        [Reactive] public int MaxChargeRate { get; set; }
+        [Reactive] public double? Longitude { get; set; }
+        [Reactive] public double? Latitude { get; set; }
+        [Reactive] public int? Cost { get; set; }
+        [Reactive] public int? MaxChargeRate { get; set; }
         [Reactive] public bool CreatingNewPoint { get; set; } = true;
         [Reactive] public bool Clicked { get; set; }
 
@@ -294,6 +294,50 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         #region Handling view buttons
         public async Task CreateStation()
         {
+            if (Longitude == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Longitude must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (Latitude == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Latitude must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (Cost == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Cost must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (MaxChargeRate == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Maximum charging rate must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
             StringContent content = JsonConverter.ToStringContent(new
             {
                 Longitude,
@@ -364,12 +408,56 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
         public async Task UpdateStation()
         {
+            if (Longitude == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Longitude must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (Latitude == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Latitude must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (Cost == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Cost must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
+            if (MaxChargeRate == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Maximum charging rate must be above 0!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
             var station = CurrentStation;
 
-            station.Longitude = Longitude;
-            station.Latitude = Latitude;
-            station.Cost = Cost;
-            station.MaxChargeRate = MaxChargeRate;
+            station.Longitude = (double)Longitude;
+            station.Latitude = (double)Latitude;
+            station.Cost = (int)Cost;
+            station.MaxChargeRate = (int)MaxChargeRate;
 
             var content = JsonConverter.ToStringContent(station);
             var request = await _httpClient.PatchAsync("/api/ChargingStations", content);

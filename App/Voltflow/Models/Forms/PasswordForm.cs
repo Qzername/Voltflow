@@ -5,7 +5,7 @@ namespace Voltflow.Models.Forms;
 /// <summary>
 /// Represents the password reset form.
 /// </summary>
-public class PasswordResetForm : SignInForm
+public class PasswordForm : SignInForm
 {
     [Reactive] public string? Token { get; set; }
     [Reactive] public bool SentToken { get; set; }

@@ -34,8 +34,6 @@ public partial class NumberBox : TextBox
         {
             if (!AllowFloats) return;
             if (!string.IsNullOrEmpty(Text) && Text.Contains(".")) return; // If Text already contains a dot - return.
-            if (Text.Length + 2 > MaxLength && MaxLength != 0) return; // If length of Text + ".0" is higher than maximum length set in the input - return.
-            e.Text = ".0";
         }
 
         base.OnTextInput(e);
@@ -43,10 +41,14 @@ public partial class NumberBox : TextBox
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        // If "BACK" or "DELETE" key is pressed and there's only a single digit in the input or whole input is selected - set input to "0".
-        if (Text != null && (e.Key == Key.Back || e.Key == Key.Delete) && (Text.Length <= 1 || (SelectionStart == 0 && SelectionEnd == Text.Length)))
+        // Fix
+        if (
+            (e.Key == Key.Back || e.Key == Key.Delete) &&
+            (Text?.Length <= 1 || (SelectionStart == 0 && SelectionEnd == Text?.Length) ||
+            (SelectionStart == Text?.Length && SelectionEnd == 0))
+        )
         {
-            Text = "0";
+            Text = null;
             return;
         }
 

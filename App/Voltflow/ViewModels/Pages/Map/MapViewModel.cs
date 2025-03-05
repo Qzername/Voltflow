@@ -1,5 +1,4 @@
-﻿using Avalonia.SimplePreferences;
-using Mapsui;
+﻿using Mapsui;
 using Mapsui.Layers;
 using Mapsui.Projections;
 using ReactiveUI;
@@ -23,6 +22,7 @@ public class MapViewModel : ViewModelBase, IScreen
 {
     [Reactive] public bool IsMobile { get; set; } = OperatingSystem.IsAndroid();
     [Reactive] public bool Authenticated { get; set; }
+    [Reactive] public bool IsAdmin { get; set; }
 
     // Dependency injection
     private readonly HttpClient _httpClient;
@@ -35,14 +35,17 @@ public class MapViewModel : ViewModelBase, IScreen
     [Reactive] public M.Map? Map { get; set; }
     private readonly MemoryLayer _pointsLayer;
 
-    public MapViewModel(IScreen screen) : base(screen)
+    public MapViewModel(IScreen screen, bool authenticated, bool isAdmin) : base(screen)
     {
+        Authenticated = authenticated;
+        IsAdmin = isAdmin;
+
         _pointsLayer = new MemoryLayer
         {
             Name = "Points",
             Features = new List<IFeature>(),
             IsMapInfoLayer = true,
-            Style = Marker.Create(Marker.Green) // Green marker is the default
+            Style = Marker.Create(Marker.Red) // Red marker is the default
         };
 
         _httpClient = GetService<HttpClient>();
@@ -56,9 +59,6 @@ public class MapViewModel : ViewModelBase, IScreen
     {
         // Prevent from running multiple times, RUN ONLY ONCE!
         if (Map is not null) return;
-
-        var token = await Preferences.GetAsync<string>("token", null);
-        Authenticated = token != null;
 
         Map = new M.Map();
         Map.Info += OnMapInteraction;

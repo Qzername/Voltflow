@@ -8,6 +8,7 @@ namespace Voltflow.Models.Forms;
 public class SettingsForm : BaseForm
 {
     [Reactive] public bool TwoFactor { get; set; }
+    [Reactive] public string? Email { get; set; }
     [Reactive] public string? Name { get; set; }
     [Reactive] public string? Surname { get; set; }
     [Reactive] public string? PhoneNumber { get; set; }
@@ -18,6 +19,7 @@ public class SettingsForm : BaseForm
     public void Reset()
     {
         TwoFactor = false;
+        Email = null;
         Name = null;
         Surname = null;
         PhoneNumber = null;

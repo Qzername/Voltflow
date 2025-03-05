@@ -27,7 +27,7 @@ public class ChargingViewModel : ViewModelBase
     [Reactive] public Car SelectedCar { get; set; }
 
     [Reactive] public bool DeclaredAmount { get; set; }
-    [Reactive] public float Amount { get; set; }
+    [Reactive] public float? Amount { get; set; }
 
     [Reactive] public string Time { get; set; } = "00:00:00";
     [Reactive] public double TotalCharge { get; set; }
@@ -96,7 +96,7 @@ public class ChargingViewModel : ViewModelBase
             return;
         }
 
-        if (DeclaredAmount && Amount <= 0)
+        if (DeclaredAmount && (Amount == null || Amount <= 0))
         {
             ToastManager?.Show(
                 new Toast("Declared amount must be above 0!"),
@@ -205,5 +205,11 @@ public class ChargingViewModel : ViewModelBase
     }
 
     //navigation
-    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
+    public void NavigateHome()
+    {
+        if (HostScreen is not MainViewModel viewModel)
+            return;
+
+        HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen, viewModel.Authenticated, viewModel.IsAdmin));
+    }
 }
