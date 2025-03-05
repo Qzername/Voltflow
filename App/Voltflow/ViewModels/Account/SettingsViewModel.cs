@@ -84,6 +84,23 @@ public class SettingsViewModel : ViewModelBase
         SettingsForm.Working = false;
     }
 
+    public async Task ChangePassword()
+    {
+        var json = new { SettingsForm.Email };
+        var content = JsonConverter.ToStringContent(json);
+        var request = await _httpClient.PostAsync("/api/Identity/PasswordReset/send", content);
+
+        if (request.StatusCode == HttpStatusCode.OK)
+            HostScreen.Router.Navigate.Execute(new ChangePasswordViewModel(HostScreen, SettingsForm.Email));
+        else
+            ToastManager?.Show(
+                new Toast("Unknown error!"),
+                showIcon: true,
+                showClose: false,
+                type: NotificationType.Error,
+                classes: ["Light"]);
+    }
+
     public async Task DeleteAccount()
     {
         if (!_clickedDelete)
@@ -118,12 +135,12 @@ public class SettingsViewModel : ViewModelBase
         await Preferences.RemoveAsync("token");
         _httpClient.DefaultRequestHeaders.Authorization = null;
 
-        if (HostScreen is MainViewModel viewModel)
-        {
-            viewModel.Authenticated = false;
-            viewModel.IsAdmin = false;
-        }
+        if (HostScreen is not MainViewModel viewModel)
+            return;
 
-        HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
+        viewModel.Authenticated = false;
+        viewModel.IsAdmin = false;
+
+        HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen, viewModel.Authenticated, viewModel.IsAdmin));
     }
 }

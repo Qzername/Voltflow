@@ -2,13 +2,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Ursa.Controls;
-using Voltflow.ViewModels.Pages.Map.SidePanels;
+using Voltflow.ViewModels.Account;
 
-namespace Voltflow.Views.Pages.Map.SidePanels;
+namespace Voltflow.Views.Account;
 
-public partial class StationInformationView : ReactiveUserControl<StationInformationViewModel>
+public partial class ChangePasswordView : ReactiveUserControl<ChangePasswordViewModel>
 {
-    public StationInformationView()
+    public ChangePasswordView()
     {
         InitializeComponent();
     }
@@ -18,7 +18,7 @@ public partial class StationInformationView : ReactiveUserControl<StationInforma
     {
         base.OnAttachedToVisualTree(e);
 
-        if (DataContext is not StationInformationViewModel viewModel)
+        if (DataContext is not ChangePasswordViewModel viewModel)
             return;
 
         var topLevel = TopLevel.GetTopLevel(this);
@@ -28,7 +28,7 @@ public partial class StationInformationView : ReactiveUserControl<StationInforma
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        if (DataContext is StationInformationViewModel viewModel)
+        if (DataContext is ChangePasswordViewModel viewModel)
             viewModel.ToastManager?.Uninstall();
     }
 }

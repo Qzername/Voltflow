@@ -33,7 +33,7 @@ public class AccountViewModel : ViewModelBase
     public SignInForm SignInForm { get; set; } = new();
     public SignUpForm SignUpForm { get; set; } = new();
     public TwoFactorAuthForm TwoFactorAuthForm { get; set; } = new();
-    public PasswordResetForm PasswordResetForm { get; set; } = new();
+    public PasswordForm PasswordForm { get; set; } = new();
     public EmailVerificationForm EmailVerificationForm { get; set; } = new();
     #endregion
 
@@ -67,6 +67,8 @@ public class AccountViewModel : ViewModelBase
         var stringTwoFactorResponse = await twoFactorRequest.Content.ReadAsStringAsync();
         var twoFactorResponse = JsonConverter.FromString(stringTwoFactorResponse);
 
+        if (response.ContainsKey("email"))
+            settingsForm.Email = (string?)response["email"];
         if (response.ContainsKey("name"))
             settingsForm.Name = (string?)response["name"];
         if (response.ContainsKey("surname"))
@@ -86,10 +88,10 @@ public class AccountViewModel : ViewModelBase
         await Preferences.RemoveAsync("token");
         _httpClient.DefaultRequestHeaders.Authorization = null;
 
-        if (HostScreen is MainViewModel screen)
+        if (HostScreen is MainViewModel viewModel)
         {
-            screen.Authenticated = false;
-            screen.IsAdmin = false;
+            viewModel.Authenticated = false;
+            viewModel.IsAdmin = false;
         }
 
         CurrentAuthType = AuthType.SignIn;
@@ -159,24 +161,44 @@ public class AccountViewModel : ViewModelBase
 
                 request = await _httpClient.GetAsync("/api/Accounts/adminCheck");
 
-                if (HostScreen is MainViewModel viewModel)
-                {
-                    viewModel.Authenticated = true;
-                    viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
-                }
+                if (HostScreen is not MainViewModel viewModel)
+                    return;
+
+                viewModel.Authenticated = true;
+                viewModel.IsAdmin = request.StatusCode == HttpStatusCode.OK;
 
                 SignInForm.Reset();
 
-                HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
+                HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen, viewModel.Authenticated, viewModel.IsAdmin));
             }
         }
         else if (request.StatusCode == HttpStatusCode.Unauthorized)
-            ToastManager?.Show(
-                new Toast("Provided credentials are invalid or account doesn't exist!"),
-                showIcon: true,
-                showClose: false,
-                type: NotificationType.Error,
-                classes: ["Light"]);
+        {
+            var stringResponse = await request.Content.ReadAsStringAsync();
+            var response = JsonConverter.FromString(stringResponse);
+
+            if (response.ContainsKey("emailVerified"))
+            {
+                EmailVerificationForm.Email = SignInForm.Email;
+                CurrentAuthType = AuthType.EmailVerification;
+
+                ToastManager?.Show(
+                    new Toast(
+                        "Provided email must be verified. A verification token has been sent. Please, paste it below."),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Information,
+                    classes: ["Light"]);
+            }
+            else
+                ToastManager?.Show(
+                    new Toast("Provided credentials are invalid or account doesn't exist!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+        }
+
 
         SignInForm.Working = false;
     }
@@ -249,7 +271,7 @@ public class AccountViewModel : ViewModelBase
     /// </summary>
     public async Task GetResetPasswordToken()
     {
-        bool emailValid = EmailValidator.IsValid(PasswordResetForm.Email);
+        bool emailValid = EmailValidator.IsValid(PasswordForm.Email);
         if (!emailValid)
         {
             ToastManager?.Show(
@@ -262,15 +284,15 @@ public class AccountViewModel : ViewModelBase
             return;
         };
 
-        PasswordResetForm.Working = true;
+        PasswordForm.Working = true;
 
-        var json = new { PasswordResetForm.Email };
+        var json = new { PasswordForm.Email };
         var content = JsonConverter.ToStringContent(json);
         var request = await _httpClient.PostAsync("/api/Identity/PasswordReset/send", content);
 
         if (request.StatusCode == HttpStatusCode.OK)
         {
-            PasswordResetForm.SentToken = true;
+            PasswordForm.SentToken = true;
 
             ToastManager?.Show(
                 new Toast("Password reset token has been sent to your email. Please, paste it below."),
@@ -287,7 +309,7 @@ public class AccountViewModel : ViewModelBase
                 type: NotificationType.Error,
                 classes: ["Light"]);
 
-        PasswordResetForm.Working = false;
+        PasswordForm.Working = false;
     }
 
     /// <summary>
@@ -295,7 +317,7 @@ public class AccountViewModel : ViewModelBase
     /// </summary>
     public async Task ResetPassword()
     {
-        bool passwordValid = PasswordValidator.IsValid(PasswordResetForm.Password);
+        bool passwordValid = PasswordValidator.IsValid(PasswordForm.Password);
         if (!passwordValid)
         {
             ToastManager?.Show(
@@ -308,13 +330,13 @@ public class AccountViewModel : ViewModelBase
             return;
         };
 
-        PasswordResetForm.Working = true;
+        PasswordForm.Working = true;
 
         var json = new
         {
-            PasswordResetForm.Email,
-            PasswordResetForm.Password,
-            TokenModel = new { PasswordResetForm.Token }
+            PasswordForm.Email,
+            PasswordForm.Password,
+            TokenModel = new { PasswordForm.Token }
         };
         var content = JsonConverter.ToStringContent(json);
         var request = await _httpClient.PostAsync("/api/Identity/PasswordReset/reset", content);
@@ -322,7 +344,7 @@ public class AccountViewModel : ViewModelBase
         if (request.StatusCode == HttpStatusCode.OK)
         {
             CurrentAuthType = AuthType.SignIn;
-            PasswordResetForm.Reset();
+            PasswordForm.Reset();
         }
         else
             ToastManager?.Show(
@@ -332,7 +354,7 @@ public class AccountViewModel : ViewModelBase
                 type: NotificationType.Error,
                 classes: ["Light"]);
 
-        PasswordResetForm.Working = false;
+        PasswordForm.Working = false;
     }
     #endregion
 

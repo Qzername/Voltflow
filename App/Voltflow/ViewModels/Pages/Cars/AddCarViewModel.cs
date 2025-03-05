@@ -23,8 +23,8 @@ public class AddCarViewModel : ViewModelBase
     public WindowToastManager? ToastManager;
 
     [Reactive] public string? Name { get; set; }
-    [Reactive] public int BatteryCapacity { get; set; }
-    [Reactive] public int ChargingRate { get; set; }
+    [Reactive] public int? BatteryCapacity { get; set; }
+    [Reactive] public int? ChargingRate { get; set; }
 
     public async Task AddCar()
     {
@@ -39,7 +39,7 @@ public class AddCarViewModel : ViewModelBase
             return;
         }
 
-        if (BatteryCapacity <= 0)
+        if (BatteryCapacity == null || BatteryCapacity <= 0)
         {
             ToastManager?.Show(
                 new Toast("Battery capacity must be above 0!"),
@@ -50,7 +50,7 @@ public class AddCarViewModel : ViewModelBase
             return;
         }
 
-        if (ChargingRate <= 0)
+        if (ChargingRate == null || ChargingRate <= 0)
         {
             ToastManager?.Show(
                 new Toast("Charging rate must be above 0!"),
@@ -64,8 +64,8 @@ public class AddCarViewModel : ViewModelBase
         Car car = new()
         {
             Name = Name,
-            BatteryCapacity = BatteryCapacity,
-            ChargingRate = ChargingRate
+            BatteryCapacity = (int)BatteryCapacity,
+            ChargingRate = (int)ChargingRate
         };
 
         var request = await _httpClient.PostAsync("/api/Cars", JsonConverter.ToStringContent(car));

@@ -3,6 +3,8 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
+using System.Net;
+using System.Net.Http;
 using Voltflow.ViewModels.Account;
 using Voltflow.ViewModels.Pages.Cars;
 using Voltflow.ViewModels.Pages.Map;
@@ -27,17 +29,37 @@ public class MainViewModel : ReactiveObject, IScreen
     /// </summary>
     public MainViewModel()
     {
-        //setup views
-        if (IsMobile)
+        Initialize();
+    }
+
+    public async void Initialize()
+    {
+        var token = await Preferences.GetAsync<string>("token", null);
+        var httpClient = GetService<HttpClient>();
+
+        if (token is not null)
         {
-            var token = Preferences.Get<string>("token", null);
-            if (token is null)
-                Router.Navigate.Execute(new AccountViewModel(this));
-            else
-                Router.Navigate.Execute(new MapViewModel(this));
+            httpClient.DefaultRequestHeaders.Authorization = new("Bearer", token);
+
+            // Check if token is valid, account deleted, etc.
+            var request = await httpClient.GetAsync("/api/Accounts");
+
+            Authenticated = request.StatusCode == HttpStatusCode.OK;
+            if (!Authenticated)
+            {
+                await Preferences.RemoveAsync("token");
+                httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+
+            // Checks if user is admin.
+            request = await httpClient.GetAsync("/api/Accounts/adminCheck");
+            IsAdmin = request.StatusCode == HttpStatusCode.OK;
         }
+
+        if (IsMobile && !Authenticated)
+            Router.Navigate.Execute(new AccountViewModel(this));
         else
-            Router.Navigate.Execute(new MapViewModel(this));
+            Router.Navigate.Execute(new MapViewModel(this, Authenticated, IsAdmin));
     }
 
     private Type? GetCurrentViewModel() => Router.GetCurrentViewModel()?.GetType();
@@ -55,7 +77,7 @@ public class MainViewModel : ReactiveObject, IScreen
         if (GetCurrentViewModel() == typeof(MapViewModel))
             return;
 
-        Router.Navigate.Execute(new MapViewModel(this));
+        Router.Navigate.Execute(new MapViewModel(this, Authenticated, IsAdmin));
     }
 
     public void NavigateToAccount()

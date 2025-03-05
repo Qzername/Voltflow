@@ -67,5 +67,11 @@ public class TransactionViewModel : ViewModelBase
             classes: ["Light"]);
     }
 
-    public void NavigateHome() => HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen));
+    public void NavigateHome()
+    {
+        if (HostScreen is not MainViewModel viewModel)
+            return;
+
+        HostScreen.Router.NavigateAndReset.Execute(new MapViewModel(HostScreen, viewModel.Authenticated, viewModel.IsAdmin));
+    }
 }

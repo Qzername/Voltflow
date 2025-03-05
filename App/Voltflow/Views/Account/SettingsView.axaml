@@ -134,6 +134,17 @@
         <Button
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
+            Classes="Warning"
+            Command="{Binding ChangePassword}">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign Kind="Key" />
+                <TextBlock Text="Change Password" />
+            </StackPanel>
+        </Button>
+
+        <Button
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
             Classes="Danger"
             Command="{Binding DeleteAccount}">
             <StackPanel Orientation="Horizontal">

@@ -64,8 +64,8 @@
     <Compile Update="Views\Account\Panels\EmailVerificationPanel.axaml.cs">
       <DependentUpon>EmailVerificationPanel.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Account\Panels\PasswordResetPanel.axaml.cs">
-      <DependentUpon>PasswordResetPanel.axaml</DependentUpon>
+    <Compile Update="Views\Account\Panels\PasswordPanel.axaml.cs">
+      <DependentUpon>PasswordPanel.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Account\Panels\SignInPanel.axaml.cs">
       <DependentUpon>SignInPanel.axaml</DependentUpon>
@@ -75,6 +75,9 @@
     </Compile>
     <Compile Update="Views\Account\Panels\TwoFactorAuthPanel.axaml.cs">
       <DependentUpon>TwoFactorAuthPanel.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Account\ChangePasswordView.axaml.cs">
+      <DependentUpon>ChangePasswordView.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\MobileNavBarView.axaml.cs">
       <SubType>Code</SubType>
@@ -92,8 +95,8 @@
     <Compile Update="Views\Pages\Map\MapView.axaml.cs">
       <DependentUpon>MapView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Accounmt\PasswordResetForm.axaml.cs">
-      <DependentUpon>PasswordResetForm.axaml</DependentUpon>
+    <Compile Update="Views\Accounmt\PasswordForm.axaml.cs">
+      <DependentUpon>PasswordForm.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Accounmt\TwoFactorAuthForm.axaml.cs">
       <DependentUpon>TwoFactorAuthForm.axaml</DependentUpon>
