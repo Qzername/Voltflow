@@ -111,7 +111,7 @@ public class AuthenticationController : ControllerBase
             return Unauthorized();
 
         if (await _userManager.IsEmailConfirmedAsync(user) == false)
-            return Unauthorized( new { EmailVerified = false });
+            return Unauthorized(new { EmailVerified = false });
 
         if (await _userManager.CheckPasswordAsync(user, model.Password) == false)
             return Unauthorized();

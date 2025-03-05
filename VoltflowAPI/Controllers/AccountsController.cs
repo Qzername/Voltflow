@@ -25,7 +25,7 @@ public class AccountsController : ControllerBase
         if (user is null)
             return BadRequest();
 
-        return Ok(new { Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber });
+        return Ok(new { user.Email, user.Name, user.Surname, user.PhoneNumber });
     }
 
     [HttpGet("adminCheck")]
