@@ -7,6 +7,8 @@ public class ChargingPort
     public int Status { get; set; }
     public bool ServiceMode { get; set; }
     public string Name { get; set; }
+
+    public ChargingStation Station { get; set; }
 }
 
 public enum ChargingPortStatus

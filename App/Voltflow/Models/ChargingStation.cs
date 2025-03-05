@@ -7,4 +7,6 @@ public struct ChargingStation
     public double Latitude { get; set; }
     public int Cost { get; set; }
     public int MaxChargeRate { get; set; }
+    public ChargingPort[] ChargingPorts { get; set; }
+    public ChargingStationOpeningHours ChargingStationOpeningHours { get; set; }
 }

@@ -12,6 +12,8 @@ public class ChargingStationOpeningHours
     public TimeSpan[] Saturday { get; set; }
     public TimeSpan[] Sunday { get; set; }
 
+    public ChargingStation Station { get; set; }
+
     public TimeSpan[] GetToday() => DateTime.UtcNow.DayOfWeek switch
     {
         DayOfWeek.Monday => Monday,

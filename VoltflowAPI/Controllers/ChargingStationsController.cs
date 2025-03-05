@@ -23,7 +23,19 @@ public class ChargingStationsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetStations()
     {
-        var chargingStations = await _applicationContext.ChargingStations.ToArrayAsync();
+        var chargingStations = _applicationContext.ChargingStations
+            .Include(x=>x.Ports)
+            .Include(x=>x.OpeningHours)
+            .Select(x=>
+        new {
+            x.Id,
+            x.Latitude,
+            x.Longitude,
+            x.Cost,
+            x.MaxChargeRate,
+            Ports = x.Ports.Where(y => y.StationId == x.Id).ToArray(),
+            OpeningHours = x.OpeningHours.Single(y => y.StationId == x.Id),
+        }).ToArray();
         return Ok(chargingStations);
     }
 

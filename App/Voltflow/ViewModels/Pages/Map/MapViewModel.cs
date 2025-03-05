@@ -82,27 +82,18 @@ public class MapViewModel : ViewModelBase, IScreen
 
             var feature = new PointFeature(point.x, point.y);
             feature["data"] = chargingStation;
+            feature["ports"] = chargingStation.ChargingPorts;
 
-            request = await _httpClient.GetAsync("/api/ChargingPorts?stationId=" + chargingStation.Id);
-
-            var portsJson = await request.Content.ReadAsStringAsync();
-            var ports = JsonConverter.Deserialize<ChargingPort[]>(portsJson);
-            feature["ports"] = ports;
-
-            request = await _httpClient.GetAsync("/api/ChargingStations/OpeningHours?stationId=" + chargingStation.Id);
-
-            var json = await request.Content.ReadAsStringAsync();
-            var temp = JsonConverter.Deserialize<ChargingStationOpeningHours>(json)!;
-            var today = ChargingStationOpeningHours.GetToday(temp);
+            var today = ChargingStationOpeningHours.GetToday(chargingStation.ChargingStationOpeningHours);
             var now = DateTime.Now.TimeOfDay;
 
-            if (ports == null)
+            if (chargingStation.ChargingPorts == null)
                 feature.Styles = [Marker.Create(Marker.Red)]; // No ports exist, so station is unavailable
-            else if (ports.All(x => x.Status == ChargingPortStatus.OutOfService) || today[0] > now || now > today[1])
+            else if (chargingStation.ChargingPorts.All(x => x.Status == ChargingPortStatus.OutOfService) || today[0] > now || now > today[1])
                 feature.Styles = [Marker.Create(Marker.Red)]; // All ports are out of service or station is closed
-            else if (ports.Any(x => x.Status == ChargingPortStatus.Available))
+            else if (chargingStation.ChargingPorts.Any(x => x.Status == ChargingPortStatus.Available))
                 feature.Styles = [Marker.Create(Marker.Green)]; // At least one port is available
-            else if (ports.All(x => x.Status == ChargingPortStatus.Occupied))
+            else if (chargingStation.ChargingPorts.All(x => x.Status == ChargingPortStatus.Occupied))
                 feature.Styles = [Marker.Create(Marker.Blue)]; // All ports are occupied
 
             list.Add(feature);
