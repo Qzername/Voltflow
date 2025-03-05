@@ -11,12 +11,14 @@ namespace Voltflow.ViewModels.Pages.Cars;
 
 public class AddCarViewModel : ViewModelBase
 {
-    public AddCarViewModel(IScreen screen) : base(screen)
+    public AddCarViewModel(IScreen screen, bool noCars) : base(screen)
     {
         _httpClient = GetService<HttpClient>();
+        NoCars = noCars;
     }
 
     private readonly HttpClient _httpClient;
+    public readonly bool NoCars;
 
     public WindowToastManager? ToastManager;
 

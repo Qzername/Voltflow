@@ -30,10 +30,14 @@ public class CarsViewModel : ViewModelBase
 
         var jsonString = await request.Content.ReadAsStringAsync();
 
-        var carsObjs = JsonConverter.Deserialize<Car[]>(jsonString);
-        Cars.AddRange(carsObjs);
+        var cars = JsonConverter.Deserialize<Car[]>(jsonString);
+        if (cars != null)
+            Cars.AddRange(cars);
+
+        if (Cars.Count == 0)
+            NavigateToCreateCar();
     }
 
     public void NavigateToCarDetails(object carObj) => HostScreen.Router.Navigate.Execute(new CarInfoViewModel((Car)carObj, HostScreen));
-    public void NavigateToCreateCar() => HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen));
+    public void NavigateToCreateCar() => HostScreen.Router.Navigate.Execute(new AddCarViewModel(HostScreen, Cars.Count == 0));
 }
