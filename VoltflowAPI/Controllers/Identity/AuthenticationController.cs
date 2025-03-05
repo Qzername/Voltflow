@@ -70,6 +70,13 @@ public class AuthenticationController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
+        //if first user, give him admin
+        if(_userManager.Users.Count() == 1)
+        {
+            user = await _userManager.FindByEmailAsync(user.Email);
+            await _userManager.AddToRoleAsync(user, "Admin");
+        }
+
         //generate and send email confirmation token
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var message = $"Your e-mail confirmation token is: {token}";
