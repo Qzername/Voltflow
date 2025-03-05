@@ -87,7 +87,7 @@
                     <ColumnDefinition Width="24" />
                 </Grid.ColumnDefinitions>
 
-                <controls:NumberBox Text="{Binding MaxChargeRate}" Watermark="MaxChargeRate" />
+                <controls:NumberBox Text="{Binding MaxChargeRate}" />
                 <TextBlock Grid.Column="2" Text="kW" />
             </Grid>
 
