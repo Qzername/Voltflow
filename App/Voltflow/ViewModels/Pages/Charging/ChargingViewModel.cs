@@ -158,11 +158,30 @@ public class ChargingViewModel : ViewModelBase
         if (!_dataUpdate.IsEnabled)
             return;
 
+        var disconnected = await _connection.InvokeAsync<bool>("IsDisconnected");
+
+        if (disconnected)
+        {
+            _dataUpdate.IsEnabled = false;
+
+            bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
+            await _connection.StopAsync();
+
+            HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost, TotalCharge, isDiscount, HostScreen));
+
+            if (App.NotificationService is not null)
+                App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
+
+            Finished = true;
+
+            return;
+        }
+
         var chargingInfo = await _connection.InvokeAsync<double[]>("GetChargingInfo");
         var time = DateTime.UtcNow - _startTime;
         Time = time.ToString("hh\\:mm\\:ss");
-        TotalCharge = chargingInfo[0];
-        TotalCost = chargingInfo[1];
+        TotalCharge = Math.Round(chargingInfo[0], 3);
+        TotalCost = Math.Round(chargingInfo[1], 2);
 
         if (DeclaredAmount && TotalCharge >= Amount)
         {
