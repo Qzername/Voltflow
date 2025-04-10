@@ -45,8 +45,9 @@ public class ChargingHub : Hub
         var car = _applicationContext.Cars.Find(connInfo.CarId);
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
-        //calculactions for cost and energy
-        var chargingRate = WattageManager.Wattages[connInfo.PortId];
+        float chargingRate = 0;
+        if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
+            chargingRate = WattageManager.Wattages[connInfo.PortId];
         var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 
