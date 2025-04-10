@@ -6,7 +6,7 @@ root = 0
 current_image_index = 0
 
 image_folder = "ads_matrix"
-image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
+image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".bmp")]
 image_paths = [os.path.join(image_folder, name) for name in image_files]
 
 def config(rootMain):
@@ -18,7 +18,7 @@ def config(rootMain):
 def update_image_files():
     global image_files
     global image_paths
-    image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
+    image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".bmp")]
     image_paths = [os.path.join(image_folder, name) for name in image_files]
 
 def update_matrix():
