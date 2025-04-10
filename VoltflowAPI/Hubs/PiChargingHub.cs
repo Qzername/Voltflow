@@ -22,6 +22,7 @@ public class PiChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
+
     public async void GetPort(int index)
     {
         var chargingStation = _applicationContext.ChargingStations.Find(_connections[Context.ConnectionId].Id);
@@ -32,12 +33,13 @@ public class PiChargingHub : Hub
             Context.Abort();
         }
 
+        var ports = _applicationContext.ChargingPorts.Where(p => p.StationId == chargingStation.Id).ToList();
+        chargingStation.Ports = ports;
         _connections[Context.ConnectionId] = chargingStation;
 
-        var ports = _applicationContext.ChargingPorts.Where(p => p.StationId == chargingStation.Id).ToList();
         await Clients.Caller.SendAsync("Port", new
         {
-            Id = index,
+            Index = index,
             Status = ports[index].Status,
             ServiceMode = ports[index].ServiceMode
         });

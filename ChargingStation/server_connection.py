@@ -5,9 +5,9 @@ def manage_port(port):
     print(port)
 
     if (port["status"] == 1 and port["serviceMode"] == False):
-        charging_station_ports.turn_port_on(port["id"])
+        charging_station_ports.turn_port_on(port["index"])
     else:
-        charging_station_ports.turn_port_off(port["id"])
+        charging_station_ports.turn_port_off(port["index"])
 
 def init(id, password):
     global client

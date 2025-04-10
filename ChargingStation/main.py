@@ -42,4 +42,5 @@ root.mainloop()
 
 while True:
     server_connection.get_port(0)
+    server_connection.get_port(1)
     time.sleep(1)
