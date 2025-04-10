@@ -26,19 +26,10 @@ public class PiChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
-    public void TurnPortOn(int port)
-    {
-        Debug.WriteLine(port);
-    }
-
-    public void TurnPortOff(int port)
-    {
-        Debug.WriteLine(port);
-    }
-
     public override async Task OnConnectedAsync()
     {
         Debug.WriteLine("Connection opened");
+        await Clients.Caller.SendAsync("TurnPortOff", 0);
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
