@@ -25,6 +25,9 @@ public class PiChargingHub : Hub
 
     public void SetWattage(int index, float wattage)
     {
+        Console.WriteLine(index);
+        Console.WriteLine(wattage);
+
         var port = _connections[Context.ConnectionId].Ports.ToList()[index];
         WattageManager.Wattages[port.Id] = wattage;
     }
