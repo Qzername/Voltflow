@@ -13,6 +13,8 @@ def config(rootMain):
     global root
     root = rootMain
 
+    update_matrix()
+
 def update_image_files():
     global image_files
     global image_paths
