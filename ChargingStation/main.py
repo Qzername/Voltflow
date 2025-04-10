@@ -18,6 +18,10 @@ password = config["Identification"]["Password"]
 
 server_connection.init(int(id), password)
 
+while not server_connection.connected:
+    print("Waiting for connection...")
+    time.sleep(1)
+
 GPIO.setmode(GPIO.BCM)
 
 charging_station_ports.turn_port_off(0)

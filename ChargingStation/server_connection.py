@@ -12,6 +12,15 @@ ports = {
     }
 }
 
+connected = False
+def on_connected():
+    global connected
+    connected = True
+
+def on_disconnected():
+    global connected
+    connected = False
+
 def manage_port(port):
     ports[port["index"]]["status"] = port["status"]
     ports[port["index"]]["serviceMode"] = port["serviceMode"]
@@ -32,6 +41,9 @@ def init(id, password):
             "reconnect_interval": 5,
             "max_attempts": 5
         }).build()
+    
+    client.on_close(lambda: on_disconnected())
+    client.on_open(lambda: on_connected())
     
     client.on("Error", lambda args: print("Error:", args[0]))
     client.on("Port", lambda args: manage_port(args[0]))
