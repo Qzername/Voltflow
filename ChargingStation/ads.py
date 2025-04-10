@@ -4,7 +4,7 @@ import os
 
 # --- Wczytanie ścieżek do obrazów ---
 image_folder = "ads"
-image_files = ["1.png", "2.png", "3.png"]
+image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
 image_paths = [os.path.join(image_folder, name) for name in image_files]
 
 current_image_index = 0
@@ -30,8 +30,16 @@ def config(frame, rootMain):
     
     update_image()  # start rotacji obrazków
 
+def update_image_files():
+    global image_files
+    global image_paths
+    image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
+    image_paths = [os.path.join(image_folder, name) for name in image_files]
+
 # --- Funkcja do zmiany obrazka ---
 def update_image():
+    update_image_files()
+
     global current_image_index
     path = image_paths[current_image_index]
     
@@ -48,5 +56,5 @@ def update_image():
     current_image_index = (current_image_index + 1) % len(image_paths)
 
     # Odpal ponownie za 10 sek.
-    root.after(10000, update_image)
+    root.after(1000, update_image)
 
