@@ -2,9 +2,6 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import os
 
-root = tk.Tk()
-root.title("GUI z obrazkami")
-
 # --- Wczytanie ścieżek do obrazów ---
 image_folder = "ads"
 image_files = ["1.png", "2.png", "3.png"]
@@ -12,23 +9,26 @@ image_paths = [os.path.join(image_folder, name) for name in image_files]
 
 current_image_index = 0
 
-# --- Kontener główny: lewo/prawo ---
-frame = tk.Frame(root)
-frame.pack(fill=tk.BOTH, expand=True)
+right_frame = 0
+image_label = 0
+root = 0
 
-# --- Lewa część: tekst przycisku itp. ---
-left_frame = tk.Frame(frame)
-left_frame.pack(side=tk.LEFT, padx=10, pady=10)
+def config(frame, rootMain):
+    global root
+    root = rootMain
+    
+    # --- Prawa część: obrazki ---
+    global right_frame
 
-label = tk.Label(left_frame, text="Stan: ???", font=("Arial", 24))
-label.pack(pady=80)
+    right_frame = tk.Frame(frame)
+    right_frame.pack(side=tk.RIGHT, padx=10, pady=10)
 
-# --- Prawa część: obrazki ---
-right_frame = tk.Frame(frame)
-right_frame.pack(side=tk.RIGHT, padx=10, pady=10)
+    global image_label
 
-image_label = tk.Label(right_frame)
-image_label.pack()
+    image_label = tk.Label(right_frame)
+    image_label.pack()
+    
+    update_image()  # start rotacji obrazków
 
 # --- Funkcja do zmiany obrazka ---
 def update_image():
@@ -50,6 +50,3 @@ def update_image():
     # Odpal ponownie za 10 sek.
     root.after(10000, update_image)
 
-update_image()  # start rotacji obrazków
-
-root.mainloop()
