@@ -13,6 +13,7 @@ def switch_callback(channel):
         print("Switch released")
 
 # Add interrupt detection
+GPIO.remove_event_detect(SWITCH_PIN)
 GPIO.add_event_detect(SWITCH_PIN, GPIO.BOTH, callback=switch_callback, bouncetime=200)
 
 try:
