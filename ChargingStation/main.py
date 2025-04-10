@@ -6,6 +6,7 @@ import tkinter as tk
 import time
 import charging_status
 import ads
+import ads_matrix
 
 import configparser
 
@@ -56,6 +57,7 @@ wattagePort2 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
 wattagePort2.pack(pady=20)
 
 ads.config(frame,root)
+ads_matrix.config(root)
 
 def change_port_status(label, wattage_info, port_id, port_info):
     if port_info["serviceMode"]:

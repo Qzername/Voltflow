@@ -1,24 +1,45 @@
 from PIL import Image
 import display
+import os
+root = 0
 
-# Otwórz obraz BMP
-image = Image.open("ads_matrix/1.bmp")
-width, height = image.size
+current_image_index = 0
 
-if image.mode != "RGB":
-    image = image.convert("RGB")
+image_folder = "ads_matrix"
+image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
+image_paths = [os.path.join(image_folder, name) for name in image_files]
 
-print(image.mode)
-print(height)
-print(width)
+def config(rootMain):
+    global root
+    root = rootMain
 
-# Iteruj po każdym pikselu
-for y in range(height):
-    for x in range(width):
-        pixel = image.getpixel((x, y))
+def update_image_files():
+    global image_files
+    global image_paths
+    image_files = [f for f in os.listdir(image_folder) if f.lower().endswith(".png")]
+    image_paths = [os.path.join(image_folder, name) for name in image_files]
 
-        print(f"Piksel ({x}, {y}): {pixel}")
-        
-        display.set_pixel(width-x-1,y,(pixel[0], pixel[2],pixel[1]))
+def update_matrix():
+    update_image_files()
 
-display.apply_changes()
+    global current_image_index
+    path = image_paths[current_image_index]
+
+    image = Image.open(path)
+    width, height = image.size
+
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+
+    # Iteruj po każdym pikselu
+    for y in range(height):
+        for x in range(width):
+            pixel = image.getpixel((x, y))
+
+            print(f"Piksel ({x}, {y}): {pixel}")
+            
+            display.set_pixel(width-x-1,y,(pixel[0], pixel[1],pixel[2]))
+
+    display.apply_changes()
+
+    root.after(10000, update_matrix)
