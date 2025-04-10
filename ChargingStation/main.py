@@ -33,10 +33,10 @@ root.title("Stan przycisku")
 portName = tk.Label(root, text="Station id: "+str(id), font=("Arial", 24))
 portName.pack(pady=20)
 
-statusPort1 = tk.Label(root, text="Port 1: Available", font=("Arial", 24))
+statusPort1 = tk.Label(root, text="Port 1: Available", fg="green", font=("Arial", 24))
 statusPort1.pack(pady=20)
 
-statusPort2 = tk.Label(root, text="Port 2: Available", font=("Arial", 24))
+statusPort2 = tk.Label(root, text="Port 2: Available", fg="green", font=("Arial", 24))
 statusPort2.pack(pady=20)
 
 def change_port_status(label, port_id, port_info):
@@ -46,6 +46,8 @@ def change_port_status(label, port_id, port_info):
         label.config(text="Port "+str(port_id+1)+": Available", fg="green")
     elif port_info["status"] == 1:
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
+        wattages = charging_status.get_info()
+        print(wattages[port_id])
 
 def loop():
     try:
@@ -58,11 +60,11 @@ def loop():
         change_port_status(statusPort1, ports[0])
         change_port_status(statusPort2, ports[1])
 
-        wattages = charging_status.get_info()
-        print(wattages)
+        #wattages = charging_status.get_info()
+        #print(wattages)
 
-        server_connection.set_wattage(0, wattages[0])
-        server_connection.set_wattage(1, wattages[1])
+        #server_connection.set_wattage(0, wattages[0])
+        #server_connection.set_wattage(1, wattages[1])
     except:
         pass
 
