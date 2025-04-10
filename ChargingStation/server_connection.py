@@ -3,7 +3,7 @@ import charging_station_ports
 
 def init():
     client = HubConnectionBuilder()\
-        .with_url("https://voltflow-api.heapy.xyz/picharginghub", options = { "verify_ssl": False } )\
+        .with_url("https://voltflow-api.heapy.xyz/picharginghub")\
         .with_automatic_reconnect({
             "type": "raw",
             "keep_alive_interval": 10,
@@ -18,5 +18,3 @@ def init():
         client.start()
     except Exception as e:
         print("Couldn't connect to server:", e)
-
-init()
