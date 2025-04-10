@@ -9,9 +9,9 @@ width, height = image.size
 for y in range(height):
     for x in range(width):
         pixel = image.getpixel((x, y))
-        
-        display.set_pixel(x,y,[pixel[0], pixel[1],pixel[2]])
 
         print(f"Piksel ({x}, {y}): {pixel}")
+        
+        display.set_pixel(x,y,(pixel[0], pixel[1],pixel[2]))
 
 display.apply_changes()
