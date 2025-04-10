@@ -1,11 +1,17 @@
-from main import Matrix
+from main import LiveMatrix
 
-matrix = Matrix()
+matrix = LiveMatrix()
+
+while matrix.ready():
+        matrix.reset(matrix.color("red"))
+        matrix.show()
+        matrix.reset(matrix.color("blue"))
+        matrix.show()
 
 def test_matrix():
-    matrix.reset()
-    matrix.line((0,0), (16,16), (255,0,0),1)
+    matrix.reset()  # black background (0, 0, 0)
+    matrix.line((0, 0), (60, 30), (255, 0, 0), 1)  # diagonal red line
+    matrix.rectangle((5, 5), (55, 25), (0, 255, 0), 1)  # green rectangle
+    matrix.circle((30, 15), 10, (0, 0, 255), 2)  # blue circle
     matrix.show()
-    matrix.delay()
-
-test_matrix()
+    matrix.delay(10000) 
