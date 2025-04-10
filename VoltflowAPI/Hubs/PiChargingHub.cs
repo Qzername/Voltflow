@@ -15,17 +15,6 @@ namespace VoltflowAPI.Hubs;
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class PiChargingHub : Hub
 {
-    static readonly ConcurrentDictionary<string, ChargingInfo> _connections = new();
-
-    readonly UserManager<Account> _userManager;
-    readonly ApplicationContext _applicationContext;
-
-    public PiChargingHub(UserManager<Account> userManager, ApplicationContext applicationContext)
-    {
-        _userManager = userManager;
-        _applicationContext = applicationContext;
-    }
-
     public override async Task OnConnectedAsync()
     {
         Debug.WriteLine("Connection opened");
