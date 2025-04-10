@@ -69,6 +69,9 @@ def change_port_status(label, wattage_info, port_id, port_info):
         display.show_status(1,port_id)
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
         wattage_info[0].config(text="Wattage "+str(wattage_info[1]))
+    elif port_info["status"] == 2:
+        label.config(text="PORT "+str(port_id+1)+" OUT OF ORDER", fg="red")
+        display.show_status(2,port_id)
 
 def loop():
     try:
