@@ -53,7 +53,8 @@ def loop():
     change_port_status(statusPort2, ports[1])
     print(server_connection.ports)
 
-    # wattages = charging_status.get_info()
+    wattages = charging_status.get_info()
+    print(wattages)
     # server_connection.set_wattage(0, wattages[0])
     # server_connection.set_wattage(1, wattages[1])
 
