@@ -26,7 +26,7 @@ charging_station_ports.turn_port_off(1)
 root = tk.Tk()
 root.title("Stan przycisku")
 
-portName = tk.Label(root, text="Port id: "+str(id), font=("Arial", 24))
+portName = tk.Label(root, text="Station id: "+str(id), font=("Arial", 24))
 portName.pack(pady=20)
 
 statusPort1 = tk.Label(root, text="Port 1: Available", font=("Arial", 24))
@@ -35,13 +35,13 @@ statusPort1.pack(pady=20)
 statusPort2 = tk.Label(root, text="Port 2: Available", font=("Arial", 24))
 statusPort2.pack(pady=20)
 
-def change_port_status(label, port_info):
+def change_port_status(label, port_id, port_info):
     if port_info["serviceMode"]:
-        label.config(text="PORT 1 IN SERVICE MODE.", fg="red")
+        label.config(text="PORT "+port_id+" IN SERVICE MODE.", fg="red")
     elif port_info["status"] == 0:
-        label.config(text="Port 1: Available", fg="green")
+        label.config(text="Port "+port_id+": Available", fg="green")
     elif port_info["status"] == 1:
-        label.config(text="Port 1: Occupied", fg="yellow")
+        label.config(text="Port "+port_id+": Occupied", fg="yellow")
 
 def loop():
     server_connection.get_port(0)
@@ -49,8 +49,8 @@ def loop():
 
     ports = server_connection.ports
 
-    change_port_status(statusPort1, ports[0])
-    change_port_status(statusPort2, ports[1])
+    change_port_status(statusPort1, 0, ports[0])
+    change_port_status(statusPort2, 1, ports[1])
     print(server_connection.ports)
 
     # wattages = charging_status.get_info()
