@@ -51,9 +51,9 @@ public class ChargingHub : Hub
         var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 
-        Console.WriteLine(chargingRate);
-        Console.WriteLine(energyConsumed);
-        Console.WriteLine(totalCost);
+        Console.WriteLine($"ChargingRate: {chargingRate}");
+        Console.WriteLine($"EnergyConsumed: {energyConsumed}");
+        Console.WriteLine($"TotalCost: {totalCost}");
 
         return [energyConsumed, totalCost];
     }
