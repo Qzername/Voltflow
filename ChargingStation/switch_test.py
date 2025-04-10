@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-SWITCH_PIN = 16  # Use BCM numbering
+SWITCH_PIN = 26  # Use BCM numbering
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Pull-up
