@@ -149,13 +149,14 @@ public class ChargingHub : Hub
         _connections.TryRemove(Context.ConnectionId, out _);
 
         //get car and station
-        var car = _applicationContext.Cars.Find(connInfo.CarId);
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
         //calculactions for cost and energy
-        var chargingRate = station.MaxChargeRate > car.ChargingRate ? car.ChargingRate : station.MaxChargeRate;
-        var energyConsumed = chargingRate * timePassed.TotalSeconds / 1000;
-        var totalCost = energyConsumed * station.Cost;
+        float chargingRate = 0;
+        if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
+            chargingRate = WattageManager.Wattages[connInfo.PortId];
+        var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
+        var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 
         //register transaction
         Transaction transaction = new()
