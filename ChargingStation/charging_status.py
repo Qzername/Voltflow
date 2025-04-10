@@ -70,7 +70,7 @@ def get_info():
         #voltage = read_bus_voltage(channel)
         current = read_current(channel)
 
-        power = 5 * current
+        power = 5 * current/1000
         result.append(power)
 
     return result
