@@ -1,2 +1,0 @@
-signalrcore==0.9.5
-RPi.GPIO==0.7.1

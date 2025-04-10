@@ -3,6 +3,7 @@ import charging_station_ports
 import server_connection
 import display
 import tkinter as tk
+import time
 
 import configparser
 
@@ -20,7 +21,6 @@ GPIO.setmode(GPIO.BCM)
 
 charging_station_ports.turn_port_off(0)
 charging_station_ports.turn_port_off(1)
-
 
 root = tk.Tk()
 root.title("Stan przycisku")
@@ -40,4 +40,6 @@ def loop():
 loop()
 root.mainloop()
 
-GPIO.cleanup()
+while True:
+    server_connection.get_port(0)
+    time.sleep(1)
