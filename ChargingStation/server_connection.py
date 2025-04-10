@@ -1,5 +1,5 @@
 from signalrcore.hub_connection_builder import HubConnectionBuilder
-from charging_station_ports import turn_port_on, turn_port_off
+import charging_station_ports
 
 def init():
     client = HubConnectionBuilder()\
@@ -11,8 +11,8 @@ def init():
             "max_attempts": 5
         }).build()
 
-    client.on("TurnPortOn", lambda args: turn_port_on(args[0]))
-    client.on("TurnPortOff", lambda args: turn_port_off(args[0]))
+    client.on("TurnPortOn", lambda args: charging_station_ports.turn_port_on(args[0]))
+    client.on("TurnPortOff", lambda args: charging_station_ports.turn_port_off(args[0]))
 
     try:
         client.start()
