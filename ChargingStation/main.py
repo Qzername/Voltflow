@@ -46,14 +46,14 @@ portName.pack(pady=20)
 statusPort1 = tk.Label(root, text="Port 1: Available", fg="green", font=("Arial", 24))
 statusPort1.pack(pady=20)
 
-wattagePort1 = tk.Label(root, text="Wattage: ", fg="yellow", font=("Arial", 24))
-wattagePort1.pack_forget()
+wattagePort1 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
+wattagePort1.pack(pady=20)
 
 statusPort2 = tk.Label(root, text="Port 2: Available", fg="green", font=("Arial", 24))
 statusPort2.pack(pady=20)
 
-wattagePort2 = tk.Label(root, text="Wattage: ", fg="yellow", font=("Arial", 24))
-wattagePort2.pack_forget()
+wattagePort2 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
+wattagePort1.pack(pady=20)
 
 ads.config(frame,root)
 
@@ -61,11 +61,10 @@ def change_port_status(label, wattage_info, port_id, port_info):
     if port_info["serviceMode"]:
         label.config(text="PORT "+str(port_id+1)+" IN SERVICE MODE.", fg="red")
     elif port_info["status"] == 0:
-        wattage_info[0].pack_forget()
+        wattage_info[0].config(text="")
         label.config(text="Port "+str(port_id+1)+": Available", fg="green")
     elif port_info["status"] == 1:
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
-        wattage_info[0].pack(pady=20)
         wattage_info[0].config(text="Wattage "+str(wattage_info[1]))
 
 def loop():
