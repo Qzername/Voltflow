@@ -27,11 +27,11 @@ def show_status(status, port):
     color = (0,0,0)
 
     if status == 0:
-        color = (0,255,0)
+        color = (0,100,0)
     elif status == 1:
-        color = (255,255,0)
+        color = (100,100,0)
     elif status == 2:
-        color = (255,0,0)
+        color = (100,0,0)
 
     start_X = 0
 
