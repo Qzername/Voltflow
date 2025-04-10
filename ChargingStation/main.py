@@ -47,7 +47,7 @@ def change_port_status(label, port_id, port_info):
     elif port_info["status"] == 1:
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
         wattages = charging_status.get_info()
-        print(wattages[port_id])
+        print(wattages)
 
 def loop():
     try:
@@ -57,8 +57,8 @@ def loop():
         ports = server_connection.ports
         print(ports)
 
-        change_port_status(statusPort1, ports[0])
-        change_port_status(statusPort2, ports[1])
+        change_port_status(statusPort1, 0, ports[0])
+        change_port_status(statusPort2, 1, ports[1])
 
         #wattages = charging_status.get_info()
         #print(wattages)
