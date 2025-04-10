@@ -22,7 +22,7 @@ public class PiChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
-    public async Task<ChargingStation> GetInfo()
+    public async void GetChargingStationInfo()
     {
         var chargingStation = _applicationContext.ChargingStations.Find(_connections[Context.ConnectionId].Id);
 
@@ -33,7 +33,7 @@ public class PiChargingHub : Hub
         }
 
         _connections[Context.ConnectionId] = chargingStation;
-        return chargingStation;
+        await Clients.Caller.SendAsync("ChargingStationInfo", chargingStation);
     }
 
     public override async Task OnConnectedAsync()
