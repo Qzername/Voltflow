@@ -1,9 +1,9 @@
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import charging_station_ports
 
-def init():
-    client = HubConnectionBuilder()\
-        .with_url("https://voltflow-api.heapy.xyz/picharginghub")\
+def init(id, password):
+    client = HubConnectionBuilder()
+        .with_url("https://voltflow-api.heapy.xyz/picharginghub")
         .with_automatic_reconnect({
             "type": "raw",
             "keep_alive_interval": 10,

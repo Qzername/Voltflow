@@ -3,7 +3,17 @@ import charging_station_ports
 import server_connection
 import display
 
-server_connection.init()
+import configparser
+
+# Load the INI file
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+# Access values
+id = config['Identification']['ID']
+password = config["Identification"]["Password"]
+
+server_connection.init(int(id), password)
 
 GPIO.setmode(GPIO.BCM)
 
