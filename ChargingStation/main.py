@@ -5,8 +5,10 @@ import display
 import tkinter as tk
 import time
 import charging_status
+import ads
 
 import configparser
+
 
 # Load the INI file
 config = configparser.ConfigParser()
@@ -28,7 +30,15 @@ charging_station_ports.turn_port_off(0)
 charging_station_ports.turn_port_off(1)
 
 root = tk.Tk()
-root.title("Stan przycisku")
+root.title("Voltflow charging station")
+
+# --- Kontener główny: lewo/prawo ---
+frame = tk.Frame(root)
+frame.pack(fill=tk.BOTH, expand=True)
+
+# --- Lewa część: tekst przycisku itp. ---
+left_frame = tk.Frame(frame)
+left_frame.pack(side=tk.LEFT, padx=10, pady=10)
 
 portName = tk.Label(root, text="Station id: "+str(id), font=("Arial", 24))
 portName.pack(pady=20)
@@ -36,18 +46,29 @@ portName.pack(pady=20)
 statusPort1 = tk.Label(root, text="Port 1: Available", fg="green", font=("Arial", 24))
 statusPort1.pack(pady=20)
 
+wattagePort1 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
+wattagePort1.pack(pady=20)
+
 statusPort2 = tk.Label(root, text="Port 2: Available", fg="green", font=("Arial", 24))
 statusPort2.pack(pady=20)
 
-def change_port_status(label, port_id, port_info):
+wattagePort2 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
+wattagePort2.pack(pady=20)
+
+ads.config(frame,root)
+
+def change_port_status(label, wattage_info, port_id, port_info):
     if port_info["serviceMode"]:
         label.config(text="PORT "+str(port_id+1)+" IN SERVICE MODE.", fg="red")
+        display.show_status(2,port_id)
     elif port_info["status"] == 0:
+        wattage_info[0].config(text="")
         label.config(text="Port "+str(port_id+1)+": Available", fg="green")
+        display.show_status(0,port_id)
     elif port_info["status"] == 1:
+        display.show_status(1,port_id)
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
-        #wattages = charging_status.get_info()
-        #print(wattages)
+        wattage_info[0].config(text="Wattage "+str(wattage_info[1]))
 
 def loop():
     try:
@@ -57,14 +78,14 @@ def loop():
         ports = server_connection.ports
         print(ports)
 
-        change_port_status(statusPort1, 0, ports[0])
-        change_port_status(statusPort2, 1, ports[1])
-
         wattages = charging_status.get_info()
         print(wattages)
+        
+        change_port_status(statusPort1, [wattagePort1, wattages[0]], 0, ports[0])
+        change_port_status(statusPort2, [wattagePort2, wattages[1]], 1, ports[1])
 
-        #server_connection.set_wattage(0, wattages[0])
-        #server_connection.set_wattage(1, wattages[1])
+        server_connection.set_wattage(0, wattages[0])
+        server_connection.set_wattage(1, wattages[1])
     except:
         pass
 
