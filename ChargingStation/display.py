@@ -1,6 +1,6 @@
-from main import Matrix
+from main import LiveMatrix
 
-matrix = Matrix()
+matrix = LiveMatrix()
 
 while matrix.ready():
         matrix.reset(matrix.color("red"))
