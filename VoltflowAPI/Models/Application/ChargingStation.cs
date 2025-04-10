@@ -8,6 +8,7 @@ public class ChargingStation
     public int Cost { get; set; }
     public int MaxChargeRate { get; set; }
     public string Password { get; set; }
+    public string? Message { get; set; }
     public ICollection<ChargingPort> Ports { get; set; }
     public ICollection<ChargingStationOpeningHours> OpeningHours { get; set; }
 }

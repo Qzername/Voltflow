@@ -53,6 +53,24 @@ public class PiChargingHub : Hub
         });
     }
 
+    public async void GetMessage()
+    {
+        var chargingStation = _applicationContext.ChargingStations.Find(_connections[Context.ConnectionId].Id);
+
+        if (chargingStation is null)
+        {
+            await Clients.Caller.SendAsync("Error", "Station not found");
+            Context.Abort();
+        }
+
+        _connections[Context.ConnectionId] = chargingStation;
+
+        await Clients.Caller.SendAsync("Port", new
+        {
+            Message = chargingStation.Message
+        });
+    }
+
     public override async Task OnConnectedAsync()
     {
         Debug.WriteLine("Connection opened");

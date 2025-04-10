@@ -8,6 +8,7 @@ public struct ChargingStation
     public int Cost { get; set; }
     public int MaxChargeRate { get; set; }
     public string Password { get; set; }
+    public string? Message { get; set; }
     public ChargingPort[] Ports { get; set; }
     public ChargingStationOpeningHours OpeningHours { get; set; }
 }
