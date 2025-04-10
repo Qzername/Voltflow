@@ -11,17 +11,21 @@ LED_PIN = 18  # GPIO18 (PWM)
 strip = PixelStrip(LED_COUNT, LED_PIN)
 strip.begin()
 
+# Clear display
+for i in range(LED_COUNT):
+    strip.setPixelColor(i, Color(0, 0, 0))
+    
+strip.show()
+
 def set_pixel(x, y, color):
     if y % 2 == 0:
         i = y * LED_COLS + x
     else:
         i = y * LED_COLS + (LED_COLS - 1 - x)
-    strip.setPixelColor(i, color)
+    strip.setPixelColor(i, Color(color[0],color[1],color[2]))
 
-# Clear display
-for i in range(LED_COUNT):
-    strip.setPixelColor(i, Color(0, 0, 0))
-strip.show()
+def apply_changes():
+    strip.show()
 
 def show_status(status, port):
     color = (0,0,0)
@@ -40,6 +44,6 @@ def show_status(status, port):
     
     for x in range(start_X, start_X+3,1):
         for y in range(0,3):
-            set_pixel(x,y,Color(color[0],color[1],color[2]))
+            set_pixel(x,y,color)
 
     strip.show()

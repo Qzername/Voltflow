@@ -56,5 +56,5 @@ def update_image():
     current_image_index = (current_image_index + 1) % len(image_paths)
 
     # Odpal ponownie za 10 sek.
-    root.after(1000, update_image)
+    root.after(10000, update_image)
 
