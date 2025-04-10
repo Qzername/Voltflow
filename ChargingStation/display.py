@@ -18,15 +18,26 @@ def set_pixel(x, y, color):
         i = y * LED_COLS + (LED_COLS - 1 - x)
     strip.setPixelColor(i, color)
 
-# Fill entire matrix red
-for y in range(LED_ROWS):
-    for x in range(LED_COLS):
-        set_pixel(x, y, Color(255, 0, 0))
-
-strip.show()
-time.sleep(1)
-
 # Clear display
 for i in range(LED_COUNT):
     strip.setPixelColor(i, Color(0, 0, 0))
 strip.show()
+
+def show_status(status, port):
+    color = (0,0,0)
+
+    if status == 0:
+        color = (0,255,0)
+    elif status == 1:
+        color = (255,255,0)
+    elif status == 2:
+        color = (255,0,0)
+
+    start_X = 0
+
+    if port == 1:
+        start_X = 13
+    
+    for x in range(start_X, start_X+3,1):
+        for y in range(0,3):
+            set_pixel(x,y,color)
