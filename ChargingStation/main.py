@@ -53,7 +53,7 @@ statusPort2 = tk.Label(root, text="Port 2: Available", fg="green", font=("Arial"
 statusPort2.pack(pady=20)
 
 wattagePort2 = tk.Label(root, text="", fg="yellow", font=("Arial", 24))
-wattagePort1.pack(pady=20)
+wattagePort2.pack(pady=20)
 
 ads.config(frame,root)
 
