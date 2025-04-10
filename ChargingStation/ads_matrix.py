@@ -43,5 +43,7 @@ def update_matrix():
             display.set_pixel(width-x-1,y,(pixel[0], pixel[1],pixel[2]))
 
     display.apply_changes()
+    
+    current_image_index = (current_image_index + 1) % len(image_paths)
 
     root.after(10000, update_matrix)
