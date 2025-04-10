@@ -41,7 +41,7 @@ public class PiChargingHub : Hub
             Context.Abort();
         }
 
-        var ports = _applicationContext.ChargingPorts.Where(p => p.StationId == chargingStation.Id).ToList();
+        var ports = _applicationContext.ChargingPorts.Where(p => p.StationId == chargingStation.Id).OrderBy(x => x.Id).ToList();
         chargingStation.Ports = ports;
         _connections[Context.ConnectionId] = chargingStation;
 
