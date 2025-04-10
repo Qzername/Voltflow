@@ -44,20 +44,23 @@ def change_port_status(label, port_id, port_info):
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
 
 def loop():
-    server_connection.get_port(0)
-    server_connection.get_port(1)
+    try:
+        server_connection.get_port(0)
+        server_connection.get_port(1)
 
-    ports = server_connection.ports
+        ports = server_connection.ports
+        print(ports)
 
-    change_port_status(statusPort1, 0, ports[0])
-    change_port_status(statusPort2, 1, ports[1])
-    print(server_connection.ports)
+        change_port_status(statusPort1, ports[0])
+        change_port_status(statusPort2, ports[1])
 
-    wattages = charging_status.get_info()
-    print(wattages)
-    
-    server_connection.set_wattage(0, wattages[0])
-    server_connection.set_wattage(1, wattages[1])
+        wattages = charging_status.get_info()
+        print(wattages)
+
+        server_connection.set_wattage(0, wattages[0])
+        server_connection.set_wattage(1, wattages[1])
+    except:
+        pass
 
     root.after(1000, loop)
 
