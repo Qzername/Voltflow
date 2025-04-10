@@ -42,4 +42,4 @@ def show_status(status, port):
         for y in range(0,3):
             set_pixel(x,y,Color(color[0],color[1],color[2]))
 
-    strip.show( )
+    strip.show()
