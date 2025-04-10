@@ -58,11 +58,11 @@ def loop():
         change_port_status(statusPort1, ports[0])
         change_port_status(statusPort2, ports[1])
 
-        wattages = charging_status.get_info()
-        print(wattages)
+        #wattages = charging_status.get_info()
+        #print(wattages)
 
-        server_connection.set_wattage(0, wattages[0])
-        server_connection.set_wattage(1, wattages[1])
+        #server_connection.set_wattage(0, wattages[0])
+        #server_connection.set_wattage(1, wattages[1])
     except:
         pass
 
