@@ -36,6 +36,22 @@ public class ChargingHub : Hub
         return isDiscount;
     }
 
+    public async Task<double[]> GetChargingInfo()
+    {
+        var connInfo = _connections[Context.ConnectionId];
+        var timePassed = DateTime.UtcNow - connInfo.StartDate;
+
+        var car = _applicationContext.Cars.Find(connInfo.CarId);
+        var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
+
+        //calculactions for cost and energy
+        var chargingRate = station.MaxChargeRate > car.ChargingRate ? car.ChargingRate : station.MaxChargeRate;
+        var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
+        var totalCost = Math.Round(energyConsumed * station.Cost, 2);
+
+        return [energyConsumed, totalCost];
+    }
+
     public override async Task OnConnectedAsync()
     {
         Console.WriteLine("Connection started");

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -53,7 +54,7 @@ public class ChargingViewModel : ViewModelBase
         CurrentStation = chargingStation;
         CurrentPort = chargingPort;
 
-        _dataUpdate.Interval = TimeSpan.FromMilliseconds(100);
+        _dataUpdate.Interval = TimeSpan.FromMilliseconds(1000);
         _dataUpdate.Tick += async (sender, e) => await UpdateData();
 
         GetCarsForCombobox();
@@ -157,13 +158,11 @@ public class ChargingViewModel : ViewModelBase
         if (!_dataUpdate.IsEnabled)
             return;
 
-        var car = Cars[SelectedIndex];
-        var chargingRate = CurrentStation.MaxChargeRate > car.ChargingRate ? car.ChargingRate : CurrentStation.MaxChargeRate;
-
+        var chargingInfo = await _connection.InvokeAsync<double[]>("GetChargingInfo");
         var time = DateTime.UtcNow - _startTime;
         Time = time.ToString("hh\\:mm\\:ss");
-        TotalCharge = Math.Round(chargingRate * time.TotalSeconds / 1000, 3); //per kwh
-        TotalCost = Math.Round(TotalCharge * CurrentStation.Cost, 2);
+        TotalCharge = chargingInfo[0];
+        TotalCost = chargingInfo[1];
 
         if (DeclaredAmount && TotalCharge >= Amount)
         {
