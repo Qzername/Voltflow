@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)  
+GPIO.setmode(GPIO.BOARD)  
 
 RELAY_LEFT_PIN = 14
 RELAY_RIGHT_PIN = 15
@@ -13,6 +13,8 @@ pin_data = {
 # Set up the GPIO pin
 GPIO.setup(RELAY_LEFT_PIN, GPIO.OUT)
 GPIO.setup(RELAY_RIGHT_PIN, GPIO.OUT)
+
+
 
 def turn_port_on(port):
     GPIO.output(pin_data[port], GPIO.HIGH)
