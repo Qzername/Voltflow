@@ -15,5 +15,5 @@ public enum ChargingPortStatus
 {
     Available,
     Occupied,
-    OutOfOrder,
+    OutOfService,
 }
