@@ -6,7 +6,7 @@ LED_ROWS = 16
 LED_COLS = 16
 LED_COUNT = LED_ROWS * LED_COLS
 LED_PIN = 18  # GPIO18 (PWM)
-LED_BRIGHTNESS = 64
+LED_BRIGHTNESS = 16
 
 # Create PixelStrip object
 strip = PixelStrip(LED_COUNT, LED_PIN,)

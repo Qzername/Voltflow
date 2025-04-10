@@ -19,6 +19,6 @@ for y in range(height):
 
         print(f"Piksel ({x}, {y}): {pixel}")
         
-        display.set_pixel(x,y,(pixel[0], pixel[1],pixel[2]))
+        display.set_pixel(width-x-1,y,(pixel[0], pixel[2],pixel[1]))
 
 display.apply_changes()
