@@ -5,6 +5,10 @@ import display
 image = Image.open("ads_matrix/1.bmp")
 width, height = image.size
 
+print(image.mode)
+print(height)
+print(width)
+
 # Iteruj po każdym pikselu
 for y in range(height):
     for x in range(width):
