@@ -3,7 +3,7 @@ import charging_station_ports
 
 def init(id, password):
     client = HubConnectionBuilder()
-        .with_url("https://voltflow-api.heapy.xyz/picharginghub")\
+        .with_url("https://voltflow-api.heapy.xyz/picharginghub")
         .with_automatic_reconnect({
             "type": "raw",
             "keep_alive_interval": 10,
