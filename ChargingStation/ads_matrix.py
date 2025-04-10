@@ -5,6 +5,9 @@ import display
 image = Image.open("ads_matrix/1.bmp")
 width, height = image.size
 
+if image.mode != "RGB":
+    image = image.convert("RGB")
+
 print(image.mode)
 print(height)
 print(width)
