@@ -13,6 +13,8 @@ def init():
 
     client.on("TurnPortOn", lambda args: charging_station_ports.turn_port_on(args[0]))
     client.on("TurnPortOff", lambda args: charging_station_ports.turn_port_off(args[0]))
+    # client.on("TurnPortOn", lambda args: print("TurnPortOn", args[0]))
+    # client.on("TurnPortOff", lambda args: print("TurnPortOff", args[0]))
 
     try:
         client.start()
