@@ -40,4 +40,8 @@ def show_status(status, port):
     
     for x in range(start_X, start_X+3,1):
         for y in range(0,3):
-            set_pixel(x,y,color)
+            set_pixel(x,y,Color(color[0],color[1],color[2]))
+
+
+show_status(0,0)
+show_status(0,1)

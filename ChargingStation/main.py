@@ -10,8 +10,5 @@ GPIO.setmode(GPIO.BCM)
 charging_station_ports.turn_port_off(0)
 charging_station_ports.turn_port_off(1)
 
-display.show_status(0,0)
-display.show_status(0,1)
-
 while True:
     pass
