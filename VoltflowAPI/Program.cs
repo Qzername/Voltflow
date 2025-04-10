@@ -97,6 +97,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<ChargingHub>("/charginghub");
+app.MapHub<PiChargingHub>("/picharginghub");
 app.MapControllers();
 
 app.Run();
