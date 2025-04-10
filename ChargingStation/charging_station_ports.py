@@ -17,7 +17,9 @@ GPIO.setup(RELAY_RIGHT_PIN, GPIO.OUT)
 
 
 def turn_port_on(port):
+    print("Enabling port", port)
     GPIO.output(pin_data[port], GPIO.HIGH)
 
 def turn_port_off(port):
+    print("Disabling port", port)
     GPIO.output(pin_data[port], GPIO.LOW) 
