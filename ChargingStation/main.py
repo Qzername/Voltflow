@@ -55,8 +55,9 @@ def loop():
 
     wattages = charging_status.get_info()
     print(wattages)
+    
     server_connection.set_wattage(0, wattages[0])
-    # server_connection.set_wattage(1, wattages[1])
+    server_connection.set_wattage(1, wattages[1])
 
     root.after(1000, loop)
 
