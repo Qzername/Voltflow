@@ -7,6 +7,8 @@ def manage_port(port):
     else:
         charging_station_ports.turn_port_off(port["id"])
 
+    print(port)
+
 def init(id, password):
     global client
 
