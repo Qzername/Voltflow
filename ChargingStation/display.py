@@ -45,3 +45,4 @@ def show_status(status, port):
 
 show_status(0,0)
 show_status(0,1)
+time.sleep(1)
