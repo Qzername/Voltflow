@@ -1,8 +1,22 @@
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import charging_station_ports
 
+ports = {
+    0: {
+        "status":0,
+        "serviceMode":False
+    },
+    1: {
+        "status":0,
+        "serviceMode":False
+    }
+}
+
 def manage_port(port):
     print(port)
+
+    ports[port["index"]]["status"] = port["status"]
+    ports[port["index"]]["serviceMode"] = port["serviceMode"]
 
     if (port["status"] == 1 and port["serviceMode"] == False):
         charging_station_ports.turn_port_on(port["index"])

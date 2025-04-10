@@ -32,15 +32,13 @@ statusPort2 = tk.Label(root, text="Port 2: Available", font=("Arial", 24))
 statusPort2.pack(pady=20)
 
 def loop():
-    
-    # Odpalaj ponownie za 100ms
-    root.after(100, loop)
+    server_connection.get_port(0)
+    server_connection.get_port(1)
+
+    print(server_connection.ports[0])    
+
+    root.after(1000, loop)
 
 # Start
 loop()
 root.mainloop()
-
-while True:
-    server_connection.get_port(0)
-    server_connection.get_port(1)
-    time.sleep(1)
