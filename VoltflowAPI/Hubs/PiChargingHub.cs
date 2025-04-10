@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using VoltflowAPI.Contexts;
 using VoltflowAPI.Models.Application;
+using VoltflowAPI.Services;
 
 namespace VoltflowAPI.Hubs;
 
@@ -22,6 +23,14 @@ public class PiChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
+    public void SetWattage(int index, float wattage)
+    {
+        Console.WriteLine(index);
+        Console.WriteLine(wattage);
+
+        var port = _connections[Context.ConnectionId].Ports.ToList()[index];
+        WattageManager.Wattages[port.Id] = wattage;
+    }
 
     public async void GetPort(int index)
     {

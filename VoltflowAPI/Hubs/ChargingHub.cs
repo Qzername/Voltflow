@@ -7,6 +7,7 @@ using System.Security.Claims;
 using VoltflowAPI.Contexts;
 using VoltflowAPI.Models;
 using VoltflowAPI.Models.Application;
+using VoltflowAPI.Services;
 
 namespace VoltflowAPI.Hubs;
 
@@ -45,7 +46,7 @@ public class ChargingHub : Hub
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
         //calculactions for cost and energy
-        var chargingRate = station.MaxChargeRate > car.ChargingRate ? car.ChargingRate : station.MaxChargeRate;
+        var chargingRate = WattageManager.Wattages[connInfo.PortId];
         var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 

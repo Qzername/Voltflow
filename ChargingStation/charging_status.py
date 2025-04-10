@@ -72,3 +72,5 @@ def get_info():
 
         power = voltage * current
         result.append(power)
+
+    return result

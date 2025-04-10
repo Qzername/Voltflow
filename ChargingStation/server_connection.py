@@ -13,8 +13,6 @@ ports = {
 }
 
 def manage_port(port):
-    print(port)
-
     ports[port["index"]]["status"] = port["status"]
     ports[port["index"]]["serviceMode"] = port["serviceMode"]
 
@@ -47,3 +45,8 @@ def get_port(index):
     global client
 
     client.send("GetPort", [index])
+
+def set_wattage(index, wattage):
+    global client
+
+    client.send("SetWattage", [index, wattage])
