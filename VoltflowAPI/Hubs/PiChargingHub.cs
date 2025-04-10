@@ -26,9 +26,9 @@ public class PiChargingHub : Hub
     public void SetWattage(int index, float wattage)
     {
         var port = _connections[Context.ConnectionId].Ports.ToList()[index];
-        WattageManager.Wattages[port.Id] = wattage;
 
-        Console.WriteLine($"SetWattage: {port.Id} (slot {index}) - {wattage}W");
+        WattageManager.Wattages[port.Id] = (float)Math.Round(wattage) < 1 ? 0 : (float)Math.Round(wattage);
+        Console.WriteLine($"SetWattage: {port.Id} (slot {index}) - {WattageManager.Wattages[port.Id]}W");
     }
 
     public async void GetPort(int index)

@@ -37,25 +37,39 @@ public class ChargingHub : Hub
         return isDiscount;
     }
 
+    public async Task<bool> IsDisconnected()
+    {
+        var conn = _connections[Context.ConnectionId];
+        return conn.Disconnected;
+    }
+
     public async Task<double[]> GetChargingInfo()
     {
         var connInfo = _connections[Context.ConnectionId];
-        var timePassed = DateTime.UtcNow - connInfo.StartDate;
 
-        var car = _applicationContext.Cars.Find(connInfo.CarId);
+        if (connInfo.Disconnected)
+            return [0, 0];
+
+        var timePassed = DateTime.UtcNow - connInfo.LastUpdated;
+        connInfo.LastUpdated = DateTime.UtcNow;
+
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
         float chargingRate = 0;
         if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
-            chargingRate = (float)Math.Round(WattageManager.Wattages[connInfo.PortId]);
-        var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
-        var totalCost = Math.Round(energyConsumed * station.Cost, 2);
+            chargingRate = WattageManager.Wattages[connInfo.PortId];
+        connInfo.EnergyConsumed += Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
+        connInfo.TotalCost += Math.Round(connInfo.EnergyConsumed * station.Cost, 2);
 
         Console.WriteLine($"ChargingRate: {chargingRate}");
-        Console.WriteLine($"EnergyConsumed: {energyConsumed}");
-        Console.WriteLine($"TotalCost: {totalCost}");
+        Console.WriteLine($"EnergyConsumed: {connInfo.EnergyConsumed}");
+        Console.WriteLine($"TotalCost: {connInfo.TotalCost}");
 
-        return [energyConsumed, totalCost];
+        if (chargingRate < 1 && connInfo.EnergyConsumed > 0)
+            connInfo.Disconnected = true;
+
+        _connections[Context.ConnectionId] = connInfo;
+        return [connInfo.EnergyConsumed, connInfo.TotalCost];
     }
 
     public override async Task OnConnectedAsync()
@@ -118,6 +132,7 @@ public class ChargingHub : Hub
         _connections[Context.ConnectionId] = new ChargingInfo()
         {
             StartDate = utcNow,
+            LastUpdated = utcNow,
             PortId = port.Id,
             StationId = station.Id,
             CarId = carId
@@ -137,7 +152,6 @@ public class ChargingHub : Hub
         //register time
         var connInfo = _connections[Context.ConnectionId];
         var endTime = DateTime.UtcNow;
-        var timePassed = endTime - connInfo.StartDate;
 
         //set port status to available
         var port = _applicationContext.ChargingPorts.Find(connInfo.PortId);
@@ -151,13 +165,6 @@ public class ChargingHub : Hub
         //get car and station
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
-        //calculactions for cost and energy
-        float chargingRate = 0;
-        if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
-            chargingRate = (float)Math.Round(WattageManager.Wattages[connInfo.PortId]);
-        var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
-        var totalCost = Math.Round(energyConsumed * station.Cost, 2);
-
         //register transaction
         Transaction transaction = new()
         {
@@ -166,13 +173,12 @@ public class ChargingHub : Hub
             ChargingStationId = connInfo.StationId,
             StartDate = connInfo.StartDate,
             EndDate = endTime,
-            EnergyConsumed = Math.Round(energyConsumed, 3),
-            Cost = Math.Round(connInfo.IsDiscount ? totalCost * 0.9 : totalCost, 2)
+            EnergyConsumed = Math.Round(connInfo.EnergyConsumed, 3),
+            Cost = Math.Round(connInfo.IsDiscount ? connInfo.TotalCost * 0.9 : connInfo.TotalCost, 2)
         };
 
         _applicationContext.Transactions.Add(transaction);
         await _applicationContext.SaveChangesAsync();
 
-        Console.WriteLine(timePassed.ToString("hh\\:mm\\:ss"));
     }
 }
