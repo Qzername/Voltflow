@@ -60,10 +60,13 @@ ads.config(frame,root)
 def change_port_status(label, wattage_info, port_id, port_info):
     if port_info["serviceMode"]:
         label.config(text="PORT "+str(port_id+1)+" IN SERVICE MODE.", fg="red")
+        display.show_status(2,port_id)
     elif port_info["status"] == 0:
         wattage_info[0].config(text="")
         label.config(text="Port "+str(port_id+1)+": Available", fg="green")
+        display.show_status(0,port_id)
     elif port_info["status"] == 1:
+        display.show_status(1,port_id)
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
         wattage_info[0].config(text="Wattage "+str(wattage_info[1]))
 
