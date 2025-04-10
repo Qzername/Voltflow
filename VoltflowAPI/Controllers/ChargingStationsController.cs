@@ -34,7 +34,7 @@ public class ChargingStationsController : ControllerBase
             x.Cost,
             x.MaxChargeRate,
             x.Password,
-            Ports = x.Ports.Where(y => y.StationId == x.Id).ToArray(),
+            Ports = x.Ports.Where(y => y.StationId == x.Id).OrderBy(x => x.Id).ToArray(),
             OpeningHours = x.OpeningHours.Single(y => y.StationId == x.Id),
         }).ToArray();
         return Ok(chargingStations);

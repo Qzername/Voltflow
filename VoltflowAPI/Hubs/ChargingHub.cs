@@ -47,7 +47,7 @@ public class ChargingHub : Hub
 
         float chargingRate = 0;
         if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
-            chargingRate = WattageManager.Wattages[connInfo.PortId];
+            chargingRate = (float)Math.Round(WattageManager.Wattages[connInfo.PortId]);
         var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 
@@ -154,7 +154,7 @@ public class ChargingHub : Hub
         //calculactions for cost and energy
         float chargingRate = 0;
         if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
-            chargingRate = WattageManager.Wattages[connInfo.PortId];
+            chargingRate = (float)Math.Round(WattageManager.Wattages[connInfo.PortId]);
         var energyConsumed = Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         var totalCost = Math.Round(energyConsumed * station.Cost, 2);
 
