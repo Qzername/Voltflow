@@ -65,7 +65,7 @@ public class PiChargingHub : Hub
 
         _connections[Context.ConnectionId] = chargingStation;
 
-        await Clients.Caller.SendAsync("Port", new
+        await Clients.Caller.SendAsync("Message", new
         {
             Message = chargingStation.Message
         });
