@@ -6,10 +6,13 @@ LED_ROWS = 16
 LED_COLS = 16
 LED_COUNT = LED_ROWS * LED_COLS
 LED_PIN = 18  # GPIO18 (PWM)
+LED_BRIGHTNESS = 64
 
 # Create PixelStrip object
-strip = PixelStrip(LED_COUNT, LED_PIN)
+strip = PixelStrip(LED_COUNT, LED_PIN,)
 strip.begin()
+
+strip.setBrightness(LED_BRIGHTNESS)
 
 # Clear display
 for i in range(LED_COUNT):
