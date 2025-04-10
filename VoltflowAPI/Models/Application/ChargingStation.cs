@@ -7,6 +7,7 @@ public class ChargingStation
     public double Latitude { get; set; }
     public int Cost { get; set; }
     public int MaxChargeRate { get; set; }
+    public string Password { get; set; }
     public ICollection<ChargingPort> Ports { get; set; }
     public ICollection<ChargingStationOpeningHours> OpeningHours { get; set; }
 }

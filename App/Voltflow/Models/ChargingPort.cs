@@ -7,7 +7,6 @@ public class ChargingPort
     public string? Name { get; set; }
     public ChargingPortStatus Status { get; set; }
     public bool ServiceMode { get; set; }
-    public string Password { get; set; }
 }
 
 public enum ChargingPortStatus

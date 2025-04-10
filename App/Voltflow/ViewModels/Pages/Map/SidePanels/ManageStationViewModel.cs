@@ -29,6 +29,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         [Reactive] public double? Latitude { get; set; }
         [Reactive] public int? Cost { get; set; }
         [Reactive] public int? MaxChargeRate { get; set; }
+        [Reactive] public string? Password { get; set; }
         [Reactive] public bool CreatingNewPoint { get; set; } = true;
         [Reactive] public bool Clicked { get; set; }
 
@@ -138,6 +139,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
 
             Cost = data.Cost;
             MaxChargeRate = data.MaxChargeRate;
+            Password = data.Password;
 
             NewPortName = null;
 
@@ -338,12 +340,24 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
                 return;
             }
 
+            if (Password == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Password cannot be empty!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
             StringContent content = JsonConverter.ToStringContent(new
             {
                 Longitude,
                 Latitude,
                 Cost,
-                MaxChargeRate
+                MaxChargeRate,
+                Password
             });
 
             var request = await _httpClient.PostAsync("/api/ChargingStations", content);
@@ -452,12 +466,24 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
                 return;
             }
 
+            if (Password == null)
+            {
+                ToastManager?.Show(
+                    new Toast("Password cannot be empty!"),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
+                return;
+            }
+
             var station = CurrentStation;
 
             station.Longitude = (double)Longitude;
             station.Latitude = (double)Latitude;
             station.Cost = (int)Cost;
             station.MaxChargeRate = (int)MaxChargeRate;
+            station.Password = Password;
 
             var content = JsonConverter.ToStringContent(station);
             var request = await _httpClient.PatchAsync("/api/ChargingStations", content);
@@ -674,6 +700,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             Latitude = 0;
             Cost = 0;
             MaxChargeRate = 0;
+            Password = null;
             CreatingNewPoint = false;
             Clicked = false;
             _selectedPoint = null;

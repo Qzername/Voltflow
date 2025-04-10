@@ -33,6 +33,7 @@ public class ChargingStationsController : ControllerBase
             x.Longitude,
             x.Cost,
             x.MaxChargeRate,
+            x.Password,
             Ports = x.Ports.Where(y => y.StationId == x.Id).ToArray(),
             OpeningHours = x.OpeningHours.Single(y => y.StationId == x.Id),
         }).ToArray();
@@ -53,6 +54,7 @@ public class ChargingStationsController : ControllerBase
             Latitude = model.Latitude,
             Cost = model.Cost,
             MaxChargeRate = model.MaxChargeRate,
+            Password = model.Password,
         };
 
         var entry = await _applicationContext.ChargingStations.AddAsync(chargingStation);
@@ -98,6 +100,9 @@ public class ChargingStationsController : ControllerBase
         if (model.MaxChargeRate is not null)
             station.MaxChargeRate = model.MaxChargeRate.Value;
 
+        if (model.Password is not null)
+            station.Password = model.Password;
+
         _applicationContext.Update(station);
         await _applicationContext.SaveChangesAsync();
 
@@ -122,6 +127,7 @@ public class ChargingStationsController : ControllerBase
         public double Latitude { get; set; }
         public int Cost { get; set; }
         public int MaxChargeRate { get; set; }
+        public string Password { get; set; }
     }
 
     public struct PatchStationModel
@@ -131,6 +137,7 @@ public class ChargingStationsController : ControllerBase
         public double? Latitude { get; set; }
         public int? Cost { get; set; }
         public int? MaxChargeRate { get; set; }
+        public string? Password { get; set; }
         public ChargingPortStatus? Status { get; set; }
         public bool? ServiceMode { get; set; }
     }

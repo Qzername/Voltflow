@@ -97,6 +97,15 @@
                 <TextBlock Grid.Column="2" Text="kW" />
             </Grid>
 
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="Lock" />
+                <TextBlock Classes="size-sm weight-bold" Text="Password" />
+            </StackPanel>
+            <TextBox Text="{Binding Password}" Watermark="Voltflow123@!" />
+
             <!--  charging ports  -->
 
             <Separator />
