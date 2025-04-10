@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BOARD)  
+GPIO.setmode(GPIO.BCM)  
 
 RELAY_LEFT_PIN = 14
 RELAY_RIGHT_PIN = 15
