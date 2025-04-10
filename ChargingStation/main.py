@@ -8,8 +8,8 @@ import charging_status
 import ads
 import ads_matrix
 
+from time import sleep
 import configparser
-
 
 # Load the INI file
 config = configparser.ConfigParser()
@@ -26,6 +26,10 @@ while not server_connection.connected:
     time.sleep(1)
 
 GPIO.setmode(GPIO.BCM)
+
+buzzer=16
+GPIO.setup(buzzer,GPIO.OUT)
+GPIO.output(buzzer,GPIO.LOW)
 
 charging_station_ports.turn_port_off(0)
 charging_station_ports.turn_port_off(1)
@@ -59,7 +63,11 @@ wattagePort2.pack(pady=20)
 ads.config(frame,root)
 ads_matrix.config(root)
 
+last_status = [0,0]
+
 def change_port_status(label, wattage_info, port_id, port_info):
+    global last_status
+
     if port_info["serviceMode"]:
         label.config(text="PORT "+str(port_id+1)+" IN SERVICE MODE.", fg="red")
         display.show_status(2,port_id)
@@ -74,6 +82,13 @@ def change_port_status(label, wattage_info, port_id, port_info):
     elif port_info["status"] == 2:
         label.config(text="PORT "+str(port_id+1)+" OUT OF SERVICE", fg="red")
         display.show_status(2,port_id)
+
+    if port_info["status"] == 1 and last_status[port_id] == 0:
+        GPIO.output(buzzer,GPIO.HIGH)
+        sleep(0.5)
+        GPIO.output(buzzer,GPIO.LOW)
+
+    last_status[port_id] = port_info["status"] 
 
 def loop():
     try:
