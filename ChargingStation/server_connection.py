@@ -77,7 +77,7 @@ def get_port(index):
 
     client.send("GetPort", [index])
 
-def get_station(index):
+def get_station():
     global client
 
     client.send("GetStation", [])
