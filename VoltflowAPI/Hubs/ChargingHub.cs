@@ -199,6 +199,8 @@ public class ChargingHub : Hub
             await _applicationContext.SaveChangesAsync();
         }
 
+        ChargeManager.StartDates.TryRemove(connInfo.PortId, out _);
+
         //remove connection
         _connections.TryRemove(Context.ConnectionId, out _);
     }
