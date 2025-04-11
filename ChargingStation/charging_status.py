@@ -1,6 +1,5 @@
 
 import smbus
-import time
 
 # Define I2C address for the INA3221 (0x40 by default)
 INA3221_ADDRESS = 0x40
@@ -70,7 +69,7 @@ def get_info():
         #voltage = read_bus_voltage(channel)
         current = read_current(channel)
 
-        power = 5 * current/1000
+        power = 5 * current / 1000
         result.append(power)
 
     return result
