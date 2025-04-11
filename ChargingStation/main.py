@@ -13,10 +13,10 @@ import configparser
 
 # Load the INI file
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read("config.ini")
 
 # Access values
-id = config['Identification']['ID']
+id = config["Identification"]["ID"]
 password = config["Identification"]["Password"]
 
 buzzerIsOn = bool(int(config["Buzzer"]["IsOn"]))
