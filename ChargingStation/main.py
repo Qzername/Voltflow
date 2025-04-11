@@ -77,7 +77,7 @@ portName = tk.Label(root, text="Station id: "+str(id), font=("Arial", 24))
 portName.pack(pady=8)
 
 if (server_connection.message != None):
-    stationMessage = tk.Label(root, text="Message: "+server_connection.message, font=("Arial", 16))
+    stationMessage = tk.Label(root, text=server_connection.message, font=("Arial", 16))
     stationMessage.pack(pady=8)
 
 stationCost = tk.Label(root, text="Cost: "+str(server_connection.station["cost"])+" zł/kWh", font=("Arial", 12))
@@ -156,7 +156,7 @@ def loop():
 
         wattages = charging_status.get_info()
         
-        if temperature > 29:
+        if temperature > 26:
             wattages = [0,0]
             server_connection.set_out_of_service()
 
