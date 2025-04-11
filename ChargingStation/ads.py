@@ -26,7 +26,7 @@ def config(frame, rootMain):
     global image_label
 
     image_label = tk.Label(right_frame)
-    image_label.pack()
+    image_label.pack(side=tk.TOP)
     
     update_image()  # start rotacji obrazków
 
