@@ -38,8 +38,6 @@ def update_matrix():
         for x in range(width):
             pixel = image.getpixel((x, y))
 
-            print((pixel[0], pixel[1],pixel[2]))
-
             display.set_pixel(width-x-1,y,(pixel[0], pixel[1],pixel[2]))
 
     display.apply_changes()
