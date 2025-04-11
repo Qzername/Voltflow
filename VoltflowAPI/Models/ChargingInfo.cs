@@ -12,4 +12,6 @@ public struct ChargingInfo
     public bool IsDiscount { get; set; }
     public bool Started { get; set; }
     public bool Disconnected { get; set; }
+    public bool OutOfService { get; set; }
+
 }

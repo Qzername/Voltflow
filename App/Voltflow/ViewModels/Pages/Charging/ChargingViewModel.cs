@@ -158,6 +158,26 @@ public class ChargingViewModel : ViewModelBase
         if (!_dataUpdate.IsEnabled)
             return;
 
+        var outOfService = await _connection.InvokeAsync<bool>("IsOutOfService");
+        if (outOfService)
+        {
+            Working = true;
+            _dataUpdate.IsEnabled = false;
+            await _connection.StopAsync();
+
+            ToastManager?.Show(
+                new Toast("Charging port is out of service! Going back to map in 5 seconds."),
+                showIcon: true,
+                showClose: false,
+                type: NotificationType.Error,
+                classes: ["Light"]);
+
+            await Task.Delay(5000);
+            NavigateHome();
+
+            return;
+        }
+
         var disconnected = await _connection.InvokeAsync<bool>("IsDisconnected");
 
         if (disconnected)

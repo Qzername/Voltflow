@@ -43,9 +43,28 @@ public class ChargingHub : Hub
         return conn.Disconnected;
     }
 
+    public async Task<bool> IsOutOfService()
+    {
+        var conn = _connections[Context.ConnectionId];
+        return conn.OutOfService;
+    }
+
     public async Task<double[]> GetChargingInfo()
     {
         var connInfo = _connections[Context.ConnectionId];
+
+        if (DateTime.UtcNow - connInfo.StartDate > TimeSpan.FromMinutes(1) && connInfo.Started == false)
+        {
+            connInfo.OutOfService = true;
+            _connections[Context.ConnectionId] = connInfo;
+
+            var port = _applicationContext.ChargingPorts.Find(connInfo.PortId);
+            port.Status = (int)ChargingPortStatus.OutOfService;
+            _applicationContext.Update(port);
+            await _applicationContext.SaveChangesAsync();
+
+            return [0, 0];
+        }
 
         if (connInfo.Disconnected)
             return [0, 0];
@@ -58,6 +77,8 @@ public class ChargingHub : Hub
         float chargingRate = 0;
         if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
             chargingRate = WattageManager.Wattages[connInfo.PortId];
+        if (chargingRate > 0)
+            connInfo.Started = true;
         connInfo.EnergyConsumed += Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
         connInfo.TotalCost += Math.Round(connInfo.EnergyConsumed * station.Cost, 2);
 
@@ -153,32 +174,30 @@ public class ChargingHub : Hub
         var connInfo = _connections[Context.ConnectionId];
         var endTime = DateTime.UtcNow;
 
-        //set port status to available
-        var port = _applicationContext.ChargingPorts.Find(connInfo.PortId);
-        port.Status = (int)ChargingPortStatus.Available;
-        _applicationContext.Update(port);
-        await _applicationContext.SaveChangesAsync();
+        //set port status to available and register transaction
+        if (!connInfo.OutOfService)
+        {
+            var port = _applicationContext.ChargingPorts.Find(connInfo.PortId);
+            port.Status = (int)ChargingPortStatus.Available;
+            _applicationContext.Update(port);
+            await _applicationContext.SaveChangesAsync();
+
+            Transaction transaction = new()
+            {
+                AccountId = user.Id,
+                CarId = connInfo.CarId,
+                ChargingStationId = connInfo.StationId,
+                StartDate = connInfo.StartDate,
+                EndDate = endTime,
+                EnergyConsumed = Math.Round(connInfo.EnergyConsumed, 3),
+                Cost = Math.Round(connInfo.IsDiscount ? connInfo.TotalCost * 0.9 : connInfo.TotalCost, 2)
+            };
+
+            _applicationContext.Transactions.Add(transaction);
+            await _applicationContext.SaveChangesAsync();
+        }
 
         //remove connection
         _connections.TryRemove(Context.ConnectionId, out _);
-
-        //get car and station
-        var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
-
-        //register transaction
-        Transaction transaction = new()
-        {
-            AccountId = user.Id,
-            CarId = connInfo.CarId,
-            ChargingStationId = connInfo.StationId,
-            StartDate = connInfo.StartDate,
-            EndDate = endTime,
-            EnergyConsumed = Math.Round(connInfo.EnergyConsumed, 3),
-            Cost = Math.Round(connInfo.IsDiscount ? connInfo.TotalCost * 0.9 : connInfo.TotalCost, 2)
-        };
-
-        _applicationContext.Transactions.Add(transaction);
-        await _applicationContext.SaveChangesAsync();
-
     }
 }
