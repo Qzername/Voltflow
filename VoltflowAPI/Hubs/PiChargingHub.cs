@@ -65,10 +65,7 @@ public class PiChargingHub : Hub
 
         _connections[Context.ConnectionId] = chargingStation;
 
-        await Clients.Caller.SendAsync("Message", new
-        {
-            Message = chargingStation.Message
-        });
+        await Clients.Caller.SendAsync("Message", chargingStation.Message);
     }
 
     public override async Task OnConnectedAsync()
