@@ -75,7 +75,7 @@ statusPort1.pack(pady=8)
 timePort1 = tk.Label(root, text="", font=("Arial", 12))
 timePort1.pack(pady=8)
 
-wattagePort1 = tk.Label(root, text="", fg="yellow", font=("Arial", 12))
+wattagePort1 = tk.Label(root, text="", font=("Arial", 12))
 wattagePort1.pack(pady=8)
 
 statusPort2 = tk.Label(root, text="Port 2: Available", fg="green", font=("Arial", 16))
@@ -84,7 +84,7 @@ statusPort2.pack(pady=8)
 timePort2 = tk.Label(root, text="", font=("Arial", 12))
 timePort2.pack(pady=8)
 
-wattagePort2 = tk.Label(root, text="", fg="yellow", font=("Arial", 12))
+wattagePort2 = tk.Label(root, text="", font=("Arial", 12))
 wattagePort2.pack(pady=8)
 
 ads.config(frame,root)
@@ -118,9 +118,9 @@ def change_port_status(label, wattage_info, port_id, port_info):
 
     last_status[port_id] = port_info["status"]
 
-def change_port_time(label, time, port_id):
+def change_port_time(label, time):
     if time != None:
-        label.config(text="Port "+str(port_id+1)+" Time: "+time, fg="yellow")
+        label.config(text="Time: "+time)
     else:
         label.config(text="")
 
@@ -132,8 +132,8 @@ def loop():
         ports = server_connection.ports
         print(ports)
 
-        change_port_time(timePort1, ports[0]["time"], 0)
-        change_port_time(timePort2, ports[1]["time"], 1)
+        change_port_time(timePort1, ports[0]["time"])
+        change_port_time(timePort2, ports[1]["time"])
 
         wattages = charging_status.get_info()
         print(wattages)
