@@ -43,7 +43,7 @@ def show_status(status, port):
     start_X = 1
 
     if port == 1:
-        start_X = 12
+        start_X = 13
     
     for x in range(start_X,6):
         for y in range(0,6):
