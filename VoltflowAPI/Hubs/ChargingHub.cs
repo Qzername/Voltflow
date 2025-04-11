@@ -176,8 +176,6 @@ public class ChargingHub : Hub
         var connInfo = _connections[Context.ConnectionId];
         var endTime = DateTime.UtcNow;
 
-        ChargeManager.StartDates.TryRemove(connInfo.PortId, out _);
-
         //set port status to available and register transaction
         if (!connInfo.OutOfService)
         {

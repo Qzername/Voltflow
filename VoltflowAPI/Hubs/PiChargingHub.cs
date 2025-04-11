@@ -45,16 +45,12 @@ public class PiChargingHub : Hub
         chargingStation.Ports = ports;
         _connections[Context.ConnectionId] = chargingStation;
 
-        string? time = null;
-        if (ChargeManager.StartDates.ContainsKey(ports[index].Id))
-            time = (ChargeManager.StartDates[ports[index].Id] - DateTime.UtcNow).ToString("hh\\:mm\\:ss");
-
         await Clients.Caller.SendAsync("Port", new
         {
             Index = index,
             Status = ports[index].Status,
             ServiceMode = ports[index].ServiceMode,
-            Time = time
+            Time = ChargeManager.StartDates.ContainsKey(ports[index].Id) ? (ChargeManager.StartDates[ports[index].Id] - DateTime.UtcNow).ToString("hh\\:mm\\:ss") : null
         });
     }
 
