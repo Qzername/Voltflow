@@ -75,8 +75,8 @@ public class ChargingHub : Hub
         var station = _applicationContext.ChargingStations.Find(connInfo.StationId);
 
         float chargingRate = 0;
-        if (WattageManager.Wattages.ContainsKey(connInfo.PortId))
-            chargingRate = WattageManager.Wattages[connInfo.PortId];
+        if (ChargeManager.Wattages.ContainsKey(connInfo.PortId))
+            chargingRate = ChargeManager.Wattages[connInfo.PortId];
         if (chargingRate > 0)
             connInfo.Started = true;
         connInfo.EnergyConsumed += chargingRate * timePassed.TotalSeconds / 1000;
@@ -159,6 +159,8 @@ public class ChargingHub : Hub
             CarId = carId
         };
 
+        ChargeManager.StartDates[port.Id] = utcNow;
+
         Console.WriteLine("Charging started");
     }
 
@@ -173,6 +175,8 @@ public class ChargingHub : Hub
         //register time
         var connInfo = _connections[Context.ConnectionId];
         var endTime = DateTime.UtcNow;
+
+        ChargeManager.StartDates.TryRemove(connInfo.PortId, out _);
 
         //set port status to available and register transaction
         if (!connInfo.OutOfService)

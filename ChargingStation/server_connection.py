@@ -4,11 +4,13 @@ import charging_station_ports
 ports = {
     0: {
         "status": 0,
-        "serviceMode": False
+        "serviceMode": False,
+        "time": None
     },
     1: {
         "status": 0,
-        "serviceMode": False
+        "serviceMode": False,
+        "time": None
     }
 }
 
@@ -32,6 +34,7 @@ def manage_port(port):
     global ports
     ports[port["index"]]["status"] = port["status"]
     ports[port["index"]]["serviceMode"] = port["serviceMode"]
+    ports[port["index"]]["time"] = port["time"] if "time" in port else None
 
     if (port["status"] == 1 and port["serviceMode"] == False):
         charging_station_ports.turn_port_on(port["index"])

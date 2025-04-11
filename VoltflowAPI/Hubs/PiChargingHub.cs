@@ -27,8 +27,8 @@ public class PiChargingHub : Hub
     {
         var port = _connections[Context.ConnectionId].Ports.ToList()[index];
 
-        WattageManager.Wattages[port.Id] = (float)Math.Round(wattage) < 1 ? 0 : (float)Math.Round(wattage);
-        Console.WriteLine($"SetWattage: {port.Id} (slot {index}) - {WattageManager.Wattages[port.Id]}W");
+        ChargeManager.Wattages[port.Id] = (float)Math.Round(wattage) < 1 ? 0 : (float)Math.Round(wattage);
+        Console.WriteLine($"SetWattage: {port.Id} (slot {index}) - {ChargeManager.Wattages[port.Id]}W");
     }
 
     public async void GetPort(int index)
@@ -45,11 +45,16 @@ public class PiChargingHub : Hub
         chargingStation.Ports = ports;
         _connections[Context.ConnectionId] = chargingStation;
 
+        string? time = null;
+        if (ChargeManager.StartDates.ContainsKey(ports[index].Id))
+            time = (ChargeManager.StartDates[ports[index].Id] - DateTime.UtcNow).ToString("hh\\:mm\\:ss");
+
         await Clients.Caller.SendAsync("Port", new
         {
             Index = index,
             Status = ports[index].Status,
-            ServiceMode = ports[index].ServiceMode
+            ServiceMode = ports[index].ServiceMode,
+            Time = time
         });
     }
 
@@ -122,6 +127,10 @@ public class PiChargingHub : Hub
     public override async Task OnDisconnectedAsync(Exception exception)
     {
         Debug.WriteLine("Connection closed");
+
+        var connInfo = _connections[Context.ConnectionId];
+        foreach (var port in connInfo.Ports)
+            ChargeManager.Wattages.TryRemove(port.Id, out _);
 
         _connections.TryRemove(Context.ConnectionId, out _);
     }
