@@ -19,6 +19,9 @@ config.read('config.ini')
 id = config['Identification']['ID']
 password = config["Identification"]["Password"]
 
+print(config["Buzzer"]["IsOn"])
+buzzerIsOn = bool(config["Buzzer"]["IsOn"])
+
 server_connection.init(int(id), password)
 
 while not server_connection.connected:
@@ -83,7 +86,7 @@ def change_port_status(label, wattage_info, port_id, port_info):
         label.config(text="PORT "+str(port_id+1)+" OUT OF SERVICE", fg="red")
         display.show_status(2,port_id)
 
-    if port_info["status"] == 1 and last_status[port_id] == 0:
+    if port_info["status"] == 1 and last_status[port_id] == 0 and buzzerIsOn:
         GPIO.output(buzzer,GPIO.HIGH)
         sleep(0.5)
         GPIO.output(buzzer,GPIO.LOW)
