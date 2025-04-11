@@ -39,6 +39,9 @@ buzzer=16
 GPIO.setup(buzzer,GPIO.OUT)
 GPIO.output(buzzer,GPIO.LOW)
 
+SWITCH_PIN = 26  # Use BCM numbering
+GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Pull-up
+
 charging_station_ports.turn_port_off(0)
 charging_station_ports.turn_port_off(1)
 
@@ -122,6 +125,9 @@ def loop():
         
         change_port_status(statusPort1, [wattagePort1, wattages[0]], 0, ports[0])
         change_port_status(statusPort2, [wattagePort2, wattages[1]], 1, ports[1])
+
+        if GPIO.input(SWITCH_PIN) == GPIO.HIGH:
+            wattages = [0,0]
 
         server_connection.set_wattage(0, wattages[0])
         server_connection.set_wattage(1, wattages[1])
