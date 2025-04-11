@@ -79,8 +79,8 @@ public class ChargingHub : Hub
             chargingRate = WattageManager.Wattages[connInfo.PortId];
         if (chargingRate > 0)
             connInfo.Started = true;
-        connInfo.EnergyConsumed += Math.Round(chargingRate * timePassed.TotalSeconds / 1000, 3);
-        connInfo.TotalCost += Math.Round(connInfo.EnergyConsumed * station.Cost, 2);
+        connInfo.EnergyConsumed += chargingRate * timePassed.TotalSeconds / 1000;
+        connInfo.TotalCost += (chargingRate * timePassed.TotalSeconds / 1000) * station.Cost;
 
         Console.WriteLine($"ChargingRate: {chargingRate}");
         Console.WriteLine($"EnergyConsumed: {connInfo.EnergyConsumed}");

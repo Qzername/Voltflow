@@ -155,71 +155,79 @@ public class ChargingViewModel : ViewModelBase
 
     private async Task UpdateData()
     {
-        if (!_dataUpdate.IsEnabled)
-            return;
-
-        var outOfService = await _connection.InvokeAsync<bool>("IsOutOfService");
-        if (outOfService)
+        try
         {
-            Working = true;
-            _dataUpdate.IsEnabled = false;
-            await _connection.StopAsync();
-
-            ToastManager?.Show(
-                new Toast("Charging port is out of service! Going back to map in 5 seconds."),
-                showIcon: true,
-                showClose: false,
-                type: NotificationType.Error,
-                classes: ["Light"]);
-
-            await Task.Delay(5000);
-            NavigateHome();
-
-            return;
-        }
-
-        var disconnected = await _connection.InvokeAsync<bool>("IsDisconnected");
-
-        if (disconnected)
-        {
-            _dataUpdate.IsEnabled = false;
-
-            bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
-            await _connection.StopAsync();
-
-            HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost, TotalCharge, isDiscount, HostScreen));
-
-            if (App.NotificationService is not null)
-                App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
-
-            Finished = true;
-
-            return;
-        }
-
-        var chargingInfo = await _connection.InvokeAsync<double[]>("GetChargingInfo");
-        var time = DateTime.UtcNow - _startTime;
-        Time = time.ToString("hh\\:mm\\:ss");
-        TotalCharge = Math.Round(chargingInfo[0], 3);
-        TotalCost = Math.Round(chargingInfo[1], 2);
-
-        if (DeclaredAmount && TotalCharge >= Amount)
-        {
-            if (!_dataUpdate.IsEnabled || _connection == null)
+            if (!_dataUpdate.IsEnabled)
                 return;
 
-            _dataUpdate.IsEnabled = false;
+            var outOfService = await _connection.InvokeAsync<bool>("IsOutOfService");
+            if (outOfService)
+            {
+                Working = true;
+                _dataUpdate.IsEnabled = false;
+                await _connection.StopAsync();
 
-            bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
-            await _connection.StopAsync();
+                ToastManager?.Show(
+                    new Toast("Charging port is out of service! Going back to map in 5 seconds."),
+                    showIcon: true,
+                    showClose: false,
+                    type: NotificationType.Error,
+                    classes: ["Light"]);
 
-            HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost, TotalCharge, isDiscount, HostScreen));
+                await Task.Delay(5000);
+                NavigateHome();
 
-            if (App.NotificationService is not null)
-                App.NotificationService.ShowNotification("Charging finished!", "You have reached your declared amount.");
+                return;
+            }
 
-            Finished = true;
+            var disconnected = await _connection.InvokeAsync<bool>("IsDisconnected");
+
+            if (disconnected)
+            {
+                _dataUpdate.IsEnabled = false;
+
+                bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
+                await _connection.StopAsync();
+
+                HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost,
+                    TotalCharge, isDiscount, HostScreen));
+
+                if (App.NotificationService is not null)
+                    App.NotificationService.ShowNotification("Charging finished!",
+                        "You have reached your declared amount.");
+
+                Finished = true;
+
+                return;
+            }
+
+            var chargingInfo = await _connection.InvokeAsync<double[]>("GetChargingInfo");
+            var time = DateTime.UtcNow - _startTime;
+            Time = time.ToString("hh\\:mm\\:ss");
+            TotalCharge = Math.Round(chargingInfo[0], 3);
+            TotalCost = Math.Round(chargingInfo[1], 2);
+
+            if (DeclaredAmount && TotalCharge >= Amount)
+            {
+                if (!_dataUpdate.IsEnabled || _connection == null)
+                    return;
+
+                _dataUpdate.IsEnabled = false;
+
+                bool isDiscount = await _connection.InvokeAsync<bool>("RequestClose");
+                await _connection.StopAsync();
+
+                HostScreen.Router.NavigateAndReset.Execute(new TransactionViewModel(CurrentStation, TotalCost,
+                    TotalCharge, isDiscount, HostScreen));
+
+                if (App.NotificationService is not null)
+                    App.NotificationService.ShowNotification("Charging finished!",
+                        "You have reached your declared amount.");
+
+                Finished = true;
+            }
         }
+        catch (Exception ex) { }
     }
 
     public async Task Stop()
