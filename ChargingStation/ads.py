@@ -21,7 +21,7 @@ def config(frame, rootMain):
     global right_frame
 
     right_frame = tk.Frame(frame)
-    right_frame.pack(side=tk.RIGHT, padx=10, pady=10)
+    right_frame.pack(side=tk.TOP, padx=10, pady=10)
 
     global image_label
 
