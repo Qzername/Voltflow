@@ -45,7 +45,7 @@ def show_status(status, port):
     if port == 1:
         start_X = 12
     
-    for x in range(start_X-1,6):
+    for x in range(start_X,6):
         for y in range(0,6):
             set_pixel(x,y, (0,0,0))
 
