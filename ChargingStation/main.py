@@ -28,6 +28,8 @@ while not server_connection.connected:
     print("Waiting for connection...")
     time.sleep(1)
 
+server_connection.get_message()
+
 GPIO.setmode(GPIO.BCM)
 
 buzzer=16

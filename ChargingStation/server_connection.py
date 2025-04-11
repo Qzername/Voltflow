@@ -12,6 +12,8 @@ ports = {
     }
 }
 
+message = None
+
 connected = False
 def on_connected():
     global connected
@@ -30,6 +32,10 @@ def manage_port(port):
     else:
         charging_station_ports.turn_port_off(port["index"])
 
+def manage_message(new_message):
+    global message
+    message = new_message
+
 def init(id, password):
     global client
 
@@ -47,6 +53,7 @@ def init(id, password):
     
     client.on("Error", lambda args: print("Error:", args[0]))
     client.on("Port", lambda args: manage_port(args[0]))
+    client.on("Message", lambda args: manage_message(args[0]))
 
     try:
         client.start()
@@ -57,6 +64,11 @@ def get_port(index):
     global client
 
     client.send("GetPort", [index])
+
+def get_message():
+    global client
+
+    client.send("GetMessage", [])
 
 def set_wattage(index, wattage):
     global client
