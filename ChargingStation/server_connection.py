@@ -35,6 +35,7 @@ def manage_port(port):
 def manage_message(new_message):
     global message
     message = new_message
+    print(new_message)
 
 def init(id, password):
     global client
