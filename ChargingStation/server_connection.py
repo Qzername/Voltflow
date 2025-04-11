@@ -44,9 +44,9 @@ def init(id, password):
         .with_url(f"https://voltflow-api.heapy.xyz/picharginghub?stationId={id}&password={password}")\
         .with_automatic_reconnect({
             "type": "raw",
-            "keep_alive_interval": 10,
-            "reconnect_interval": 5,
-            "max_attempts": 5
+            "keep_alive_interval": 60,
+            "reconnect_interval": 2,
+            "max_attempts": 10
         }).build()
     
     client.on_close(lambda: on_disconnected())

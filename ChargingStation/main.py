@@ -28,6 +28,7 @@ while not server_connection.connected:
     time.sleep(1)
 
 server_connection.get_message()
+time.sleep(1)
 
 GPIO.setmode(GPIO.BCM)
 
