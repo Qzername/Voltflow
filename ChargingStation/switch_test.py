@@ -8,7 +8,7 @@ GPIO.setup(SWITCH_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)  # Pull-up
 
 try:
     while True:
-        if GPIO.input(SWITCH_PIN) == GPIO.LOW:
+        if GPIO.input(SWITCH_PIN) == GPIO.HIGH:
             print("Switch pressed")
         else:
             print("Switch released")
