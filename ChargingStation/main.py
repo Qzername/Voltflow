@@ -19,11 +19,7 @@ config.read('config.ini')
 id = config['Identification']['ID']
 password = config["Identification"]["Password"]
 
-buzzerIsOn = bool(config["Buzzer"]["IsOn"])
-
-print(config["Buzzer"]["IsOn"])
-print(buzzerIsOn)
-print(bool(int(config["Buzzer"]["IsOn"])))
+buzzerIsOn = bool(int(config["Buzzer"]["IsOn"]))
 
 server_connection.init(int(id), password)
 
