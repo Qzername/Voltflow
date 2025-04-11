@@ -1,6 +1,3 @@
-
-import smbus
-
 # Define I2C address for the INA3221 (0x40 by default)
 INA3221_ADDRESS = 0x40
 
@@ -14,7 +11,11 @@ INA3221_REG_SHUNT_VOLTAGE_3 = 0x05
 INA3221_REG_BUS_VOLTAGE_3 = 0x06
 
 # Initialize I2C (I2C bus 1 for Raspberry Pi)
-bus = smbus.SMBus(1)
+bus = 0
+
+def config(busMain):
+    global bus
+    bus = busMain
 
 def read_bus_voltage(channel):
     """Read the bus voltage for a given channel"""

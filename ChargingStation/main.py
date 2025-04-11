@@ -7,6 +7,8 @@ import time
 import charging_status
 import ads
 import ads_matrix
+import smbus
+from sht3x import SHT3x
 
 from time import sleep
 import configparser
@@ -14,6 +16,8 @@ import configparser
 # Load the INI file
 config = configparser.ConfigParser()
 config.read("config.ini")
+
+
 
 # Access values
 id = config["Identification"]["ID"]
@@ -34,6 +38,18 @@ server_connection.get_station()
 time.sleep(1)
 
 GPIO.setmode(GPIO.BCM)
+
+bus = smbus.SMBus(1)
+charging_status.config(bus)
+
+# INA3221 address
+INA3221_ADDRESS = 0x40
+
+# SHT3X address (change if needed)
+SHT3X_ADDRESS = 0x44
+
+# Initialize SHT3X sensor
+sensor = SHT3x(bus, address=SHT3X_ADDRESS)
 
 buzzer=16
 GPIO.setup(buzzer,GPIO.OUT)
@@ -126,6 +142,9 @@ def change_port_time(label, time):
 
 def loop():
     try:
+        temperature, humidity = sensor.measure()
+        print("temp: " +temperature)
+
         server_connection.get_port(0)
         server_connection.get_port(1)
 
