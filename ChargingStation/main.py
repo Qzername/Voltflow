@@ -19,7 +19,6 @@ config.read('config.ini')
 id = config['Identification']['ID']
 password = config["Identification"]["Password"]
 
-print(config["Buzzer"]["IsOn"])
 buzzerIsOn = bool(config["Buzzer"]["IsOn"])
 
 server_connection.init(int(id), password)
@@ -72,6 +71,7 @@ last_status = [0,0]
 
 def change_port_status(label, wattage_info, port_id, port_info):
     global last_status
+    global buzzerIsOn
 
     if port_info["serviceMode"]:
         label.config(text="PORT "+str(port_id+1)+" IN SERVICE MODE.", fg="red")
