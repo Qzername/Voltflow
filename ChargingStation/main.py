@@ -8,7 +8,8 @@ import charging_status
 import ads
 import ads_matrix
 import smbus
-from sht3x import SHT3x
+import adafruit_sht31d
+import board
 
 from time import sleep
 import configparser
@@ -49,7 +50,7 @@ INA3221_ADDRESS = 0x40
 SHT3X_ADDRESS = 0x44
 
 # Initialize SHT3X sensor
-sensor = SHT3x(bus, address=SHT3X_ADDRESS)
+sensor = adafruit_sht31d.SHT31D(board.I2C())
 
 buzzer=16
 GPIO.setup(buzzer,GPIO.OUT)
@@ -142,7 +143,7 @@ def change_port_time(label, time):
 
 def loop():
     try:
-        temperature, humidity = sensor.measure()
+        temperature = sensor.temperature
         print("temp: " +temperature)
 
         server_connection.get_port(0)
