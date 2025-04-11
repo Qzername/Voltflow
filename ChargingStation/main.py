@@ -144,7 +144,7 @@ def change_port_time(label, time):
 def loop():
     temperature = sensor.temperature
     print("123")
-    print("temp: " +temperature)
+    print("temp: " + str(temperature))
     print("321")
 
     server_connection.get_port(0)
