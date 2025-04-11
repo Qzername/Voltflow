@@ -122,7 +122,7 @@ def change_port_status(label, wattage_info, port_id, port_info):
     elif port_info["status"] == 1:
         display.show_status(1,port_id)
         label.config(text="Port "+str(port_id+1)+": Occupied", fg="yellow")
-        wattage_info[0].config(text="Wattage "+str(round(wattage_info[1], 2))+" W")
+        wattage_info[0].config(text="Wattage: "+str(round(wattage_info[1], 2))+" W")
     elif port_info["status"] == 2:
         label.config(text="PORT "+str(port_id+1)+" OUT OF SERVICE", fg="red")
         display.show_status(2,port_id)
