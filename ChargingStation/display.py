@@ -25,7 +25,7 @@ def set_pixel(x, y, color):
         i = y * LED_COLS + x
     else:
         i = y * LED_COLS + (LED_COLS - 1 - x)
-    strip.setPixelColor(i, Color(color[0],color[1],color[2]))
+    strip.setPixelColor(i, Color(color[0],color[2],color[1]))
 
 def apply_changes():
     strip.show()
