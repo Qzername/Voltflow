@@ -21,6 +21,8 @@ password = config["Identification"]["Password"]
 
 buzzerIsOn = bool(config["Buzzer"]["IsOn"])
 
+print(buzzerIsOn)
+
 server_connection.init(int(id), password)
 
 while not server_connection.connected:
