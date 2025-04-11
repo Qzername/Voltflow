@@ -142,34 +142,31 @@ def change_port_time(label, time):
         label.config(text="")
 
 def loop():
-    try:
-        temperature = sensor.temperature
-        print("123")
-        print("temp: " +temperature)
-        print("321")
+    temperature = sensor.temperature
+    print("123")
+    print("temp: " +temperature)
+    print("321")
 
-        server_connection.get_port(0)
-        server_connection.get_port(1)
+    server_connection.get_port(0)
+    server_connection.get_port(1)
 
-        ports = server_connection.ports
-        print(ports)
+    ports = server_connection.ports
+    print(ports)
 
-        change_port_time(timePort1, ports[0]["time"])
-        change_port_time(timePort2, ports[1]["time"])
+    change_port_time(timePort1, ports[0]["time"])
+    change_port_time(timePort2, ports[1]["time"])
 
-        wattages = charging_status.get_info()
-        print(wattages)
-        
-        change_port_status(statusPort1, [wattagePort1, wattages[0]], 0, ports[0])
-        change_port_status(statusPort2, [wattagePort2, wattages[1]], 1, ports[1])
+    wattages = charging_status.get_info()
+    print(wattages)
+    
+    change_port_status(statusPort1, [wattagePort1, wattages[0]], 0, ports[0])
+    change_port_status(statusPort2, [wattagePort2, wattages[1]], 1, ports[1])
 
-        if GPIO.input(SWITCH_PIN) == GPIO.HIGH:
-            wattages = [0,0]
+    if GPIO.input(SWITCH_PIN) == GPIO.HIGH:
+        wattages = [0,0]
 
-        server_connection.set_wattage(0, wattages[0])
-        server_connection.set_wattage(1, wattages[1])
-    except:
-        pass
+    server_connection.set_wattage(0, wattages[0])
+    server_connection.set_wattage(1, wattages[1])
 
     root.after(1000, loop)
 
