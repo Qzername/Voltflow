@@ -40,13 +40,17 @@ def show_status(status, port):
     elif status == 2:
         color = (100,0,0)
 
-    start_X = 0
+    start_X = 1
 
     if port == 1:
-        start_X = 13
+        start_X = 12
     
+    for x in range(start_X-1,6):
+        for y in range(0,6):
+            set_pixel(x,y, (0,0,0))
+
     for x in range(start_X, start_X+3,1):
-        for y in range(0,3):
+        for y in range(1,4):
             set_pixel(x,y,color)
 
     strip.show()
