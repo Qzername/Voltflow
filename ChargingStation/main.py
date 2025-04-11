@@ -30,6 +30,9 @@ while not server_connection.connected:
 server_connection.get_message()
 time.sleep(1)
 
+server_connection.get_station()
+time.sleep(1)
+
 GPIO.setmode(GPIO.BCM)
 
 buzzer=16
@@ -56,6 +59,12 @@ portName.pack(pady=20)
 if (server_connection.message != None):
     stationMessage = tk.Label(root, text="Message: "+server_connection.message, font=("Arial", 16))
     stationMessage.pack(pady=8)
+
+stationCost = tk.Label(root, text="Cost: "+server_connection.station["cost"], font=("Arial", 12))
+stationCost.pack(pady=4)
+
+stationMaxChargeRate = tk.Label(root, text="Cost: "+server_connection.station["maxChargeRate"], font=("Arial", 12))
+stationMaxChargeRate.pack(pady=4)
 
 statusPort1 = tk.Label(root, text="Port 1: Available", fg="green", font=("Arial", 24))
 statusPort1.pack(pady=20)

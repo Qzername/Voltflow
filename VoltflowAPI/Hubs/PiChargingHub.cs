@@ -68,6 +68,25 @@ public class PiChargingHub : Hub
         await Clients.Caller.SendAsync("Message", chargingStation.Message);
     }
 
+    public async void GetStation()
+    {
+        var chargingStation = _applicationContext.ChargingStations.Find(_connections[Context.ConnectionId].Id);
+
+        if (chargingStation is null)
+        {
+            await Clients.Caller.SendAsync("Error", "Station not found");
+            Context.Abort();
+        }
+
+        _connections[Context.ConnectionId] = chargingStation;
+
+        await Clients.Caller.SendAsync("Station", new
+        {
+            Cost = chargingStation.Cost,
+            MaxChargeRate = chargingStation.MaxChargeRate
+        });
+    }
+
     public override async Task OnConnectedAsync()
     {
         Debug.WriteLine("Connection opened");
