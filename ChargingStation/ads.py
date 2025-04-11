@@ -49,7 +49,7 @@ def update_image():
     photo = ImageTk.PhotoImage(img)
     
     # Ustaw w labelu
-    image_label.config(image=photo)
+    image_label.config(image=photo, anchor="center")
     image_label.image = photo  # <- ważne: inaczej Python zgubi referencję!
 
     # Następny obrazek
