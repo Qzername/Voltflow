@@ -18,6 +18,8 @@ config.read('config.ini')
 # Access values
 id = config['Identification']['ID']
 password = config["Identification"]["Password"]
+
+print(config["Buzzer"]["IsOn"])
 buzzerIsOn = bool(config["Buzzer"]["IsOn"])
 
 server_connection.init(int(id), password)
