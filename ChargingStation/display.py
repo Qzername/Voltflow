@@ -9,7 +9,7 @@ LED_PIN = 18  # GPIO18 (PWM)
 LED_BRIGHTNESS = 16
 
 # Create PixelStrip object
-strip = PixelStrip(LED_COUNT, LED_PIN,)
+strip = PixelStrip(LED_COUNT, LED_PIN)
 strip.begin()
 
 strip.setBrightness(LED_BRIGHTNESS)
