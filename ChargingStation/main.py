@@ -53,8 +53,8 @@ portName = tk.Label(root, text="Station id: "+str(id), font=("Arial", 24))
 portName.pack(pady=20)
 
 if (server_connection.message != None):
-    stationMessage = tk.Label(root, text=server_connection.message, font=("Arial", 24))
-    stationMessage.pack(pady=20)
+    stationMessage = tk.Label(root, text="Message "+server_connection.message, font=("Arial", 16))
+    stationMessage.pack(pady=8)
 
 statusPort1 = tk.Label(root, text="Port 1: Available", fg="green", font=("Arial", 24))
 statusPort1.pack(pady=20)
