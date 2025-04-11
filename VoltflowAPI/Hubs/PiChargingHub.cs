@@ -26,12 +26,16 @@ public class PiChargingHub : Hub
     public async void SetOutOfService()
     {
         var ports = _connections[Context.ConnectionId].Ports.OrderBy(x => x.Id).ToList();
-        foreach (var p in ports)
-        {
-            p.Status = (int)ChargingPortStatus.OutOfService;
-            _applicationContext.Update(p);
-            await _applicationContext.SaveChangesAsync();
-        }
+
+        var portOne = ports[0];
+        var portTwo = ports[1];
+
+        portOne.Status = (int)ChargingPortStatus.OutOfService;
+        _applicationContext.Update(portOne);
+        portTwo.Status = (int)ChargingPortStatus.OutOfService;
+        _applicationContext.Update(portTwo);
+
+        await _applicationContext.SaveChangesAsync();
     }
 
     public void SetWattage(int index, float wattage)
