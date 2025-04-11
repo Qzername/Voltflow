@@ -3,13 +3,18 @@ import charging_station_ports
 
 ports = {
     0: {
-        "status":0,
-        "serviceMode":False
+        "status": 0,
+        "serviceMode": False
     },
     1: {
-        "status":0,
-        "serviceMode":False
+        "status": 0,
+        "serviceMode": False
     }
+}
+
+station = {
+    "cost": 0,
+    "maxChargeRate": 0
 }
 
 message = None
@@ -24,6 +29,7 @@ def on_disconnected():
     connected = False
 
 def manage_port(port):
+    global ports
     ports[port["index"]]["status"] = port["status"]
     ports[port["index"]]["serviceMode"] = port["serviceMode"]
 
@@ -32,10 +38,14 @@ def manage_port(port):
     else:
         charging_station_ports.turn_port_off(port["index"])
 
+def manage_station(new_station):
+    global station
+    station["cost"] = new_station["cost"]
+    station["maxChargeRate"] = new_station["maxChargeRate"]
+
 def manage_message(new_message):
     global message
     message = new_message
-    print(new_message)
 
 def init(id, password):
     global client
@@ -44,9 +54,9 @@ def init(id, password):
         .with_url(f"https://voltflow-api.heapy.xyz/picharginghub?stationId={id}&password={password}")\
         .with_automatic_reconnect({
             "type": "raw",
-            "keep_alive_interval": 10,
-            "reconnect_interval": 5,
-            "max_attempts": 5
+            "keep_alive_interval": 60,
+            "reconnect_interval": 2,
+            "max_attempts": 10
         }).build()
     
     client.on_close(lambda: on_disconnected())
@@ -55,6 +65,7 @@ def init(id, password):
     client.on("Error", lambda args: print("Error:", args[0]))
     client.on("Port", lambda args: manage_port(args[0]))
     client.on("Message", lambda args: manage_message(args[0]))
+    client.on("Station", lambda args: manage_station(args[0]))
 
     try:
         client.start()
@@ -65,6 +76,11 @@ def get_port(index):
     global client
 
     client.send("GetPort", [index])
+
+def get_station():
+    global client
+
+    client.send("GetStation", [])
 
 def get_message():
     global client
