@@ -106,6 +106,15 @@
             </StackPanel>
             <TextBox Text="{Binding Password}" Watermark="Voltflow123@!" />
 
+            <StackPanel Classes="sm-spacing" Orientation="Horizontal">
+                <iconPacks:PackIconMaterialDesign
+                    Classes="size-sm"
+                    IsVisible="True"
+                    Kind="Chat" />
+                <TextBlock Classes="size-sm weight-bold" Text="Message" />
+            </StackPanel>
+            <TextBox Text="{Binding Message}" Watermark="Station is unavailable" />
+
             <!--  charging ports  -->
 
             <Separator />

@@ -30,6 +30,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
         [Reactive] public int? Cost { get; set; }
         [Reactive] public int? MaxChargeRate { get; set; }
         [Reactive] public string? Password { get; set; }
+        [Reactive] public string? Message { get; set; }
         [Reactive] public bool CreatingNewPoint { get; set; } = true;
         [Reactive] public bool Clicked { get; set; }
 
@@ -140,6 +141,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             Cost = data.Cost;
             MaxChargeRate = data.MaxChargeRate;
             Password = data.Password;
+            Message = data.Message;
 
             NewPortName = null;
 
@@ -357,7 +359,8 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
                 Latitude,
                 Cost,
                 MaxChargeRate,
-                Password
+                Password,
+                Message
             });
 
             var request = await _httpClient.PostAsync("/api/ChargingStations", content);
@@ -484,6 +487,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             station.Cost = (int)Cost;
             station.MaxChargeRate = (int)MaxChargeRate;
             station.Password = Password;
+            station.Message = Message;
 
             var content = JsonConverter.ToStringContent(station);
             var request = await _httpClient.PatchAsync("/api/ChargingStations", content);
@@ -701,6 +705,7 @@ namespace Voltflow.ViewModels.Pages.Map.SidePanels
             Cost = 0;
             MaxChargeRate = 0;
             Password = null;
+            Message = null;
             CreatingNewPoint = false;
             Clicked = false;
             _selectedPoint = null;
