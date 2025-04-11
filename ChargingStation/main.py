@@ -120,7 +120,7 @@ def change_port_status(label, wattage_info, port_id, port_info):
 
 def change_port_time(label, time, port_id):
     if time != None:
-        label.config(text="Port "+str(port_id)+" Time: "+time)
+        label.config(text="Port "+str(port_id+1)+" Time: "+time, fg="yellow")
     else:
         label.config(text="")
 
