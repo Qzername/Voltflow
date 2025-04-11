@@ -21,7 +21,7 @@ def config(frame, rootMain):
     global right_frame
 
     right_frame = tk.Frame(frame)
-    right_frame.pack(side=tk.RIGHT, padx=10, pady=10)
+    right_frame.pack(side=tk.TOP, expand=True, padx=10, pady=10)
 
     global image_label
 
@@ -49,7 +49,7 @@ def update_image():
     photo = ImageTk.PhotoImage(img)
     
     # Ustaw w labelu
-    image_label.config(image=photo, anchor="center")
+    image_label.config(image=photo)
     image_label.image = photo  # <- ważne: inaczej Python zgubi referencję!
 
     # Następny obrazek
