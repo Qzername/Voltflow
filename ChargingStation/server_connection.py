@@ -85,6 +85,11 @@ def get_station():
 
     client.send("GetStation", [])
 
+def set_out_of_service():
+    global client
+
+    client.send("SetOutOfService", [])
+
 def get_message():
     global client
 

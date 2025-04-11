@@ -23,9 +23,20 @@ public class PiChargingHub : Hub
         _applicationContext = applicationContext;
     }
 
+    public async void SetOutOfService()
+    {
+        var ports = _connections[Context.ConnectionId].Ports.OrderBy(x => x.Id).ToList();
+        foreach (var p in ports)
+        {
+            p.Status = (int)ChargingPortStatus.OutOfService;
+            _applicationContext.Update(p);
+            await _applicationContext.SaveChangesAsync();
+        }
+    }
+
     public void SetWattage(int index, float wattage)
     {
-        var port = _connections[Context.ConnectionId].Ports.ToList()[index];
+        var port = _connections[Context.ConnectionId].Ports.OrderBy(x => x.Id).ToList()[index];
 
         ChargeManager.Wattages[port.Id] = (float)Math.Round(wattage) < 1 ? 0 : (float)Math.Round(wattage);
         Console.WriteLine($"SetWattage: {port.Id} (slot {index}) - {ChargeManager.Wattages[port.Id]}W");

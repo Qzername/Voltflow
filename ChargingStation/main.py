@@ -158,6 +158,7 @@ def loop():
         
         if temperature > 29:
             wattages = [0,0]
+            server_connection.set_out_of_service()
 
         change_port_status(statusPort1, [wattagePort1, wattages[0]], 0, ports[0])
         change_port_status(statusPort2, [wattagePort2, wattages[1]], 1, ports[1])
